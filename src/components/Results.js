@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 // Initialize the Markdown parser
 const mdParser = new MarkdownIt();
 
-const Results = ({ result, onLineClick, back, isSubGoal, disableSubGoal }) => {
+const Results = ({ result, onLineClick, back, isSubGoal }) => {
   const theme = useTheme();
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,9 +60,6 @@ const Results = ({ result, onLineClick, back, isSubGoal, disableSubGoal }) => {
 
     // Add event listener for clicks on the processed content
     const handleLineClick = (event) => {
-      if (disableSubGoal) {
-        return;
-      }
       if (isSubGoal) {
         console.log("isSubGoal", isSubGoal);
         setIsToastOpen(true);

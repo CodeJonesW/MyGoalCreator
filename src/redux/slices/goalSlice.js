@@ -57,6 +57,9 @@ const goalSlice = createSlice({
     clearSubGoal: (state) => {
       state.subGoal = null;
     },
+    setGoal: (state, action) => {
+      state.goal = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,6 +86,6 @@ const goalSlice = createSlice({
   },
 });
 
-export const { clearGoal, clearSubGoal } = goalSlice.actions;
+export const { clearGoal, clearSubGoal, setGoal } = goalSlice.actions;
 
 export default goalSlice;

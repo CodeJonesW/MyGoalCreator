@@ -26,7 +26,7 @@ const App = () => {
   useEffect(() => {
     if (token) {
       try {
-        dispatch(getProfile(token));
+        dispatch(getProfile({ token: token, setLatestGoal: false }));
         setDisplayComponent("analyze");
       } catch (error) {
         setDisplayComponent("welcome");

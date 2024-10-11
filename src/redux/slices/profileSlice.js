@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clearAuthToken } from "./authSlice";
+import { setGoal } from "./goalSlice";
 import axios from "axios";
 
 export const getProfile = createAsyncThunk(
   "profile/getProfile",
-  async (token, { rejectWithValue, dispatch }) => {
+  async ({ token, setLatestGoal }, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.get(`api/profile`, {
         headers: {
@@ -13,6 +14,9 @@ export const getProfile = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      if (setLatestGoal) {
+        dispatch(setGoal(response.data.recentGoal));
+      }
       return response.data;
     } catch (error) {
       dispatch(clearAuthToken());

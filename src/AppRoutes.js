@@ -9,6 +9,7 @@ import {
   Register,
   PrivateRoute,
   Goals,
+  ViewGoal,
 } from "./components/index.js";
 import App from "./App.js";
 
@@ -18,7 +19,7 @@ function AppRoutes() {
 
   useEffect(() => {
     if (token) {
-      dispatch(getProfile(token));
+      dispatch(getProfile({ token: token, setLatestGoal: false }));
     }
   }, [dispatch, token]);
 
@@ -34,6 +35,7 @@ function AppRoutes() {
           path="/profile"
           element={<PrivateRoute element={<Profile />} />}
         />
+        <Route path="/goal" element={<PrivateRoute element={<ViewGoal />} />} />
       </Routes>
     </Router>
   );

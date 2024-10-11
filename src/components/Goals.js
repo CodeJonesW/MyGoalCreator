@@ -14,10 +14,12 @@ import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
 import { getGoal, clearGoal } from "../redux/slices/goalSlice";
 import { useTheme } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Goals = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
   const { goals } = useSelector((state) => state.profileSlice);
   const { token } = useSelector((state) => state.authSlice);
@@ -25,6 +27,7 @@ const Goals = () => {
 
   const handleShowGoal = async (goalId) => {
     dispatch(getGoal({ token, goalId }));
+    navigate("/goal");
   };
 
   const handleClearGoal = () => {
@@ -47,60 +50,39 @@ const Goals = () => {
     >
       <NavBar />
       <Box sx={{ padding: "24px" }}>
-        {goal ? (
-          <Box>
-            <Box
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "24px",
-              }}
-            >
-              <Button
-                onClick={handleClearGoal}
-                variant="contained"
-                color="secondary"
-              >
-                View All Goals
-              </Button>
-            </Box>
-            <Results disableSubGoal={true} result={goal.plan} />
-          </Box>
-        ) : (
-          <Card style={{ padding: "24px" }}>
-            <h2>My Goals</h2>
-            <List>
-              {goals.length > 0 ? (
-                goals.map((goal, index) => (
-                  <GoalItem
-                    goal={goal}
-                    index={index}
-                    handleShowGoal={handleShowGoal}
-                  />
-                ))
-              ) : (
-                <p>No goals available</p>
-              )}
-            </List>
-          </Card>
-        )}
+        <Card style={{ padding: "24px" }}>
+          <h2>My Goals</h2>
+          <List>
+            {goals.length > 0 ? (
+              goals.map((goal, index) => (
+                <GoalItem
+                  goal={goal}
+                  index={index}
+                  handleShowGoal={handleShowGoal}
+                />
+              ))
+            ) : (
+              <p>No goals available</p>
+            )}
+          </List>
+        </Card>
       </Box>
     </Box>
   );
 };
 
 const GoalItem = ({ goal, index, handleShowGoal }) => {
-  const [hover, setHover] = useState(false); // Track hover state
+  const [hover, setHover] = useState(false);
 
   return (
     <ListItem
       key={index}
       onClick={() => handleShowGoal(goal.GoalId)}
-      onMouseEnter={() => setHover(true)} // Set hover state on mouse enter
-      onMouseLeave={() => setHover(false)} // Remove hover state on mouse leave
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       sx={{
         cursor: "pointer",
-        backgroundColor: hover ? "rgba(0, 0, 0, 0.1)" : "transparent", // Change background on hover
+        backgroundColor: hover ? "rgba(0, 0, 0, 0.1)" : "transparent",
         transition: "background-color 0.3s", // Smooth transition
         "&:hover .icon-button": {
           display: "inline-flex", // Show icon on hover
