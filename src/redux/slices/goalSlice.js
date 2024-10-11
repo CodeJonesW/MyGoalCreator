@@ -21,16 +21,41 @@ export const getGoal = createAsyncThunk(
   }
 );
 
+export const analyzeSubGoal = createAsyncThunk(
+  "goal/analyzeSubGoal",
+  async ({ token, text, lineNumber, goalId }) => {
+    const response = await axios.post(
+      `/api/subgoal`,
+      {
+        goalId,
+        sub_goal_name: text,
+        line_number: lineNumber,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+
 const goalSlice = createSlice({
   name: "goal",
   initialState: {
     goal: null,
+    subGoal: null,
     loading: false,
     error: false,
   },
   reducers: {
     clearGoal: (state) => {
       state.goal = null;
+    },
+    clearSubGoal: (state) => {
+      state.subGoal = null;
     },
   },
   extraReducers: (builder) => {
@@ -43,10 +68,21 @@ const goalSlice = createSlice({
       })
       .addCase(getGoal.rejected, (state, action) => {
         state.error = true;
+      })
+      .addCase(analyzeSubGoal.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(analyzeSubGoal.fulfilled, (state, action) => {
+        console.log("Subgoal analyzed successfully", action);
+        state.loading = false;
+        state.subGoal = action.payload.subGoal;
+      })
+      .addCase(analyzeSubGoal.rejected, (state) => {
+        state.loading = false;
       });
   },
 });
 
-export const { clearGoal } = goalSlice.actions;
+export const { clearGoal, clearSubGoal } = goalSlice.actions;
 
 export default goalSlice;
