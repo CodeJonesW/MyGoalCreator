@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
-import { getGoal, clearGoal } from "../redux/slices/goalSlice";
+import { getGoal } from "../redux/slices/goalSlice";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
