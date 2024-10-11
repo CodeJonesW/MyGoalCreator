@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import InputForm from "./InputForm";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
-import { analyzeSubGoal, clearSubGoal } from "../redux/slices/goalSlice";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.authSlice);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState("");
