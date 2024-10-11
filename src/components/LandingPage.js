@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import GoalIllustration from "../assets/images/my_goal_creator_landing_page_img_1.webp";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = ({ displayComponent }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box className="landing-page">
@@ -62,14 +64,14 @@ const LandingPage = ({ displayComponent }) => {
                 variant="contained"
                 color="primary"
                 sx={{ marginRight: "16px" }}
-                onClick={() => displayComponent("register")}
+                onClick={() => navigate("/register")}
               >
                 Get Started
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => displayComponent("login")}
+                onClick={() => navigate("/login")}
               >
                 Login
               </Button>
