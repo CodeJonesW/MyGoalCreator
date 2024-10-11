@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import {
   Box,
   Card,
-  Button,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
   IconButton,
 } from "@mui/material";
-import Results from "./Results";
 import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
 import { getGoal, clearGoal } from "../redux/slices/goalSlice";
@@ -23,15 +21,10 @@ const Goals = () => {
   const theme = useTheme();
   const { goals } = useSelector((state) => state.profileSlice);
   const { token } = useSelector((state) => state.authSlice);
-  const { goal } = useSelector((state) => state.goalSlice);
 
   const handleShowGoal = async (goalId) => {
     dispatch(getGoal({ token, goalId }));
     navigate("/goal");
-  };
-
-  const handleClearGoal = () => {
-    dispatch(clearGoal());
   };
 
   return (

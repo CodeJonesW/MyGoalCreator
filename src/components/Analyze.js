@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputForm from "./InputForm";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
