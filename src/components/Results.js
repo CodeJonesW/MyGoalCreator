@@ -4,6 +4,7 @@ import MarkdownIt from "markdown-it";
 import { useTheme } from "@mui/material/styles";
 import { Box, Button, Snackbar } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Initialize the Markdown parser
 const mdParser = new MarkdownIt();
@@ -11,6 +12,7 @@ const mdParser = new MarkdownIt();
 const Results = ({ result, onLineClick, back, isSubGoal }) => {
   const theme = useTheme();
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Parse the Markdown content into HTML
   const htmlContent = mdParser.render(result);
@@ -68,6 +70,7 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
       const text = target.innerHTML;
       if (lineNumber && text) {
         onLineClick(lineNumber, text);
+        setIsLoading(true);
       }
     };
 
@@ -95,11 +98,21 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
       }}
       className="markdown-content"
     >
-      {back ? (
-        <Button color="secondary" variant={"outlined"} onClick={back}>
-          <ArrowBackIosNewIcon />
-        </Button>
-      ) : null}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: back ? "space-between" : "flex-end",
+        }}
+      >
+        {back ? (
+          <Button color="secondary" variant={"outlined"} onClick={back}>
+            <ArrowBackIosNewIcon />
+          </Button>
+        ) : null}
+        {isLoading ? <CircularProgress color="secondary" /> : null}
+      </Box>
+
       <Snackbar
         sx={{ marginTop: "20px" }}
         open={isToastOpen}
