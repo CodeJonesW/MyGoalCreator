@@ -14,7 +14,7 @@ import NavBar from "./NavBar";
 import { useSelector, useDispatch } from "react-redux";
 import { getGoal, clearGoal } from "../redux/slices/goalSlice";
 import { useTheme } from "@mui/material/styles";
-import VisibilityIcon from "@mui/icons-material/Visibility"; // Example icon
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Goals = () => {
   const dispatch = useDispatch();
