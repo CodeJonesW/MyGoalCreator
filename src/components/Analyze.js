@@ -188,7 +188,12 @@ const Analyze = () => {
           animate={showSubGoalResults ? "exit" : "visible"}
           exit="exit"
         >
-          <Results back={null} onLineClick={onLineClick} result={result} />
+          <Results
+            back={null}
+            onLineClick={onLineClick}
+            result={result}
+            isSubGoal={false}
+          />
         </motion.div>
       ) : null}
 
@@ -203,6 +208,7 @@ const Analyze = () => {
             back={handleClearSubGoal}
             onLineClick={onLineClick}
             result={subGoal.plan}
+            isSubGoal={true}
           />
         </motion.div>
       ) : null}

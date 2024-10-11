@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import MarkdownIt from "markdown-it";
 import { useTheme } from "@mui/material/styles";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Snackbar } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 // Initialize the Markdown parser
 const mdParser = new MarkdownIt();
 
-const Results = ({ result, onLineClick, back }) => {
+const Results = ({ result, onLineClick, back, isSubGoal }) => {
   const theme = useTheme();
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   // Parse the Markdown content into HTML
   const htmlContent = mdParser.render(result);
@@ -57,10 +58,13 @@ const Results = ({ result, onLineClick, back }) => {
 
     // Add event listener for clicks on the processed content
     const handleLineClick = (event) => {
+      if (isSubGoal) {
+        console.log("isSubGoal", isSubGoal);
+        setIsToastOpen(true);
+        return;
+      }
       const target = event.target;
       const lineNumber = target.parentElement.getAttribute("data-line-number");
-      console.log("Clicked line number:", lineNumber);
-      console.log("Clicked line text:", target.innerHTML);
       const text = target.innerHTML;
       if (lineNumber && text) {
         onLineClick(lineNumber, text);
@@ -96,6 +100,15 @@ const Results = ({ result, onLineClick, back }) => {
           <ArrowBackIosNewIcon />
         </Button>
       ) : null}
+      <Snackbar
+        sx={{ marginTop: "20px" }}
+        open={isToastOpen}
+        autoHideDuration={3000}
+        color="secondary"
+        onClose={() => setIsToastOpen(false)}
+        message="Going deeper requires a paid plan 🙂"
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position
+      />
       <div dangerouslySetInnerHTML={{ __html: processedHtml }} />
     </Box>
   );

@@ -7,7 +7,6 @@ export async function onRequest(context) {
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
   const url = `${workerUrl}/api/subgoal`;
   const body = await context.request.json();
-  console.log("SUBGOAL", body);
   const { goalId, sub_goal_name, line_number } = body;
   const init = {
     method: "POST",
