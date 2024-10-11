@@ -79,7 +79,7 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
       document.head.removeChild(styleTag);
       contentDiv.removeEventListener("click", handleLineClick);
     };
-  }, [theme, onLineClick]);
+  }, [theme, onLineClick, isSubGoal]);
 
   return (
     <Box
