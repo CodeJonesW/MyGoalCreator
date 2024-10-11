@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InputForm from "./InputForm";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
@@ -8,10 +8,12 @@ import { Box } from "@mui/material";
 const Analyze = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
+  const { recentGoal } = useSelector((state) => state.profileSlice);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState("");
   const [refreshProfile, setRefreshProfile] = useState(false);
+  const prevGoalIdRef = useRef(null);
 
   useEffect(() => {
     if (refreshProfile) {
@@ -19,6 +21,20 @@ const Analyze = () => {
       setRefreshProfile(false);
     }
   }, [refreshProfile, token, dispatch]);
+
+  useEffect(() => {
+    if (recentGoal && recentGoal.GoalId) {
+      const prevGoalId = prevGoalIdRef.current;
+
+      if (prevGoalId !== recentGoal.GoalId) {
+        // GoalId has changed
+        setResult(recentGoal.plan);
+      }
+
+      // Update the ref with the current GoalId
+      prevGoalIdRef.current = recentGoal.GoalId;
+    }
+  }, [recentGoal]);
 
   const handleAnalyze = (goal, prompt, timeline) => {
     setLoading(true);

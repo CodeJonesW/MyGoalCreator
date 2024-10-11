@@ -28,9 +28,7 @@ const profileSlice = createSlice({
     goals: [],
     loading: false,
     error: false,
-  },
-  reducers: {
-    // define any additional synchronous reducers here later
+    recentGoal: null,
   },
   extraReducers: (builder) => {
     builder
@@ -38,9 +36,10 @@ const profileSlice = createSlice({
         state.loading = true;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
-        const { user, goals } = action.payload;
+        const { user, goals, recentGoal } = action.payload;
         state.user = user;
         state.goals = goals;
+        state.recentGoal = recentGoal;
       })
       .addCase(getProfile.rejected, (state, action) => {
         console.log("Error fetching profile:", action);
