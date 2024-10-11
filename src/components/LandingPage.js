@@ -162,8 +162,8 @@ const LandingPage = ({ displayComponent }) => {
                   variant="body1"
                   sx={{ color: theme.palette.text.secondary, marginTop: "4px" }}
                 >
-                  Continue the conversation in seperate windows to keep main
-                  line of questioning concise.
+                  Generate detailed plans and resources for each subtopic of
+                  your goal.
                 </Typography>
               </Paper>
             </Grid>
