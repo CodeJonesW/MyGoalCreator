@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import InputForm from "./InputForm";
+import React, { useState, useEffect } from "react";
 import Results from "./Results";
-import { getProfile } from "../redux/slices/profileSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Button } from "@mui/material";
 import {
