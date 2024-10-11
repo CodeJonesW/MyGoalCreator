@@ -25,12 +25,15 @@ function AppRoutes() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PrivateRoute element={<App />} />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/welcome" element={<LandingPage />} />
+        <Route path="/" element={<PrivateRoute element={<App />} />} />
         <Route path="/goals" element={<PrivateRoute element={<Goals />} />} />
+        <Route
+          path="/profile"
+          element={<PrivateRoute element={<Profile />} />}
+        />
       </Routes>
     </Router>
   );

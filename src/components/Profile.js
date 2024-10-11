@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box, Typography, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -13,6 +13,26 @@ const Profile = () => {
   const handleGoToCreateGoal = () => {
     navigate("/");
   };
+
+  if (!user) {
+    return (
+      <Box
+        className="main"
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          background: theme.palette.primary.main,
+        }}
+      >
+        <NavBar />
+        <CircularProgress color="secondary" />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -58,6 +78,12 @@ const Profile = () => {
           </Typography>
           <Box>
             <Typography>{user.email}</Typography>
+          </Box>
+
+          <Box>
+            <Typography>
+              Remaining Goal Requests: {user.analyze_requests}
+            </Typography>
           </Box>
           <Box>
             <span>

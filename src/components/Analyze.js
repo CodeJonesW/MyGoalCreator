@@ -189,6 +189,7 @@ const Analyze = () => {
           exit="exit"
         >
           <Results
+            disableSubGoal={false}
             back={null}
             onLineClick={onLineClick}
             result={result}
@@ -205,6 +206,7 @@ const Analyze = () => {
           exit="exit"
         >
           <Results
+            disableSubGoal={false}
             back={handleClearSubGoal}
             onLineClick={onLineClick}
             result={subGoal.plan}
