@@ -21,6 +21,10 @@ const ViewGoal = () => {
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
+  if (!goal && !recentGoal) {
+    navigate("/goals");
+  }
+
   useEffect(() => {
     if (subGoal) {
       setShowSubGoalResults(true);
@@ -28,6 +32,13 @@ const ViewGoal = () => {
       setShowSubGoalResults(false);
     }
   }, [subGoal]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSubGoal());
+      dispatch(clearGoal());
+    };
+  }, []);
 
   const onLineClick = (lineNumber, text) => {
     console.log("Clicked line number:", lineNumber, text, goal.GoalId);

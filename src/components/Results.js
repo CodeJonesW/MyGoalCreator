@@ -6,7 +6,6 @@ import { Box, Button, Snackbar } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CircularProgress from "@mui/material/CircularProgress";
 
-// Initialize the Markdown parser
 const mdParser = new MarkdownIt();
 
 const Results = ({ result, onLineClick, back, isSubGoal }) => {
@@ -14,11 +13,9 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Parse the Markdown content into HTML
   const htmlContent = mdParser.render(result);
   const cleanHtmlContent = DOMPurify.sanitize(htmlContent);
 
-  // Process the HTML to add click handlers for each line
   const processContent = (html) => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html;
@@ -33,7 +30,6 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
     return processedLines.join("\n");
   };
 
-  // Create the processed HTML content with clickable lines
   const processedHtml = processContent(cleanHtmlContent);
 
   useEffect(() => {
@@ -114,13 +110,13 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
       </Box>
 
       <Snackbar
-        sx={{ marginTop: "20px" }}
+        sx={{ marginTop: "20px", width: "200px" }}
         open={isToastOpen}
         autoHideDuration={3000}
         color="secondary"
         onClose={() => setIsToastOpen(false)}
         message="Going deeper requires a paid plan 🙂"
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Position
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
       <div dangerouslySetInnerHTML={{ __html: processedHtml }} />
     </Box>
