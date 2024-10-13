@@ -199,7 +199,10 @@ const LandingPage = ({ displayComponent }) => {
       </Box>
       {/* Testimonials Section */}
       <Box
-        sx={{ padding: "80px 0", backgroundColor: "#ececec" }}
+        sx={{
+          padding: "80px 0",
+          backgroundColor: theme.palette.background.default,
+        }}
         id="testimonials"
       >
         <Container maxWidth="lg">
@@ -209,7 +212,7 @@ const LandingPage = ({ displayComponent }) => {
               fontWeight: "bold",
               textAlign: "center",
               marginBottom: "40px",
-              color: "#333",
+              color: theme.palette.text.primary,
             }}
           >
             What Our Users Say
@@ -219,19 +222,27 @@ const LandingPage = ({ displayComponent }) => {
               <Paper
                 elevation={6}
                 sx={{
-                  padding: "20px",
-                  backgroundColor: "#ffffff", // Keep cards white for contrast
-                  border: "1px solid #e0e0e0", // Light border to define edges
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Add a subtle shadow
+                  padding: "44px",
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  boxShadow: theme.shadows[4],
+                  borderRadius: "10px",
+                  minHeight: "144px",
                 }}
               >
-                <Typography variant="body1" sx={{ color: "#555" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: theme.palette.text.primary }}
+                >
                   "Honestly it was great for creating recipes and learning about
                   each step in depth."
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontStyle: "italic", color: "#007bff" }}
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
                 >
                   — Austin Candler
                 </Typography>
@@ -241,18 +252,26 @@ const LandingPage = ({ displayComponent }) => {
               <Paper
                 elevation={6}
                 sx={{
-                  padding: "20px",
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e0e0e0",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  padding: "44px",
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  boxShadow: theme.shadows[4],
+                  borderRadius: "10px",
+                  minHeight: "144px",
                 }}
               >
-                <Typography variant="body1" sx={{ color: "#555" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: theme.palette.text.primary }}
+                >
                   "I could see this being great for any size task."
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontStyle: "italic", color: "#007bff" }}
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
                 >
                   — Jim Gibbs
                 </Typography>
@@ -262,18 +281,26 @@ const LandingPage = ({ displayComponent }) => {
               <Paper
                 elevation={6}
                 sx={{
-                  padding: "20px",
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e0e0e0",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  padding: "44px",
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  boxShadow: theme.shadows[4],
+                  borderRadius: "10px",
+                  minHeight: "144px",
                 }}
               >
-                <Typography variant="body1" sx={{ color: "#555" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: theme.palette.text.primary }}
+                >
                   "I will use again."
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontStyle: "italic", color: "#007bff" }}
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
                 >
                   — Laura Townsend
                 </Typography>
