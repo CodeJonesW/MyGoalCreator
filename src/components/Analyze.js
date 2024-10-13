@@ -1,52 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import InputForm from "./InputForm";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
-import { analyzeSubGoal, clearSubGoal } from "../redux/slices/goalSlice";
-import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Analyze = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.authSlice);
-  const { recentGoal } = useSelector((state) => state.profileSlice);
-  const { subGoal } = useSelector((state) => state.goalSlice);
+  const navigate = useNavigate();
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState("");
-  const [refreshProfile, setRefreshProfile] = useState(false);
-  const prevGoalIdRef = useRef(null);
-  const [showSubGoalResults, setShowSubGoalResults] = useState(false);
-
-  useEffect(() => {
-    if (refreshProfile) {
-      dispatch(getProfile(token));
-      setRefreshProfile(false);
-    }
-  }, [refreshProfile, token, dispatch]);
-
-  useEffect(() => {
-    if (recentGoal && recentGoal.GoalId) {
-      const prevGoalId = prevGoalIdRef.current;
-
-      if (prevGoalId !== recentGoal.GoalId) {
-        // GoalId has changed
-        setResult(recentGoal.plan);
-      }
-
-      // Update the ref with the current GoalId
-      prevGoalIdRef.current = recentGoal.GoalId;
-    }
-  }, [recentGoal]);
-
-  useEffect(() => {
-    if (subGoal) {
-      setShowSubGoalResults(true); // Trigger animation when subGoal exists
-    } else {
-      setShowSubGoalResults(false); // Hide subGoal results
-    }
-  }, [subGoal]);
 
   const handleAnalyze = (goal, prompt, timeline) => {
     setLoading(true);
@@ -123,8 +88,9 @@ const Analyze = () => {
           }
           return ""; // Clear buffer
         });
-        setLoading(false); // Stop loading when stream is done or errored
-        setRefreshProfile(true);
+        setLoading(false);
+        dispatch(getProfile({ token: token, setLatestGoal: true }));
+        navigate("/goal");
       };
 
       eventSource.onopen = () => {
@@ -149,24 +115,6 @@ const Analyze = () => {
     }
   };
 
-  const onLineClick = (lineNumber, text) => {
-    console.log("Clicked line number:", lineNumber, text, recentGoal.GoalId);
-    const goalId = recentGoal.GoalId;
-    const dispatchData = { token, text, lineNumber, goalId };
-    console.log("Dispatching data:", dispatchData);
-    dispatch(analyzeSubGoal(dispatchData));
-  };
-
-  const handleClearSubGoal = () => {
-    dispatch(clearSubGoal());
-  };
-
-  const variants = {
-    hidden: { x: "100vw", opacity: 0 }, // Start off-screen to the right
-    visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }, // Animate to the screen
-    exit: { x: "-100vw", opacity: 0, transition: { duration: 0.5 } }, // Exit off-screen to the left
-  };
-
   return (
     <Box
       sx={{
@@ -178,39 +126,13 @@ const Analyze = () => {
         flexDirection: "column",
       }}
     >
-      <Box>
-        <InputForm loading={loading} onSubmit={handleAnalyze} />
-      </Box>
-      {result && !subGoal ? (
-        <motion.div
-          variants={variants}
-          initial="visible"
-          animate={showSubGoalResults ? "exit" : "visible"}
-          exit="exit"
-        >
-          <Results
-            back={null}
-            onLineClick={onLineClick}
-            result={result}
-            isSubGoal={false}
-          />
-        </motion.div>
+      {!result ? (
+        <Box>
+          <InputForm loading={loading} onSubmit={handleAnalyze} />
+        </Box>
       ) : null}
-
-      {subGoal ? (
-        <motion.div
-          variants={variants}
-          initial="hidden"
-          animate={showSubGoalResults ? "visible" : "hidden"}
-          exit="exit"
-        >
-          <Results
-            back={handleClearSubGoal}
-            onLineClick={onLineClick}
-            result={subGoal.plan}
-            isSubGoal={true}
-          />
-        </motion.div>
+      {result ? (
+        <Results back={null} result={result} isSubGoal={false} />
       ) : null}
     </Box>
   );

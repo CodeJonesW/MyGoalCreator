@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import GoalIllustration from "../assets/images/my_goal_creator_landing_page_img_1.webp";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = ({ displayComponent }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box className="landing-page">
@@ -62,14 +64,14 @@ const LandingPage = ({ displayComponent }) => {
                 variant="contained"
                 color="primary"
                 sx={{ marginRight: "16px" }}
-                onClick={() => displayComponent("register")}
+                onClick={() => navigate("/register")}
               >
                 Get Started
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => displayComponent("login")}
+                onClick={() => navigate("/login")}
               >
                 Login
               </Button>
@@ -160,8 +162,8 @@ const LandingPage = ({ displayComponent }) => {
                   variant="body1"
                   sx={{ color: theme.palette.text.secondary, marginTop: "4px" }}
                 >
-                  Continue the conversation in seperate windows to keep main
-                  line of questioning concise.
+                  Generate detailed plans and resources for each subtopic of
+                  your goal.
                 </Typography>
               </Paper>
             </Grid>

@@ -10,8 +10,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { clearAuthToken } from "../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = ({ handleLogout }) => {
+const NavBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -21,6 +26,11 @@ const NavBar = ({ handleLogout }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(clearAuthToken());
+    navigate("/welcome");
   };
 
   return (
@@ -52,6 +62,11 @@ const NavBar = ({ handleLogout }) => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
+            <MenuItem onClick={() => navigate("/")}>Create Goal</MenuItem>
+            <MenuItem onClick={() => navigate("/goals")}>View Goals</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>
+              View Profile
+            </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </Box>
