@@ -87,7 +87,6 @@ const LandingPage = ({ displayComponent }) => {
           </Grid>
         </Container>
       </Box>
-
       {/* Features Section */}
       <Box
         sx={{
@@ -198,8 +197,7 @@ const LandingPage = ({ displayComponent }) => {
           </Grid>
         </Container>
       </Box>
-
-      {/* Testimonials Section
+      {/* Testimonials Section */}
       <Box
         sx={{ padding: "80px 0", backgroundColor: "#ececec" }}
         id="testimonials"
@@ -228,7 +226,8 @@ const LandingPage = ({ displayComponent }) => {
                 }}
               >
                 <Typography variant="body1" sx={{ color: "#555" }}>
-                  "I was able to visualize the action steps I needed to take."
+                  "Honestly it was great for creating recipes and learning about
+                  each step in depth."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -249,7 +248,7 @@ const LandingPage = ({ displayComponent }) => {
                 }}
               >
                 <Typography variant="body1" sx={{ color: "#555" }}>
-                  "Loved diving deeper into the sub topics of my plan."
+                  "I could see this being great for any size task."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -270,8 +269,7 @@ const LandingPage = ({ displayComponent }) => {
                 }}
               >
                 <Typography variant="body1" sx={{ color: "#555" }}>
-                  "I was skeptical at first, but this app exceeded my
-                  expectations."
+                  "I will use again."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -283,8 +281,7 @@ const LandingPage = ({ displayComponent }) => {
             </Grid>
           </Grid>
         </Container>
-      </Box> */}
-
+      </Box>
       {/* Pricing Section */}
       <Box
         sx={{
@@ -420,7 +417,6 @@ const LandingPage = ({ displayComponent }) => {
           </Grid>
         </Container>
       </Box>
-
       {/* Call to Action */}
       <Box
         sx={{
@@ -454,7 +450,6 @@ const LandingPage = ({ displayComponent }) => {
           </Button>
         </Container>
       </Box>
-
       {/* Footer */}
       <Box
         sx={{
