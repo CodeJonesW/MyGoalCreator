@@ -22,8 +22,8 @@ const Goals = () => {
   const { goals } = useSelector((state) => state.profileSlice);
   const { token } = useSelector((state) => state.authSlice);
 
-  const handleShowGoal = async (goalId) => {
-    dispatch(getGoal({ token, goalId }));
+  const handleShowGoal = async (goal_id) => {
+    dispatch(getGoal({ token, goal_id }));
     navigate("/goal");
   };
 
@@ -70,7 +70,7 @@ const GoalItem = ({ goal, index, handleShowGoal }) => {
   return (
     <ListItem
       key={index}
-      onClick={() => handleShowGoal(goal.GoalId)}
+      onClick={() => handleShowGoal(goal.goal_id)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       sx={{

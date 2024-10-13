@@ -4,11 +4,11 @@ import axios from "axios";
 
 export const getGoal = createAsyncThunk(
   "goal/getGoal",
-  async ({ token, goalId }) => {
+  async ({ token, goal_id }) => {
     const response = await axios.post(
       `/api/goal`,
       {
-        goalId,
+        goal_id,
       },
       {
         headers: {
@@ -23,11 +23,11 @@ export const getGoal = createAsyncThunk(
 
 export const analyzeSubGoal = createAsyncThunk(
   "goal/analyzeSubGoal",
-  async ({ token, text, lineNumber, goalId }) => {
+  async ({ token, text, lineNumber, goal_id }) => {
     const response = await axios.post(
       `/api/subgoal`,
       {
-        goalId,
+        goal_id,
         sub_goal_name: text,
         line_number: lineNumber,
       },

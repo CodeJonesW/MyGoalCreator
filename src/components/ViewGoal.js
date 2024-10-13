@@ -21,6 +21,8 @@ const ViewGoal = () => {
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
+  console.log("Goal:", goal, "Recent Goal:", recentGoal);
+
   if (!goal && !recentGoal) {
     navigate("/goals");
   }
@@ -41,9 +43,9 @@ const ViewGoal = () => {
   }, [dispatch]);
 
   const onLineClick = (lineNumber, text) => {
-    console.log("Clicked line number:", lineNumber, text, goal.GoalId);
-    const goalId = goal.GoalId;
-    const dispatchData = { token, text, lineNumber, goalId };
+    console.log("Clicked line number:", lineNumber, text, goal.goal_id);
+    const goal_id = goal.goal_id;
+    const dispatchData = { token, text, lineNumber, goal_id };
     console.log("Dispatching data:", dispatchData);
     dispatch(analyzeSubGoal(dispatchData));
   };

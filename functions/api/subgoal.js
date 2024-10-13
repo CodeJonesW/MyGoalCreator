@@ -7,7 +7,7 @@ export async function onRequest(context) {
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
   const url = `${workerUrl}/api/subgoal`;
   const body = await context.request.json();
-  const { goalId, sub_goal_name, line_number } = body;
+  const { goal_id, sub_goal_name, line_number } = body;
   const init = {
     method: "POST",
     headers: {
@@ -15,7 +15,7 @@ export async function onRequest(context) {
       Authorization: context.request.headers.get("authorization"),
     },
     body: JSON.stringify({
-      goalId,
+      goal_id,
       sub_goal_name,
       line_number,
     }),
