@@ -21,12 +21,6 @@ const ViewGoal = () => {
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
-  console.log("Goal:", goal, "Recent Goal:", recentGoal);
-
-  if (!goal && !recentGoal) {
-    navigate("/goals");
-  }
-
   useEffect(() => {
     if (subGoal) {
       setShowSubGoalResults(true);
@@ -64,6 +58,10 @@ const ViewGoal = () => {
     visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }, // Animate to the screen
     exit: { x: "-100vw", opacity: 0, transition: { duration: 0.5 } }, // Exit off-screen to the left
   };
+
+  if (!goal && !recentGoal) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
@@ -119,7 +117,7 @@ const ViewGoal = () => {
               <Results
                 back={null}
                 onLineClick={onLineClick}
-                result={goal ? goal.plan : recentGoal.plan}
+                result={goal ? goal?.plan : recentGoal?.plan}
                 isSubGoal={false}
               />
             </motion.div>
