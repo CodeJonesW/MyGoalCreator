@@ -45,7 +45,7 @@ export const analyzeSubGoal = createAsyncThunk(
 const goalSlice = createSlice({
   name: "goal",
   initialState: {
-    goal: null,
+    goal: JSON.parse(localStorage.getItem("goal")) || null,
     subGoal: null,
     loading: false,
     error: false,
@@ -53,6 +53,7 @@ const goalSlice = createSlice({
   reducers: {
     clearGoal: (state) => {
       state.goal = null;
+      localStorage.removeItem("goal");
     },
     clearSubGoal: (state) => {
       state.subGoal = null;
@@ -68,6 +69,7 @@ const goalSlice = createSlice({
       })
       .addCase(getGoal.fulfilled, (state, action) => {
         state.goal = action.payload.goal;
+        localStorage.setItem("goal", JSON.stringify(action.payload.goal));
       })
       .addCase(getGoal.rejected, (state, action) => {
         state.error = true;
