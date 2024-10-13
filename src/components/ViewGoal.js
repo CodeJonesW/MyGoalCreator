@@ -38,7 +38,7 @@ const ViewGoal = () => {
       dispatch(clearSubGoal());
       dispatch(clearGoal());
     };
-  }, []);
+  }, [dispatch]);
 
   const onLineClick = (lineNumber, text) => {
     console.log("Clicked line number:", lineNumber, text, goal.GoalId);
