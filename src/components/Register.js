@@ -6,10 +6,11 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
-const Register = ({ onRegister }) => {
-  const [email, setEmail] = useState("");
+const Register = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
@@ -36,6 +37,7 @@ const Register = ({ onRegister }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
@@ -47,10 +49,14 @@ const Register = ({ onRegister }) => {
         email: email,
         password,
       });
-      onRegister();
+      setLoading(false);
+      alert("Registration successful. Please log in.");
+      navigate("/login");
     } catch (err) {
-      console.log(err);
-      setError("Registration failed. Please try again.");
+      const error = err.response.data.error;
+      console.log("my err", error);
+      setLoading(false);
+      setError(error);
     }
   };
 
@@ -132,7 +138,12 @@ const Register = ({ onRegister }) => {
                   }}
                 />
               </Box>
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                disabled={loading}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Register
               </Button>
             </FormGroup>
