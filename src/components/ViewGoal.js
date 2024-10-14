@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Results from "./Results";
+import TrackGoalButton from "./TrackGoalButton";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
+import axios from "axios";
 import {
   analyzeSubGoal,
   clearSubGoal,
@@ -10,11 +12,9 @@ import {
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
-import { useNavigate } from "react-router-dom";
 
 const ViewGoal = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
   const { subGoal, goal } = useSelector((state) => state.goalSlice);
@@ -46,9 +46,19 @@ const ViewGoal = () => {
     dispatch(clearSubGoal());
   };
 
-  const handleViewAllGoals = () => {
-    dispatch(clearGoal());
-    navigate("/goals");
+  const handleTrackGoal = async () => {
+    await axios.post(
+      "/api/trackgoal",
+      {
+        goal_id: goal.goal_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   };
 
   const variants = {
@@ -79,32 +89,26 @@ const ViewGoal = () => {
         <Box style={{ width: "100%", paddingBottom: "24px" }}>
           <NavBar />
         </Box>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "24px",
-          }}
-        >
-          <Button
-            onClick={handleViewAllGoals}
-            variant="contained"
-            color="secondary"
-          >
-            View All Goals
-          </Button>
-        </Box>
+
         <Box
           sx={{
             display: "flex",
             width: "100%",
             height: "100%",
-            padding: "24px",
             justifyContent: "flex-start",
             alignItems: "center",
             flexDirection: "column",
           }}
         >
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "80%",
+            }}
+          >
+            <TrackGoalButton onClick={handleTrackGoal} />
+          </Box>
           {!subGoal ? (
             <motion.div
               variants={variants}
@@ -113,7 +117,6 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={null}
                 onLineClick={onLineClick}
                 result={goal ? goal?.plan : recentGoal?.plan}
                 isSubGoal={false}

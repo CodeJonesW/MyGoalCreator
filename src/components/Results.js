@@ -89,7 +89,7 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
         padding: "20px",
         borderRadius: "8px",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        width: "80%",
+        width: "80vw",
         margin: "20px auto",
       }}
       className="markdown-content"

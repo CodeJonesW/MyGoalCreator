@@ -14,7 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import GoalIllustration from "../assets/images/my_goal_creator_landing_page_img_1.webp";
 import { useNavigate } from "react-router-dom";
 
-const LandingPage = ({ displayComponent }) => {
+const LandingPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -234,8 +234,8 @@ const LandingPage = ({ displayComponent }) => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "Honestly it was great for creating recipes and learning about
-                  each step in depth."
+                  "Great for creating recipes and learning about each step in
+                  depth."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -264,7 +264,7 @@ const LandingPage = ({ displayComponent }) => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "I could see this being great for any size task."
+                  "Greate for planning small and large tasks."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -293,7 +293,7 @@ const LandingPage = ({ displayComponent }) => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "I will use again."
+                  "Excited to see where this project goes! Great for planning"
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -374,7 +374,7 @@ const LandingPage = ({ displayComponent }) => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => displayComponent("register")}
+                  onClick={() => navigate("/register")}
                   sx={{
                     marginTop: "20px",
                     padding: "10px 20px",
@@ -467,7 +467,7 @@ const LandingPage = ({ displayComponent }) => {
           <Button
             variant="contained"
             size="large"
-            onClick={() => displayComponent("register")}
+            onClick={() => navigate("/register")}
             sx={{
               backgroundColor: theme.palette.primary.main,
               color: theme.palette.primary.contrastText,
