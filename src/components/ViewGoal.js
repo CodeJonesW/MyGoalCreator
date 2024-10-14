@@ -149,10 +149,8 @@ const ViewGoal = () => {
           }
           return ""; // Clear buffer
         });
-        setLoading(false);
       });
     } catch (error) {
-      setLoading(false);
       console.error("Error during analysis:", error);
     }
   };
