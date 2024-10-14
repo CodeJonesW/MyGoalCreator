@@ -17,12 +17,11 @@ const ViewGoal = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
-  const { subGoal, goal } = useSelector((state) => state.goalSlice);
+  const { goal } = useSelector((state) => state.goalSlice);
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
   const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState("");
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const ViewGoal = () => {
 
   const onLineClick = (lineNumber, text) => {
     const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
-    const dispatchData = { token, text, lineNumber, goal_id };
+    // const dispatchData = { token, text, lineNumber, goal_id };
     // dispatch(analyzeSubGoal(dispatchData));
     handleAnalyzeSubGoal(
       goal ? goal.goal_id : recentGoal.goal_id,
@@ -53,7 +52,6 @@ const ViewGoal = () => {
   };
 
   const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
-    setLoading(true);
     setResult("");
     setBuffer("");
 
@@ -136,7 +134,6 @@ const ViewGoal = () => {
           }
           return ""; // Clear buffer
         });
-        setLoading(false);
       };
 
       eventSource.onopen = () => {
@@ -161,7 +158,7 @@ const ViewGoal = () => {
   };
 
   const handleClearSubGoal = () => {
-    dispatch(clearSubGoal());
+    setResult("");
   };
 
   const handleTrackGoal = async () => {
@@ -250,7 +247,7 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={() => setResult("")}
+                back={handleClearSubGoal}
                 onLineClick={onLineClick}
                 result={result}
                 isSubGoal={true}
