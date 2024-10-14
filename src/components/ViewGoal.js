@@ -21,13 +21,18 @@ const ViewGoal = () => {
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [buffer, setBuffer] = useState("");
+
   useEffect(() => {
-    if (subGoal) {
+    console.log("Result updated:", result);
+    if (result) {
       setShowSubGoalResults(true);
     } else {
       setShowSubGoalResults(false);
     }
-  }, [subGoal]);
+  }, [result]);
 
   useEffect(() => {
     return () => {
@@ -39,7 +44,120 @@ const ViewGoal = () => {
   const onLineClick = (lineNumber, text) => {
     const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
     const dispatchData = { token, text, lineNumber, goal_id };
-    dispatch(analyzeSubGoal(dispatchData));
+    // dispatch(analyzeSubGoal(dispatchData));
+    handleAnalyzeSubGoal(
+      goal ? goal.goal_id : recentGoal.goal_id,
+      text,
+      lineNumber
+    );
+  };
+
+  const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
+    setLoading(true);
+    setResult("");
+    setBuffer("");
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      // Open EventSource connection with query parameters
+      const eventSource = new EventSource(
+        `/api/subgoalv2?goal_id=${encodeURIComponent(
+          goal_id
+        )}&text=${encodeURIComponent(text)}&lineNumber=${encodeURIComponent(
+          lineNumber
+        )}&token=${encodeURIComponent(token)}`
+      );
+
+      // Listen for streaming results
+      eventSource.onmessage = (event) => {
+        let newChunk = event.data;
+        console.log("Received chunk in UI:", newChunk);
+        try {
+          const parsed = JSON.parse(newChunk);
+          console.log("Parsed JSON in UI:", parsed);
+          if (parsed.message === "success") {
+            setResult(parsed.subGoal.plan);
+            return;
+          }
+        } catch (error) {
+          // console.error("Error parsing JSON in fn:", error);
+        }
+        if (newChunk === "event: done") {
+          return;
+        }
+
+        // Concatenate incoming markdown chunks and immediately update the result incrementally
+        setBuffer((prevBuffer) => {
+          let updatedBuffer = prevBuffer + (newChunk === "" ? "\n" : newChunk);
+
+          // Split lines to handle bullet points and headings
+          const lines = updatedBuffer.split("\n");
+
+          let completeContent = ""; // To accumulate complete lines
+          let remainingBuffer = ""; // To store incomplete markdown
+
+          lines.forEach((line, index) => {
+            // Check if a line starts with a markdown heading or bullet point
+            if (/^\s*#{1,6}\s/.test(line) || /^\s*[-*]\s/.test(line)) {
+              // If it's a heading or bullet point, ensure it starts cleanly
+              if (index === lines.length - 1) {
+                remainingBuffer = line; // Incomplete line stays in buffer
+              } else {
+                completeContent += line + "\n"; // Add complete line to content
+              }
+            } else {
+              // For non-heading and non-bullet lines, handle normally
+              if (index === lines.length - 1) {
+                remainingBuffer = line; // Incomplete line stays in buffer
+              } else {
+                completeContent += line + "\n";
+              }
+            }
+          });
+
+          // Update the result with the complete content
+          setResult((prevResult) => prevResult + completeContent);
+
+          // Return the remaining incomplete buffer for the next chunk
+          return remainingBuffer || "";
+        });
+      };
+
+      // Handle stream closing or errors
+      eventSource.onerror = (error) => {
+        console.error("Error during analysis:", error);
+        console.log(buffer);
+        eventSource.close();
+        setBuffer((prevBuffer) => {
+          // console.log("Final buffer:", prevBuffer);
+          if (prevBuffer) {
+            setResult((prevResult) => prevResult + prevBuffer);
+          }
+          return ""; // Clear buffer
+        });
+        setLoading(false);
+      };
+
+      eventSource.onopen = () => {
+        // console.log("SSE connection opened.");
+      };
+      // Close the stream naturally when done
+      eventSource.addEventListener("close", () => {
+        // If there's any remaining data in the buffer, add it to the result
+        setBuffer((prevBuffer) => {
+          // console.log("Final buffer:", prevBuffer);
+          if (prevBuffer) {
+            setResult((prevResult) => prevResult + prevBuffer);
+          }
+          return ""; // Clear buffer
+        });
+        setLoading(false);
+      });
+    } catch (error) {
+      setLoading(false);
+      console.error("Error during analysis:", error);
+    }
   };
 
   const handleClearSubGoal = () => {
@@ -109,7 +227,7 @@ const ViewGoal = () => {
           >
             <TrackGoalButton onClick={handleTrackGoal} />
           </Box>
-          {!subGoal ? (
+          {!result ? (
             <motion.div
               variants={variants}
               initial="visible"
@@ -124,7 +242,7 @@ const ViewGoal = () => {
             </motion.div>
           ) : null}
 
-          {subGoal ? (
+          {result ? (
             <motion.div
               variants={variants}
               initial="hidden"
@@ -132,9 +250,9 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={handleClearSubGoal}
+                back={() => setResult("")}
                 onLineClick={onLineClick}
-                result={subGoal.plan}
+                result={result}
                 isSubGoal={true}
               />
             </motion.div>
