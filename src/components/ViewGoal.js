@@ -20,6 +20,7 @@ const ViewGoal = () => {
   const { goal } = useSelector((state) => state.goalSlice);
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [result, setResult] = useState("");
   const [buffer, setBuffer] = useState("");
@@ -47,6 +48,7 @@ const ViewGoal = () => {
   const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
     setResult("");
     setBuffer("");
+    setLoading(true);
 
     try {
       const token = localStorage.getItem("authToken");
@@ -61,10 +63,8 @@ const ViewGoal = () => {
 
       eventSource.onmessage = (event) => {
         let newChunk = event.data;
-        console.log("Received chunk in UI:", newChunk);
         try {
           const parsed = JSON.parse(newChunk);
-          console.log("Parsed JSON in UI:", parsed);
           if (parsed.message === "success") {
             setResult(parsed.subGoal.plan);
             return;
@@ -106,7 +106,6 @@ const ViewGoal = () => {
 
       eventSource.onerror = (error) => {
         console.error("Error during analysis:", error);
-        console.log(buffer);
         eventSource.close();
         setBuffer((prevBuffer) => {
           if (prevBuffer) {
@@ -114,6 +113,7 @@ const ViewGoal = () => {
           }
           return "";
         });
+        setLoading(false);
       };
 
       eventSource.addEventListener("close", () => {
@@ -219,7 +219,7 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={handleClearSubGoal}
+                back={!loading ? handleClearSubGoal : null}
                 onLineClick={onLineClick}
                 result={result}
                 isSubGoal={true}
