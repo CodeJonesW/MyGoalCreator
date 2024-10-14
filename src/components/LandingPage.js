@@ -234,7 +234,7 @@ const LandingPage = () => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "Great for creating recipes and learning about each step in
+                  "I used it to plan my dinner recipe and explain each step in
                   depth."
                 </Typography>
                 <Typography
@@ -264,7 +264,7 @@ const LandingPage = () => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "Greate for planning small and large tasks."
+                  "Helped me map out my fitness goal"
                 </Typography>
                 <Typography
                   variant="subtitle2"
