@@ -23,7 +23,7 @@ const ViewGoal = () => {
   const [loading, setLoading] = useState(false);
 
   const [result, setResult] = useState("");
-  const [buffer, setBuffer] = useState("");
+  const [_buffer, setBuffer] = useState("");
 
   useEffect(() => {
     if (result) {
