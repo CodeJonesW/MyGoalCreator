@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Results from "./Results";
+import TrackGoalButton from "./TrackGoalButton";
+import BackButton from "./BackButton";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Button } from "@mui/material";
 import {
@@ -11,6 +13,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
 import { useNavigate } from "react-router-dom";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const ViewGoal = () => {
   const theme = useTheme();
@@ -50,6 +53,9 @@ const ViewGoal = () => {
     dispatch(clearGoal());
     navigate("/goals");
   };
+  const handleTrackGoal = () => {
+    console.log("Track Goal");
+  };
 
   const variants = {
     hidden: { x: "100vw", opacity: 0 }, // Start off-screen to the right
@@ -79,32 +85,26 @@ const ViewGoal = () => {
         <Box style={{ width: "100%", paddingBottom: "24px" }}>
           <NavBar />
         </Box>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "24px",
-          }}
-        >
-          <Button
-            onClick={handleViewAllGoals}
-            variant="contained"
-            color="secondary"
-          >
-            View All Goals
-          </Button>
-        </Box>
+
         <Box
           sx={{
             display: "flex",
             width: "100%",
             height: "100%",
-            padding: "24px",
             justifyContent: "flex-start",
             alignItems: "center",
             flexDirection: "column",
           }}
         >
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "80%",
+            }}
+          >
+            <TrackGoalButton onClick={handleTrackGoal} />
+          </Box>
           {!subGoal ? (
             <motion.div
               variants={variants}
