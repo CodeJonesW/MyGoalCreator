@@ -67,6 +67,7 @@ const ViewGoal = () => {
           const parsed = JSON.parse(newChunk);
           if (parsed.message === "success") {
             setResult(parsed.subGoal.plan);
+            setLoading(false);
             return;
           }
         } catch (error) {}
