@@ -12,16 +12,13 @@ import {
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
-import { useNavigate } from "react-router-dom";
 
 const ViewGoal = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
   const { subGoal, goal } = useSelector((state) => state.goalSlice);
   const { recentGoal } = useSelector((state) => state.profileSlice);
-  const [trackGoalLoading, setTrackGoalLoading] = useState(false);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
   useEffect(() => {
@@ -50,7 +47,6 @@ const ViewGoal = () => {
   };
 
   const handleTrackGoal = async () => {
-    setTrackGoalLoading(true);
     await axios.post(
       "/api/trackgoal",
       {
@@ -63,7 +59,6 @@ const ViewGoal = () => {
         },
       }
     );
-    setTrackGoalLoading(false);
   };
 
   const variants = {
