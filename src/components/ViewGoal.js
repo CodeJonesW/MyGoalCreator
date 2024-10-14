@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Results from "./Results";
 import TrackGoalButton from "./TrackGoalButton";
-import BackButton from "./BackButton";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
+import axios from "axios";
 import {
   analyzeSubGoal,
   clearSubGoal,
@@ -13,7 +13,6 @@ import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const ViewGoal = () => {
   const theme = useTheme();
@@ -22,6 +21,7 @@ const ViewGoal = () => {
   const { token } = useSelector((state) => state.authSlice);
   const { subGoal, goal } = useSelector((state) => state.goalSlice);
   const { recentGoal } = useSelector((state) => state.profileSlice);
+  const [trackGoalLoading, setTrackGoalLoading] = useState(false);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
 
   useEffect(() => {
@@ -49,12 +49,21 @@ const ViewGoal = () => {
     dispatch(clearSubGoal());
   };
 
-  const handleViewAllGoals = () => {
-    dispatch(clearGoal());
-    navigate("/goals");
-  };
-  const handleTrackGoal = () => {
-    console.log("Track Goal");
+  const handleTrackGoal = async () => {
+    setTrackGoalLoading(true);
+    await axios.post(
+      "/api/trackgoal",
+      {
+        goal_id: goal.goal_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setTrackGoalLoading(false);
   };
 
   const variants = {
@@ -113,7 +122,6 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={null}
                 onLineClick={onLineClick}
                 result={goal ? goal?.plan : recentGoal?.plan}
                 isSubGoal={false}
