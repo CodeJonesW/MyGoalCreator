@@ -37,10 +37,9 @@ const ViewGoal = () => {
   }, [dispatch]);
 
   const onLineClick = (lineNumber, text) => {
-    console.log("Clicked line number:", lineNumber, text, goal.goal_id);
-    const goal_id = goal.goal_id;
+    console.log("Clicked line number:", lineNumber, text, goal);
+    const goal_id = goal ? goal.id : recentGoal.id;
     const dispatchData = { token, text, lineNumber, goal_id };
-    console.log("Dispatching data:", dispatchData);
     dispatch(analyzeSubGoal(dispatchData));
   };
 
