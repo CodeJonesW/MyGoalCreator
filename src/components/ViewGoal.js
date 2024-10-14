@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import axios from "axios";
 import {
-  analyzeSubGoal,
+  // analyzeSubGoal,
   clearSubGoal,
   clearGoal,
 } from "../redux/slices/goalSlice";
@@ -44,11 +44,7 @@ const ViewGoal = () => {
     const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
     // const dispatchData = { token, text, lineNumber, goal_id };
     // dispatch(analyzeSubGoal(dispatchData));
-    handleAnalyzeSubGoal(
-      goal ? goal.goal_id : recentGoal.goal_id,
-      text,
-      lineNumber
-    );
+    handleAnalyzeSubGoal(goal_id, text, lineNumber);
   };
 
   const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
