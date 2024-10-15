@@ -42,16 +42,20 @@ const Goals = () => {
     if (!goalToDelete) return;
 
     console.log("DELETE GOAL", goalToDelete);
-    const response = await fetch("/api/deletegoal", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        goal_id: goalToDelete,
-      }),
-    });
+    try {
+      await fetch("/api/deletegoal", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          goal_id: goalToDelete,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to delete goal", error);
+    }
 
     dispatch(getProfile({ token, setLatestGoal: false }));
 
