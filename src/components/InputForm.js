@@ -16,7 +16,7 @@ const InputForm = ({ onSubmit, loading }) => {
   const theme = useTheme();
   const [goal, setGoal] = useState("");
   const [prompt, setPrompt] = useState("");
-  const [timeline, setTimeline] = useState("1 year");
+  const [timeline, setTimeline] = useState("1 day");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

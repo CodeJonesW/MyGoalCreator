@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import axios from "axios";
 import {
-  analyzeSubGoal,
+  // analyzeSubGoal,
   clearSubGoal,
   clearGoal,
 } from "../redux/slices/goalSlice";
@@ -17,17 +17,21 @@ const ViewGoal = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
-  const { subGoal, goal } = useSelector((state) => state.goalSlice);
+  const { goal } = useSelector((state) => state.goalSlice);
   const { recentGoal } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [result, setResult] = useState("");
+  const [, setBuffer] = useState("");
 
   useEffect(() => {
-    if (subGoal) {
+    if (result) {
       setShowSubGoalResults(true);
     } else {
       setShowSubGoalResults(false);
     }
-  }, [subGoal]);
+  }, [result]);
 
   useEffect(() => {
     return () => {
@@ -38,12 +42,96 @@ const ViewGoal = () => {
 
   const onLineClick = (lineNumber, text) => {
     const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
-    const dispatchData = { token, text, lineNumber, goal_id };
-    dispatch(analyzeSubGoal(dispatchData));
+    handleAnalyzeSubGoal(goal_id, text, lineNumber);
+  };
+
+  const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
+    setResult("");
+    setBuffer("");
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const eventSource = new EventSource(
+        `/api/subgoalv2?goal_id=${encodeURIComponent(
+          goal_id
+        )}&text=${encodeURIComponent(text)}&lineNumber=${encodeURIComponent(
+          lineNumber
+        )}&token=${encodeURIComponent(token)}`
+      );
+
+      eventSource.onmessage = (event) => {
+        let newChunk = event.data;
+        try {
+          const parsed = JSON.parse(newChunk);
+          if (parsed.message === "success") {
+            setResult(parsed.subGoal.plan);
+            setLoading(false);
+            return;
+          }
+        } catch (error) {}
+        if (newChunk === "event: done") {
+          return;
+        }
+
+        setBuffer((prevBuffer) => {
+          let updatedBuffer = prevBuffer + (newChunk === "" ? "\n" : newChunk);
+
+          const lines = updatedBuffer.split("\n");
+
+          let completeContent = "";
+          let remainingBuffer = "";
+
+          lines.forEach((line, index) => {
+            if (/^\s*#{1,6}\s/.test(line) || /^\s*[-*]\s/.test(line)) {
+              if (index === lines.length - 1) {
+                remainingBuffer = line;
+              } else {
+                completeContent += line + "\n";
+              }
+            } else {
+              if (index === lines.length - 1) {
+                remainingBuffer = line;
+              } else {
+                completeContent += line + "\n";
+              }
+            }
+          });
+
+          setResult((prevResult) => prevResult + completeContent);
+
+          return remainingBuffer || "";
+        });
+      };
+
+      eventSource.onerror = (error) => {
+        console.error("Error during analysis:", error);
+        eventSource.close();
+        setBuffer((prevBuffer) => {
+          if (prevBuffer) {
+            setResult((prevResult) => prevResult + prevBuffer);
+          }
+          return "";
+        });
+        setLoading(false);
+      };
+
+      eventSource.addEventListener("close", () => {
+        setBuffer((prevBuffer) => {
+          if (prevBuffer) {
+            setResult((prevResult) => prevResult + prevBuffer);
+          }
+          return "";
+        });
+      });
+    } catch (error) {
+      console.error("Error during analysis:", error);
+    }
   };
 
   const handleClearSubGoal = () => {
-    dispatch(clearSubGoal());
+    setResult("");
   };
 
   const handleTrackGoal = async () => {
@@ -62,9 +150,9 @@ const ViewGoal = () => {
   };
 
   const variants = {
-    hidden: { x: "100vw", opacity: 0 }, // Start off-screen to the right
-    visible: { x: 0, opacity: 1, transition: { duration: 0.5 } }, // Animate to the screen
-    exit: { x: "-100vw", opacity: 0, transition: { duration: 0.5 } }, // Exit off-screen to the left
+    hidden: { x: "100vw", opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 0.5 } },
+    exit: { x: "-100vw", opacity: 0, transition: { duration: 0.5 } },
   };
 
   if (!goal && !recentGoal) {
@@ -109,7 +197,7 @@ const ViewGoal = () => {
           >
             <TrackGoalButton onClick={handleTrackGoal} />
           </Box>
-          {!subGoal ? (
+          {!result ? (
             <motion.div
               variants={variants}
               initial="visible"
@@ -124,7 +212,7 @@ const ViewGoal = () => {
             </motion.div>
           ) : null}
 
-          {subGoal ? (
+          {result ? (
             <motion.div
               variants={variants}
               initial="hidden"
@@ -132,9 +220,9 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={handleClearSubGoal}
+                back={!loading ? handleClearSubGoal : null}
                 onLineClick={onLineClick}
-                result={subGoal.plan}
+                result={result}
                 isSubGoal={true}
               />
             </motion.div>
