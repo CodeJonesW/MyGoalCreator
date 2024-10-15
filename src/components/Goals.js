@@ -53,7 +53,6 @@ const Goals = () => {
       }),
     });
 
-    const data = await response.json();
     dispatch(getProfile({ token, setLatestGoal: false }));
 
     setOpen(false);
