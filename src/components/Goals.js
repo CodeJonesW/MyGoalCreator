@@ -100,7 +100,7 @@ const Goals = () => {
                   goal={goal}
                   index={index}
                   handleShowGoal={handleShowGoal}
-                  handleDeleteGoal={handleOpenDeleteDialog} // Pass the dialog handler here
+                  handleOpenDeleteDialog={handleOpenDeleteDialog} // Pass the dialog handler here
                 />
               ))
             ) : (
@@ -136,7 +136,7 @@ const Goals = () => {
   );
 };
 
-const GoalItem = ({ goal, index, handleShowGoal, handleDeleteGoal }) => {
+const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
   const theme = useTheme();
   return (
     <Box
@@ -152,8 +152,6 @@ const GoalItem = ({ goal, index, handleShowGoal, handleDeleteGoal }) => {
         sx={{
           cursor: "pointer",
           backgroundColor: "transparent",
-          border: "1px solid",
-          borderColor: theme.palette.primary.contrastText,
           transition: "background-color 0.3s",
           borderRadius: "16px",
         }}
@@ -173,7 +171,7 @@ const GoalItem = ({ goal, index, handleShowGoal, handleDeleteGoal }) => {
         <ListItemText primary={goal.goal_name} />
       </ListItem>
       <IconButton
-        onClick={() => handleDeleteGoal(goal.goal_id)}
+        onClick={() => handleOpenDeleteDialog(goal.goal_id)}
         sx={{
           display: "inline-flex",
           marginLeft: "8px",
