@@ -100,7 +100,7 @@ const Goals = () => {
                   goal={goal}
                   index={index}
                   handleShowGoal={handleShowGoal}
-                  handleOpenDeleteDialog={handleOpenDeleteDialog} // Pass the dialog handler here
+                  handleOpenDeleteDialog={handleOpenDeleteDialog}
                 />
               ))
             ) : (
@@ -110,7 +110,6 @@ const Goals = () => {
         </Card>
       </Box>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         sx={{ borderRadius: "16px" }}
         open={open}
