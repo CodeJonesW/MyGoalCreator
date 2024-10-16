@@ -40,6 +40,7 @@ const NavBar = () => {
     >
       <Toolbar>
         <Typography
+          onClick={() => navigate("/")}
           variant="h6"
           sx={{ flexGrow: 1, color: theme.palette.text.primary }}
         >

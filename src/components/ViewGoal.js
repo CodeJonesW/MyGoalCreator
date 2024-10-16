@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Results from "./Results";
-import TrackGoalButton from "./TrackGoalButton";
 import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import axios from "axios";
-import {
-  // analyzeSubGoal,
-  clearSubGoal,
-  clearGoal,
-} from "../redux/slices/goalSlice";
+import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
+import { useNavigate } from "react-router-dom";
 
 const ViewGoal = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
   const { goal } = useSelector((state) => state.goalSlice);
@@ -188,7 +185,7 @@ const ViewGoal = () => {
             flexDirection: "column",
           }}
         >
-          <Box
+          {/* <Box
             style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -196,7 +193,7 @@ const ViewGoal = () => {
             }}
           >
             <TrackGoalButton onClick={handleTrackGoal} />
-          </Box>
+          </Box> */}
           {!result ? (
             <motion.div
               variants={variants}
@@ -205,6 +202,7 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
+                back={!loading ? () => navigate("/goals") : null}
                 onLineClick={onLineClick}
                 result={goal ? goal?.plan : recentGoal?.plan}
                 isSubGoal={false}
