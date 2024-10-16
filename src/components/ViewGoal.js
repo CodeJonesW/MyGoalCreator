@@ -3,7 +3,6 @@ import Results from "./Results";
 import Loading from "./Loading";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
-import axios from "axios";
 import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
@@ -16,7 +15,6 @@ const ViewGoal = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const firstRender = useRef(true);
-  const { token } = useSelector((state) => state.authSlice);
   const { goal } = useSelector((state) => state.goalSlice);
   const { recentGoal, isFirstLogin } = useSelector(
     (state) => state.profileSlice
@@ -153,21 +151,6 @@ const ViewGoal = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
-  // const handleTrackGoal = async () => {
-  //   await axios.post(
-  //     "/api/trackgoal",
-  //     {
-  //       goal_id: goal.goal_id,
-  //     },
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  // };
 
   const variants = {
     hidden: { x: "100vw", opacity: 0 },

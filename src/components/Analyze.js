@@ -4,7 +4,7 @@ import Loading from "./Loading";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useDispatch } from "react-redux";
-import { Box, Snackbar, Alert, Button } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
