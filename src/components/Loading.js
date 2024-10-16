@@ -1,5 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import NavBar from "./NavBar";
 
 export const Loading = () => {
   const theme = useTheme();
@@ -14,6 +15,7 @@ export const Loading = () => {
         backgroundColor: theme.palette.primary.main,
       }}
     >
+      <NavBar isMenuDisabled={true} />
       <CircularProgress color="secondary" />
     </Box>
   );
