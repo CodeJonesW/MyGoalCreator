@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InputForm from "./InputForm";
+import Loading from "./Loading";
 import Results from "./Results";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useDispatch } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Snackbar, Alert, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const firstRender = useRef(true);
+  const { loading: isProfileLoading, isFirstLogin } = useSelector(
+    (state) => state.profileSlice
+  );
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState("");
+
+  useEffect(() => {
+    console.log("isFirstLogin", isFirstLogin);
+    if (firstRender.current) {
+      console.log("First render");
+      firstRender.current = false;
+      if (isFirstLogin) {
+        setOpenSnackbar(true);
+      }
+      return;
+    }
+  }, [isFirstLogin]);
+
+  if (isProfileLoading) {
+    return <Loading />;
+  }
 
   const handleAnalyze = (goal, prompt, timeline) => {
     setLoading(true);
@@ -115,6 +138,10 @@ const Analyze = () => {
     }
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <Box
       sx={{
@@ -126,6 +153,21 @@ const Analyze = () => {
         flexDirection: "column",
       }}
     >
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        variant="filled"
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="info"
+          sx={{ width: "100%" }}
+        >
+          Welcome! Enter a goal to get started! 🎯
+        </Alert>
+      </Snackbar>
       {!result ? (
         <Box>
           <InputForm loading={loading} onSubmit={handleAnalyze} />

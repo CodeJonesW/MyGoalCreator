@@ -33,6 +33,7 @@ const profileSlice = createSlice({
     loading: false,
     error: false,
     recentGoal: null,
+    isFirstLogin: null,
   },
   extraReducers: (builder) => {
     builder
@@ -40,14 +41,17 @@ const profileSlice = createSlice({
         state.loading = true;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
-        const { user, goals, recentGoal } = action.payload;
+        const { user, goals, recentGoal, is_first_login } = action.payload;
         state.user = user;
         state.goals = goals;
         state.recentGoal = recentGoal;
+        state.isFirstLogin = is_first_login;
+        state.loading = false;
       })
       .addCase(getProfile.rejected, (state, action) => {
         console.log("Error fetching profile:", action);
         state.error = true;
+        state.loading = false;
       });
   },
 });

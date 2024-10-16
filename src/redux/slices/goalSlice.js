@@ -67,9 +67,11 @@ const goalSlice = createSlice({
       .addCase(getGoal.fulfilled, (state, action) => {
         state.goal = action.payload.goal;
         localStorage.setItem("goal", JSON.stringify(action.payload.goal));
+        state.loading = false;
       })
       .addCase(getGoal.rejected, (state, action) => {
         state.error = true;
+        state.loading = false;
       })
       .addCase(analyzeSubGoal.pending, (state) => {
         state.loading = true;
@@ -81,6 +83,7 @@ const goalSlice = createSlice({
       })
       .addCase(analyzeSubGoal.rejected, (state) => {
         state.loading = false;
+        state.error = true;
       });
   },
 });

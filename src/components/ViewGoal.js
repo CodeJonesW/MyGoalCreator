@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Results from "./Results";
+import Loading from "./Loading";
 import { useSelector, useDispatch } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import axios from "axios";
 import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
 import { motion } from "framer-motion";
@@ -14,12 +15,15 @@ const ViewGoal = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const firstRender = useRef(true);
   const { token } = useSelector((state) => state.authSlice);
   const { goal } = useSelector((state) => state.goalSlice);
-  const { recentGoal } = useSelector((state) => state.profileSlice);
+  const { recentGoal, isFirstLogin } = useSelector(
+    (state) => state.profileSlice
+  );
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [, setBuffer] = useState("");
 
@@ -30,6 +34,16 @@ const ViewGoal = () => {
       setShowSubGoalResults(false);
     }
   }, [result]);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      if (isFirstLogin) {
+        setOpenSnackbar(true);
+      }
+      return;
+    }
+  }, [isFirstLogin]);
 
   useEffect(() => {
     return () => {
@@ -136,6 +150,10 @@ const ViewGoal = () => {
     navigate("/goals");
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   const handleTrackGoal = async () => {
     await axios.post(
       "/api/trackgoal",
@@ -158,7 +176,7 @@ const ViewGoal = () => {
   };
 
   if (!goal && !recentGoal) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -197,8 +215,21 @@ const ViewGoal = () => {
               width: "80%",
             }}
           >
-            {/* back={!loading ? () => navigate("/goals") : null}
-             */}
+            <Snackbar
+              open={openSnackbar}
+              autoHideDuration={4000}
+              onClose={handleCloseSnackbar}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              variant="filled"
+            >
+              <Alert
+                onClose={handleCloseSnackbar}
+                severity="info"
+                sx={{ width: "100%" }}
+              >
+                Select a line of interest to learn more! 🚀
+              </Alert>
+            </Snackbar>
             {!loading ? (
               <BackButton
                 onClick={!result ? handleClearGoal : handleClearSubGoal}
