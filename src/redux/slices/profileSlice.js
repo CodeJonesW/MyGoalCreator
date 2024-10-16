@@ -56,6 +56,4 @@ const profileSlice = createSlice({
   },
 });
 
-export const { incremented, decremented } = profileSlice.actions;
-
 export default profileSlice;
