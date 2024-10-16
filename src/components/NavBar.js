@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { clearAuthToken } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ menuDisabled }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -38,40 +38,51 @@ const NavBar = () => {
       sx={{ backgroundColor: theme.palette.background.paper }}
       position="static"
     >
-      <Toolbar>
-        <Typography
-          onClick={() => navigate("/")}
-          variant="h6"
-          sx={{ flexGrow: 1, color: theme.palette.text.primary }}
-        >
-          My Goal Creator
-        </Typography>
-
-        <Box>
-          <IconButton
-            size="large"
-            edge="end"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleMenuOpen}
+      {menuDisabled ? (
+        <Toolbar>
+          <Typography
+            variant="h6"
+            sx={{ flexGrow: 1, color: theme.palette.text.primary }}
           >
-            <MenuIcon />
-          </IconButton>
-
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
+            My Goal Creator
+          </Typography>
+        </Toolbar>
+      ) : (
+        <Toolbar>
+          <Typography
+            onClick={() => navigate("/")}
+            variant="h6"
+            sx={{ flexGrow: 1, color: theme.palette.text.primary }}
           >
-            <MenuItem onClick={() => navigate("/")}>Create Goal</MenuItem>
-            <MenuItem onClick={() => navigate("/goals")}>View Goals</MenuItem>
-            <MenuItem onClick={() => navigate("/profile")}>
-              View Profile
-            </MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
-        </Box>
-      </Toolbar>
+            My Goal Creator
+          </Typography>
+
+          <Box>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleMenuOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={() => navigate("/")}>Create Goal</MenuItem>
+              <MenuItem onClick={() => navigate("/goals")}>View Goals</MenuItem>
+              <MenuItem onClick={() => navigate("/profile")}>
+                View Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      )}
     </AppBar>
   );
 };
