@@ -183,8 +183,7 @@ const LandingPage = () => {
                   variant="h6"
                   sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
                 >
-                  Track Progress (Coming Soon)
-                </Typography>
+                  Track Progress
                 <Typography
                   variant="body1"
                   sx={{ color: theme.palette.text.secondary, marginTop: "4px" }}
