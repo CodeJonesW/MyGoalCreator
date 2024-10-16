@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import MarkdownIt from "markdown-it";
 import { useTheme } from "@mui/material/styles";
-import { Box, Button, Snackbar } from "@mui/material";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Box, Snackbar } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const mdParser = new MarkdownIt();
 
-const Results = ({ result, onLineClick, back, isSubGoal }) => {
+const Results = ({ result, onLineClick, isSubGoal }) => {
   const theme = useTheme();
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -98,14 +97,9 @@ const Results = ({ result, onLineClick, back, isSubGoal }) => {
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: back ? "space-between" : "flex-end",
+          justifyContent: "flex-end",
         }}
       >
-        {back ? (
-          <Button color="secondary" variant={"outlined"} onClick={back}>
-            <ArrowBackIosNewIcon />
-          </Button>
-        ) : null}
         {isLoading ? <CircularProgress color="secondary" /> : null}
       </Box>
 

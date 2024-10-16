@@ -1,12 +1,10 @@
 export async function onRequest(context) {
-  console.log("DELETE GOAL", context);
-
   const isLocal =
     context.request.url === "http://localhost:8788/api/deletegoal";
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
-  const url = `${workerUrl}/api/deletegoal`;
+  const url = `${workerUrl}/api/goal`;
   const body = await context.request.json();
   const { goal_id } = body;
   const init = {

@@ -47,10 +47,12 @@ const authSlice = createSlice({
         const { access_token } = action.payload;
         state.token = access_token;
         localStorage.setItem("authToken", access_token);
+        state.loading = false;
       })
       .addCase(login.rejected, (state, action) => {
         console.error("Error logging in:", state, action);
         state.error = true;
+        state.loading = false;
       });
   },
 });
