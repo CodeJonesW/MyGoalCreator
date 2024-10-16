@@ -1,5 +1,4 @@
 export async function onRequest(context) {
-  console.log("Requesting goal", context.request.url);
   const isLocal = context.request.url.includes("localhost");
 
   const workerUrl = isLocal
@@ -11,7 +10,6 @@ export async function onRequest(context) {
 
   const url = `${workerUrl}/api/goal?goal_id=${goal_id}`;
 
-  console.log("Fetching goal", url);
   const init = {
     method: "GET",
     headers: {
@@ -28,7 +26,6 @@ export async function onRequest(context) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.log("Failed to get goal", error);
     return new Response(JSON.stringify({ error: "Failed to get goal" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
