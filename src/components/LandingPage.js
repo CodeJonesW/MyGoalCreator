@@ -184,6 +184,7 @@ const LandingPage = () => {
                   sx={{ fontWeight: "bold", color: theme.palette.text.primary }}
                 >
                   Track Progress
+                </Typography>
                 <Typography
                   variant="body1"
                   sx={{ color: theme.palette.text.secondary, marginTop: "4px" }}
