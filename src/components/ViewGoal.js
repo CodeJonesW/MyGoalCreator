@@ -154,20 +154,20 @@ const ViewGoal = () => {
     setOpenSnackbar(false);
   };
 
-  const handleTrackGoal = async () => {
-    await axios.post(
-      "/api/trackgoal",
-      {
-        goal_id: goal.goal_id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-  };
+  // const handleTrackGoal = async () => {
+  //   await axios.post(
+  //     "/api/trackgoal",
+  //     {
+  //       goal_id: goal.goal_id,
+  //     },
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  // };
 
   const variants = {
     hidden: { x: "100vw", opacity: 0 },

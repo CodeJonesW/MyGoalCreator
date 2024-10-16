@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import MarkdownIt from "markdown-it";
 import { useTheme } from "@mui/material/styles";
-import { Box, Button, Snackbar } from "@mui/material";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Box, Snackbar } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const mdParser = new MarkdownIt();
