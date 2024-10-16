@@ -1,22 +1,23 @@
 export async function onRequest(context) {
-  console.log("GOAL", context);
+  console.log("Requesting goal", context.request.url);
+  const isLocal = context.request.url.includes("localhost");
 
-  const isLocal = context.request.url === "http://localhost:8788/api/goal";
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
-  const url = `${workerUrl}/api/goal`;
-  const body = await context.request.json();
-  const { goal_id } = body;
+
+  const { searchParams } = new URL(context.request.url);
+  const goal_id = searchParams.get("goal_id");
+
+  const url = `${workerUrl}/api/goal?goal_id=${goal_id}`;
+
+  console.log("Fetching goal", url);
   const init = {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
     },
-    body: JSON.stringify({
-      goal_id,
-    }),
   };
 
   try {
@@ -27,6 +28,7 @@ export async function onRequest(context) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    console.log("Failed to get goal", error);
     return new Response(JSON.stringify({ error: "Failed to get goal" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

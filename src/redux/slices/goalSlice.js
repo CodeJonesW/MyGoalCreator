@@ -5,11 +5,8 @@ import axios from "axios";
 export const getGoal = createAsyncThunk(
   "goal/getGoal",
   async ({ token, goal_id }) => {
-    const response = await axios.post(
-      `/api/goal`,
-      {
-        goal_id,
-      },
+    const response = await axios.get(
+      `/api/goal?goal_id=${encodeURIComponent(goal_id)}`,
       {
         headers: {
           "Content-Type": "application/json",

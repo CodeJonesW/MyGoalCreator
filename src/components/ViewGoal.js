@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
 import { useNavigate } from "react-router-dom";
+import { BackButton } from "./index.js";
 
 const ViewGoal = () => {
   const theme = useTheme();
@@ -51,7 +52,7 @@ const ViewGoal = () => {
       const token = localStorage.getItem("authToken");
 
       const eventSource = new EventSource(
-        `/api/subgoalv2?goal_id=${encodeURIComponent(
+        `/api/subgoal?goal_id=${encodeURIComponent(
           goal_id
         )}&text=${encodeURIComponent(text)}&lineNumber=${encodeURIComponent(
           lineNumber
@@ -131,6 +132,10 @@ const ViewGoal = () => {
     setResult("");
   };
 
+  const handleClearGoal = () => {
+    navigate("/goals");
+  };
+
   const handleTrackGoal = async () => {
     await axios.post(
       "/api/trackgoal",
@@ -185,15 +190,22 @@ const ViewGoal = () => {
             flexDirection: "column",
           }}
         >
-          {/* <Box
+          <Box
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "flex-start",
               width: "80%",
             }}
           >
-            <TrackGoalButton onClick={handleTrackGoal} />
-          </Box> */}
+            {/* back={!loading ? () => navigate("/goals") : null}
+             */}
+            {!loading ? (
+              <BackButton
+                onClick={!result ? handleClearGoal : handleClearSubGoal}
+              />
+            ) : null}
+            {/* <TrackGoalButton onClick={handleTrackGoal} /> */}
+          </Box>
           {!result ? (
             <motion.div
               variants={variants}
@@ -202,7 +214,6 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={!loading ? () => navigate("/goals") : null}
                 onLineClick={onLineClick}
                 result={goal ? goal?.plan : recentGoal?.plan}
                 isSubGoal={false}
@@ -218,7 +229,6 @@ const ViewGoal = () => {
               exit="exit"
             >
               <Results
-                back={!loading ? handleClearSubGoal : null}
                 onLineClick={onLineClick}
                 result={result}
                 isSubGoal={true}

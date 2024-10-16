@@ -41,7 +41,6 @@ const Goals = () => {
   const handleDeleteGoal = async () => {
     if (!goalToDelete) return;
 
-    console.log("DELETE GOAL", goalToDelete);
     try {
       await fetch("/api/deletegoal", {
         method: "DELETE",
