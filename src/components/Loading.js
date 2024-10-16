@@ -1,6 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { NavBar } from "./NavBar";
+import NavBar from "./NavBar";
 
 export const Loading = () => {
   const theme = useTheme();
