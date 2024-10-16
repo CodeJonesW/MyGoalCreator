@@ -15,7 +15,7 @@ export const Loading = () => {
         backgroundColor: theme.palette.primary.main,
       }}
     >
-      <NavBar />
+      <NavBar isMenuDisabled={true} />
       <CircularProgress color="secondary" />
     </Box>
   );

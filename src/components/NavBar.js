@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { clearAuthToken } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const NavBar = ({ menuDisabled }) => {
+const NavBar = ({ isMenuDisabled }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -38,7 +38,7 @@ const NavBar = ({ menuDisabled }) => {
       sx={{ backgroundColor: theme.palette.background.paper }}
       position="static"
     >
-      {menuDisabled ? (
+      {isMenuDisabled ? (
         <Toolbar>
           <Typography
             variant="h6"
