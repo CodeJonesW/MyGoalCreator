@@ -57,9 +57,17 @@ const Analyze = () => {
         }
 
         setBuffer((prevBuffer) => {
+          if (prevBuffer === "" && newChunk === "") {
+            let updatedBuffer = prevBuffer + "\n";
+            setResult((prevResult) => prevResult + updatedBuffer);
+            return "";
+          }
+
           let updatedBuffer =
             prevBuffer +
-            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
+            (newChunk === "" || newChunk === " " || newChunk === "\n"
+              ? "\n"
+              : newChunk);
 
           const lines = updatedBuffer.split("\n");
 
@@ -70,7 +78,11 @@ const Analyze = () => {
             if (index === lines.length - 1) {
               remainingBuffer = line;
             } else {
-              completeContent += line + "\n";
+              if (line !== "\n") {
+                completeContent += line + "\n";
+              } else {
+                completeContent += line;
+              }
             }
           });
 
