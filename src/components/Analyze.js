@@ -12,7 +12,7 @@ const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const firstRender = useRef(true);
-  const { loading: isProfileLoading, isFirstLogin } = useSelector(
+  const { loading: isProfileLoading, showUiHelp } = useSelector(
     (state) => state.profileSlice
   );
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -23,12 +23,12 @@ const Analyze = () => {
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
-      if (isFirstLogin) {
+      if (showUiHelp) {
         setOpenSnackbar(true);
       }
       return;
     }
-  }, [isFirstLogin]);
+  }, [showUiHelp]);
 
   if (isProfileLoading) {
     return <Loading />;
