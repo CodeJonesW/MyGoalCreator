@@ -15,21 +15,37 @@ const Results = ({ result, onLineClick, isSubGoal }) => {
   const htmlContent = mdParser.render(result);
   const cleanHtmlContent = DOMPurify.sanitize(htmlContent);
 
-  // const processContent = (html) => {
-  //   const tempDiv = document.createElement("div");
-  //   tempDiv.innerHTML = html;
-  //   const lines = tempDiv.innerHTML.split("\n");
-  //   let processedLines = lines.map((line, index) => {
-  //     // If the line doesn't contain a link, make it clickable
-  //     if (!line.includes("<a")) {
-  //       return `<div class="clickable-line" data-line-number="${index}">${line}</div>`;
-  //     }
-  //     return line;
-  //   });
-  //   return processedLines.join("\n");
-  // };
+  const processContent = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    Array.from(tempDiv.children).forEach((child, index) => {
+      if (
+        child.tagName.toLowerCase() === "ul" ||
+        child.tagName.toLowerCase() === "ol"
+      ) {
+        if (child.children.length > 0) {
+          Array.from(child.children).forEach((listItem, index) => {
+            if (listItem.children.length > 0) {
+              Array.from(listItem.children).forEach((item, index) => {
+                if (item.tagName.toLowerCase() === "ul") {
+                  Array.from(item.children).forEach((subItem, index) => {
+                    subItem.classList.add("clickable-line");
+                  });
+                } else {
+                  item.classList.add("clickable-line");
+                }
+              });
+            } else {
+              listItem.classList.add("clickable-line");
+            }
+          });
+        }
+      }
+    });
+    return tempDiv.innerHTML;
+  };
 
-  const processedHtml = cleanHtmlContent;
+  const processedHtml = processContent(cleanHtmlContent);
 
   useEffect(() => {
     // Inject custom styles for links and clickable lines
@@ -55,16 +71,16 @@ const Results = ({ result, onLineClick, isSubGoal }) => {
 
     // Add event listener for clicks on the processed content
     const handleLineClick = (event) => {
+      console.log("handleLineClick", event);
       if (isSubGoal) {
         console.log("isSubGoal", isSubGoal);
         setIsToastOpen(true);
         return;
       }
       const target = event.target;
-      const lineNumber = target.parentElement.getAttribute("data-line-number");
       const text = target.innerHTML;
-      if (lineNumber && text) {
-        onLineClick(lineNumber, text);
+      if (text) {
+        onLineClick(text);
         setIsLoading(true);
       }
     };

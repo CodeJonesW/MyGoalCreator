@@ -48,12 +48,12 @@ const ViewGoal = () => {
     };
   }, [dispatch]);
 
-  const onLineClick = (lineNumber, text) => {
+  const onLineClick = (text) => {
     const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
-    handleAnalyzeSubGoal(goal_id, text, lineNumber);
+    handleAnalyzeSubGoal(goal_id, text);
   };
 
-  const handleAnalyzeSubGoal = (goal_id, text, lineNumber) => {
+  const handleAnalyzeSubGoal = (goal_id, text, lineNumber = 0) => {
     setResult("");
     setBuffer("");
     setLoading(true);
@@ -84,7 +84,17 @@ const ViewGoal = () => {
         }
 
         setBuffer((prevBuffer) => {
-          let updatedBuffer = prevBuffer + (newChunk === "" ? "\n" : newChunk);
+          if (prevBuffer === "" && newChunk === "") {
+            let updatedBuffer = prevBuffer + "\n";
+            setResult((prevResult) => prevResult + updatedBuffer);
+            return "";
+          }
+
+          let updatedBuffer =
+            prevBuffer +
+            (newChunk === "" || newChunk === " " || newChunk === "\n"
+              ? "\n"
+              : newChunk);
 
           const lines = updatedBuffer.split("\n");
 
@@ -92,17 +102,13 @@ const ViewGoal = () => {
           let remainingBuffer = "";
 
           lines.forEach((line, index) => {
-            if (/^\s*#{1,6}\s/.test(line) || /^\s*[-*]\s/.test(line)) {
-              if (index === lines.length - 1) {
-                remainingBuffer = line;
-              } else {
-                completeContent += line + "\n";
-              }
+            if (index === lines.length - 1) {
+              remainingBuffer = line;
             } else {
-              if (index === lines.length - 1) {
-                remainingBuffer = line;
-              } else {
+              if (line !== "\n") {
                 completeContent += line + "\n";
+              } else {
+                completeContent += line;
               }
             }
           });
