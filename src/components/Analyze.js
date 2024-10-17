@@ -67,18 +67,10 @@ const Analyze = () => {
           let remainingBuffer = "";
 
           lines.forEach((line, index) => {
-            if (/^\s*#{1,6}\s/.test(line) || /^\s*[-*]\s/.test(line)) {
-              if (index === lines.length - 1) {
-                remainingBuffer = line;
-              } else {
-                completeContent += line + "\n";
-              }
+            if (index === lines.length - 1) {
+              remainingBuffer = line;
             } else {
-              if (index === lines.length - 1) {
-                remainingBuffer = line;
-              } else {
-                completeContent += line + "\n";
-              }
+              completeContent += line + "\n";
             }
           });
 
