@@ -15,21 +15,21 @@ const Results = ({ result, onLineClick, isSubGoal }) => {
   const htmlContent = mdParser.render(result);
   const cleanHtmlContent = DOMPurify.sanitize(htmlContent);
 
-  const processContent = (html) => {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    const lines = tempDiv.innerHTML.split("\n");
-    let processedLines = lines.map((line, index) => {
-      // If the line doesn't contain a link, make it clickable
-      if (!line.includes("<a")) {
-        return `<div class="clickable-line" data-line-number="${index}">${line}</div>`;
-      }
-      return line;
-    });
-    return processedLines.join("\n");
-  };
+  // const processContent = (html) => {
+  //   const tempDiv = document.createElement("div");
+  //   tempDiv.innerHTML = html;
+  //   const lines = tempDiv.innerHTML.split("\n");
+  //   let processedLines = lines.map((line, index) => {
+  //     // If the line doesn't contain a link, make it clickable
+  //     if (!line.includes("<a")) {
+  //       return `<div class="clickable-line" data-line-number="${index}">${line}</div>`;
+  //     }
+  //     return line;
+  //   });
+  //   return processedLines.join("\n");
+  // };
 
-  const processedHtml = processContent(cleanHtmlContent);
+  const processedHtml = cleanHtmlContent;
 
   useEffect(() => {
     // Inject custom styles for links and clickable lines
