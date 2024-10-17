@@ -16,9 +16,7 @@ const ViewGoal = () => {
   const dispatch = useDispatch();
   const firstRender = useRef(true);
   const { goal } = useSelector((state) => state.goalSlice);
-  const { recentGoal, isFirstLogin } = useSelector(
-    (state) => state.profileSlice
-  );
+  const { recentGoal, showUiHelp } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -36,12 +34,12 @@ const ViewGoal = () => {
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
-      if (isFirstLogin) {
+      if (showUiHelp) {
         setOpenSnackbar(true);
       }
       return;
     }
-  }, [isFirstLogin]);
+  }, [showUiHelp]);
 
   useEffect(() => {
     return () => {
