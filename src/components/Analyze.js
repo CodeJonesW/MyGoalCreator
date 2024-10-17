@@ -57,7 +57,9 @@ const Analyze = () => {
         }
 
         setBuffer((prevBuffer) => {
-          let updatedBuffer = prevBuffer + (newChunk === "" ? "\n" : newChunk);
+          let updatedBuffer =
+            prevBuffer +
+            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
 
           const lines = updatedBuffer.split("\n");
 
