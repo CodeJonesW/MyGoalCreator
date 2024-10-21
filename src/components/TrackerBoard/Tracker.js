@@ -2,13 +2,22 @@ import React, { useEffect, useState } from "react";
 import { DndContext, useSensor, useSensors, MouseSensor } from "@dnd-kit/core";
 import { Board } from "./Board";
 import { NavBar } from "../index.js";
-import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { getTrackedGoal } from "../../redux/slices/goalSlice";
+import { Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 const Tracker = () => {
   const theme = useTheme();
-  const { trackedGoal } = useSelector((state) => state.goalSlice);
+  const dispatch = useDispatch();
+  const {
+    trackedGoalItems,
+    trackedGoalId,
+    trackedGoalStep,
+    trackedGoalTimelineName,
+  } = useSelector((state) => state.goalSlice);
+  const { token } = useSelector((state) => state.authSlice);
+
   const [board, setBoard] = useState({
     columns: [
       {
@@ -29,16 +38,37 @@ const Tracker = () => {
     ],
   });
 
+  const handleForwardStep = () => {
+    console.log("FORWARD STEP", trackedGoalStep, trackedGoalId);
+    dispatch(
+      getTrackedGoal({
+        token,
+        goal_id: trackedGoalId,
+        step: parseInt(trackedGoalStep) + 1,
+      })
+    );
+  };
+
+  const handleBackStep = () => {
+    console.log("BACK STEP", trackedGoalStep, trackedGoalId);
+    dispatch(
+      getTrackedGoal({
+        token,
+        goal_id: trackedGoalId,
+        step: parseInt(trackedGoalStep) - 1,
+      })
+    );
+  };
+
   useEffect(() => {
-    if (trackedGoal) {
+    if (trackedGoalItems) {
       setBoard({
         columns: [
           {
             id: "todo",
             title: "To Do",
-            tasks: trackedGoal.map((planItem) => ({
+            tasks: trackedGoalItems.map((planItem) => ({
               id: planItem.plan_item_id,
-              title: planItem.description,
               description: planItem.description,
             })),
           },
@@ -55,7 +85,7 @@ const Tracker = () => {
         ],
       });
     }
-  }, [trackedGoal]);
+  }, [trackedGoalItems]);
 
   // Handle the drag end event
   const handleDragEnd = (event) => {
@@ -113,6 +143,29 @@ const Tracker = () => {
       }}
     >
       <NavBar />
+      {/* forward and back button  */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "80%",
+          padding: "24px",
+        }}
+      >
+        <Button onClick={handleBackStep} variant="outlined" color="secondary">
+          Back
+        </Button>
+        <Typography variant={"h5"} color="secondary">
+          {trackedGoalTimelineName}
+        </Typography>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleForwardStep}
+        >
+          Forward
+        </Button>
+      </Box>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <Board board={board} />
       </DndContext>

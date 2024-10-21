@@ -181,6 +181,7 @@ const ViewGoal = () => {
       getTrackedGoal({
         token,
         goal_id: goal ? goal.goal_id : recentGoal.goal_id,
+        step: 0,
       })
     );
     navigate("/tracker");

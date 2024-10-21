@@ -41,10 +41,12 @@ export const analyzeSubGoal = createAsyncThunk(
 
 export const getTrackedGoal = createAsyncThunk(
   "goal/getTrackedGoal",
-  async ({ token, goal_id }) => {
+  async ({ token, goal_id, step }) => {
     console.log("Getting tracked goal", goal_id);
     const response = await axios.get(
-      `/api/getTrackedGoal?goal_id=${encodeURIComponent(goal_id)}`,
+      `/api/getTrackedGoal?goal_id=${encodeURIComponent(
+        goal_id
+      )}&step=${encodeURIComponent(step)}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +65,10 @@ const goalSlice = createSlice({
     subGoal: null,
     loading: false,
     error: false,
-    trackedGoal: null,
+    trackedGoalItems: null,
+    trackedGoalId: null,
+    trackedGoalStep: null,
+    trackedGoalTimelineName: null,
   },
   reducers: {
     clearGoal: (state) => {
@@ -109,7 +114,10 @@ const goalSlice = createSlice({
       .addCase(getTrackedGoal.fulfilled, (state, action) => {
         console.log("Tracked goal fetched successfully", action);
         state.loading = false;
-        state.trackedGoal = action.payload.planItems;
+        state.trackedGoalItems = action.payload.planItems;
+        state.trackedGoalId = action.payload.goal_id;
+        state.trackedGoalStep = action.payload.step;
+        state.trackedGoalTimelineName = action.payload.timelineName;
       })
       .addCase(getTrackedGoal.rejected, (state) => {
         state.loading = false;

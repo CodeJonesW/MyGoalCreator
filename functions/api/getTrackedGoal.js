@@ -7,8 +7,9 @@ export async function onRequest(context) {
 
   const { searchParams } = new URL(context.request.url);
   const goal_id = searchParams.get("goal_id");
+  const step = searchParams.get("step");
 
-  const url = `${workerUrl}/api/trackGoal?goal_id=${goal_id}`;
+  const url = `${workerUrl}/api/trackGoal?goal_id=${goal_id}&step=${step}`;
 
   const init = {
     method: "GET",

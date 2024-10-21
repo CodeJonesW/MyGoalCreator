@@ -1,6 +1,7 @@
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { useTheme } from "@mui/material/styles";
+import { Box, Typography } from "@mui/material";
 
 export const Task = ({ task, columnId }) => {
   const theme = useTheme();
@@ -21,9 +22,8 @@ export const Task = ({ task, columnId }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
-    </div>
+    <Box ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      <Typography variant="p">{task.description}</Typography>
+    </Box>
   );
 };
