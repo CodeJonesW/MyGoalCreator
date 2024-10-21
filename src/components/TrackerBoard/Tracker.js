@@ -15,6 +15,7 @@ const Tracker = () => {
     trackedGoalId,
     trackedGoalStep,
     trackedGoalTimelineName,
+    isTrackedGoalLastStep,
   } = useSelector((state) => state.goalSlice);
   const { token } = useSelector((state) => state.authSlice);
 
@@ -152,19 +153,30 @@ const Tracker = () => {
           padding: "24px",
         }}
       >
-        <Button onClick={handleBackStep} variant="outlined" color="secondary">
-          Back
-        </Button>
+        <Box>
+          <Button
+            sx={{ display: parseInt(trackedGoalStep) === 0 ? "none" : "block" }}
+            onClick={handleBackStep}
+            variant="outlined"
+            color="secondary"
+          >
+            Back
+          </Button>
+        </Box>
+
         <Typography variant={"h5"} color="secondary">
           {trackedGoalTimelineName}
         </Typography>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleForwardStep}
-        >
-          Forward
-        </Button>
+        <Box>
+          <Button
+            sx={{ display: isTrackedGoalLastStep ? "none" : "block" }}
+            variant="outlined"
+            color="secondary"
+            onClick={handleForwardStep}
+          >
+            Forward
+          </Button>
+        </Box>
       </Box>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <Board board={board} />
