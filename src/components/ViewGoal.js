@@ -245,7 +245,12 @@ const ViewGoal = () => {
                 onClick={!result ? handleClearGoal : handleClearSubGoal}
               />
             ) : null}
-            <TrackGoalButton onClick={handleTrackGoal} />
+            <TrackGoalButton
+              isGoalTracked={
+                goal ? goal.isGoalTracked : recentGoal.isGoalTracked
+              }
+              onClick={handleTrackGoal}
+            />
           </Box>
           {!result ? (
             <motion.div
