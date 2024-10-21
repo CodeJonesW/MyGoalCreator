@@ -4,11 +4,7 @@ import Loading from "./Loading";
 import TrackGoalButton from "./TrackGoalButton";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
-import {
-  clearSubGoal,
-  clearGoal,
-  getTrackedGoal,
-} from "../redux/slices/goalSlice";
+import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
