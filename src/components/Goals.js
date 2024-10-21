@@ -20,8 +20,9 @@ import { getGoal } from "../redux/slices/goalSlice";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import ArticleIcon from "@mui/icons-material/Article";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 
 const Goals = () => {
   const dispatch = useDispatch();
@@ -136,6 +137,7 @@ const Goals = () => {
 
 const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -146,7 +148,6 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
     >
       <ListItem
         key={index}
-        onClick={() => handleShowGoal(goal.goal_id)}
         sx={{
           cursor: "pointer",
           backgroundColor: "transparent",
@@ -154,8 +155,24 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
           borderRadius: "16px",
         }}
       >
+        {goal.isGoalTracked ? (
+          <ListItemIcon>
+            <IconButton
+              onClick={() => navigate(`/tracker/${goal.goal_id}`)}
+              className="icon-button"
+              sx={{
+                color: theme.palette.primary.contrastText,
+                display: "inline-flex",
+                transition: "display 0.3s",
+              }}
+            >
+              <TrackChangesIcon />
+            </IconButton>
+          </ListItemIcon>
+        ) : null}
         <ListItemIcon>
           <IconButton
+            onClick={() => handleShowGoal(goal.goal_id)}
             className="icon-button"
             sx={{
               color: theme.palette.primary.contrastText,
@@ -163,10 +180,14 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
               transition: "display 0.3s",
             }}
           >
-            <VisibilityIcon />
+            <ArticleIcon />
           </IconButton>
         </ListItemIcon>
-        <ListItemText primary={goal.goal_name} />
+
+        <ListItemText
+          onClick={() => handleShowGoal(goal.goal_id)}
+          primary={goal.goal_name}
+        />
       </ListItem>
       <IconButton
         onClick={() => handleOpenDeleteDialog(goal.goal_id)}

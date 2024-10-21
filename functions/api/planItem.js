@@ -1,19 +1,21 @@
 export async function onRequest(context) {
-  const isLocal = context.request.url === "http://localhost:8788/api/trackgoal";
+  const isLocal = context.request.url === "http://localhost:8788/api/planItem";
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
-  const url = `${workerUrl}/api/trackGoal`;
+
+  const url = `${workerUrl}/api/planItem`;
   const body = await context.request.json();
-  const { goal_id } = body;
+  const { taskId, status } = body;
   const init = {
-    method: "POST",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
     },
     body: JSON.stringify({
-      goal_id,
+      plan_item_id: taskId,
+      status: status,
     }),
   };
 
@@ -25,9 +27,12 @@ export async function onRequest(context) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to track goal" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "Failed to update plan item" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }

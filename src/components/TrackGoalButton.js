@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges"; // Goal tracking icon
 
-const TrackGoalButton = ({ onClick }) => {
+const TrackGoalButton = ({ onClick, isGoalTracked }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detect if the screen size is small (mobile)
 
@@ -38,7 +38,11 @@ const TrackGoalButton = ({ onClick }) => {
         }}
       >
         <TrackChangesIcon sx={{ mr: 1 }} />
-        {isMobile ? "Track Goal" : "Start Tracking Your Goal"}
+        {isGoalTracked
+          ? "Go to Tracker"
+          : isMobile
+          ? "Track Goal"
+          : "Start Tracking Your Goal"}
       </Button>
     </Box>
   );

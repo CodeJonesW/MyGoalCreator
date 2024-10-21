@@ -39,6 +39,25 @@ export const analyzeSubGoal = createAsyncThunk(
   }
 );
 
+export const getTrackedGoal = createAsyncThunk(
+  "goal/getTrackedGoal",
+  async ({ token, goal_id, step }) => {
+    console.log("Getting tracked goal", goal_id);
+    const response = await axios.get(
+      `/api/getTrackedGoal?goal_id=${encodeURIComponent(
+        goal_id
+      )}&step=${encodeURIComponent(step)}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+);
+
 const goalSlice = createSlice({
   name: "goal",
   initialState: {
@@ -46,6 +65,11 @@ const goalSlice = createSlice({
     subGoal: null,
     loading: false,
     error: false,
+    trackedGoalItems: null,
+    trackedGoalId: null,
+    trackedGoalStep: null,
+    trackedGoalTimelineName: null,
+    isTrackedGoalLastStep: false,
   },
   reducers: {
     clearGoal: (state) => {
@@ -82,6 +106,22 @@ const goalSlice = createSlice({
         state.subGoal = action.payload.subGoal;
       })
       .addCase(analyzeSubGoal.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(getTrackedGoal.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getTrackedGoal.fulfilled, (state, action) => {
+        console.log("Tracked goal fetched successfully", action);
+        state.loading = false;
+        state.trackedGoalItems = action.payload.planItems;
+        state.trackedGoalId = action.payload.goal_id;
+        state.trackedGoalStep = action.payload.step;
+        state.trackedGoalTimelineName = action.payload.timelineName;
+        state.isTrackedGoalLastStep = action.payload.isLastStep;
+      })
+      .addCase(getTrackedGoal.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
