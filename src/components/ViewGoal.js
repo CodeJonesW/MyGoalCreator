@@ -1,20 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import Results from "./Results";
 import Loading from "./Loading";
+import TrackGoalButton from "./TrackGoalButton";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
-import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
+import {
+  clearSubGoal,
+  clearGoal,
+  getTrackedGoal,
+} from "../redux/slices/goalSlice";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
 import { useNavigate } from "react-router-dom";
 import { BackButton } from "./index.js";
+import axios from "axios";
 
 const ViewGoal = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const firstRender = useRef(true);
+  const { token } = useSelector((state) => state.authSlice);
   const { goal } = useSelector((state) => state.goalSlice);
   const { recentGoal, showUiHelp } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
@@ -156,6 +163,29 @@ const ViewGoal = () => {
     setOpenSnackbar(false);
   };
 
+  const handleTrackGoal = async () => {
+    await axios.post(
+      "/api/trackgoal",
+      {
+        goal_id: goal ? goal.goal_id : recentGoal.goal_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    dispatch(
+      getTrackedGoal({
+        token,
+        goal_id: goal ? goal.goal_id : recentGoal.goal_id,
+      })
+    );
+    navigate("/tracker");
+  };
+
   const variants = {
     hidden: { x: "100vw", opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.5 } },
@@ -198,7 +228,7 @@ const ViewGoal = () => {
           <Box
             style={{
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               width: "80%",
             }}
           >
@@ -222,7 +252,7 @@ const ViewGoal = () => {
                 onClick={!result ? handleClearGoal : handleClearSubGoal}
               />
             ) : null}
-            {/* <TrackGoalButton onClick={handleTrackGoal} /> */}
+            <TrackGoalButton onClick={handleTrackGoal} />
           </Box>
           {!result ? (
             <motion.div
