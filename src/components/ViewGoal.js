@@ -176,15 +176,7 @@ const ViewGoal = () => {
         },
       }
     );
-
-    dispatch(
-      getTrackedGoal({
-        token,
-        goal_id: goal ? goal.goal_id : recentGoal.goal_id,
-        step: 0,
-      })
-    );
-    navigate("/tracker");
+    navigate(`/tracker/${goal ? goal.goal_id : recentGoal.goal_id}`);
   };
 
   const variants = {

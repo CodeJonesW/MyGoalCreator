@@ -6,9 +6,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getTrackedGoal } from "../../redux/slices/goalSlice";
 import { Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useParams } from "react-router-dom";
 
 const Tracker = () => {
   const theme = useTheme();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const {
     trackedGoalItems,
@@ -18,6 +20,12 @@ const Tracker = () => {
     isTrackedGoalLastStep,
   } = useSelector((state) => state.goalSlice);
   const { token } = useSelector((state) => state.authSlice);
+
+  useEffect(() => {
+    if (id && token) {
+      dispatch(getTrackedGoal({ token, goal_id: id, step: 0 }));
+    }
+  }, [dispatch, id, token]);
 
   const [board, setBoard] = useState({
     columns: [
@@ -40,7 +48,6 @@ const Tracker = () => {
   });
 
   const handleForwardStep = () => {
-    console.log("FORWARD STEP", trackedGoalStep, trackedGoalId);
     dispatch(
       getTrackedGoal({
         token,
@@ -51,7 +58,6 @@ const Tracker = () => {
   };
 
   const handleBackStep = () => {
-    console.log("BACK STEP", trackedGoalStep, trackedGoalId);
     dispatch(
       getTrackedGoal({
         token,
@@ -61,34 +67,75 @@ const Tracker = () => {
     );
   };
 
+  const updateTaskStatus = async (taskId, newStatus) => {
+    try {
+      const response = await fetch(`/api/planItem`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          taskId,
+          status: newStatus,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+
+      console.log("Task status updated successfully");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
+
   useEffect(() => {
     if (trackedGoalItems) {
+      const todoTasks = trackedGoalItems
+        .filter((planItem) => planItem.item_status === "todo")
+        .map((planItem) => ({
+          id: planItem.plan_item_id,
+          description: planItem.description,
+        }));
+
+      const inProgressTasks = trackedGoalItems
+        .filter((planItem) => planItem.item_status === "in-progress")
+        .map((planItem) => ({
+          id: planItem.plan_item_id,
+          description: planItem.description,
+        }));
+
+      const doneTasks = trackedGoalItems
+        .filter((planItem) => planItem.item_status === "done")
+        .map((planItem) => ({
+          id: planItem.plan_item_id,
+          description: planItem.description,
+        }));
+
       setBoard({
         columns: [
           {
             id: "todo",
             title: "To Do",
-            tasks: trackedGoalItems.map((planItem) => ({
-              id: planItem.plan_item_id,
-              description: planItem.description,
-            })),
+            tasks: todoTasks,
           },
           {
             id: "in-progress",
             title: "In Progress",
-            tasks: [],
+            tasks: inProgressTasks,
           },
           {
             id: "done",
             title: "Done",
-            tasks: [],
+            tasks: doneTasks,
           },
         ],
       });
     }
   }, [trackedGoalItems]);
 
-  // Handle the drag end event
   const handleDragEnd = (event) => {
     console.log("DRAG END", event);
     const { active, over } = event;
@@ -125,6 +172,8 @@ const Tracker = () => {
     console.log("UPDATED COLUMNS", updatedColumns);
 
     setBoard({ columns: updatedColumns });
+
+    updateTaskStatus(task.id, destinationColumnId, token);
   };
 
   // Set up the sensors for drag detection
