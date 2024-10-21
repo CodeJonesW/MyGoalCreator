@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DndContext, useSensor, useSensors, MouseSensor } from "@dnd-kit/core";
 import { Board } from "./Board";
+import { NavBar } from "../index.js";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -101,12 +102,17 @@ const Tracker = () => {
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.background.default,
-        height: "100vh",
-        width: "100vw",
-        padding: "20px",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        overflow: "scroll",
+        background: theme.palette.primary.main,
       }}
     >
+      <NavBar />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <Board board={board} />
       </DndContext>
