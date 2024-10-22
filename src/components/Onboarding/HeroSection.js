@@ -16,21 +16,11 @@ const HeroSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  // Use MUI's useMediaQuery hook to detect screen size
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const isXLargeScreen = useMediaQuery(theme.breakpoints.up("xl"));
-  console.log("isSmallScreen", isSmallScreen);
-  console.log("isMediumScreen", isMediumScreen);
-  console.log("isLargeScreen", isLargeScreen);
-  console.log("isXLargeScreen", isXLargeScreen);
-
-  // Define different honeycomb structures for different screen sizes
   const fullHoneycomb = [5, 6, 7, 8, 9, 8, 7, 6, 5];
   const smallHoneycomb = [3, 4, 5, 4, 3];
 
-  // Determine the structure based on the screen size
   const honeycomb =
     isLargeScreen || isXLargeScreen ? fullHoneycomb : smallHoneycomb;
 

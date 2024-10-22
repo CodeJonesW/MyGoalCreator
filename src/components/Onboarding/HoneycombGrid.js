@@ -24,8 +24,6 @@ import {
 import { useTheme } from "@mui/material/styles";
 import "./HoneycombGrid.css";
 
-const honeycomb = [5, 6, 7, 8, 9, 8, 7, 6, 5];
-
 const icons = [
   <RocketLaunchIcon fontSize="medium" />,
   <SportsEsportsIcon fontSize="medium" />,
@@ -84,7 +82,9 @@ const HoneycombGrid = ({ structure }) => {
                 key={rowIndex}
                 className="hexagon"
                 onClick={handleClick}
-                style={{ color: theme.palette.primary.main }}
+                style={{
+                  color: theme.palette.primary.main,
+                }}
               >
                 {icon}
                 {rippleEffect.active && (
