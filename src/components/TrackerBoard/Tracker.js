@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 const Tracker = () => {
   const theme = useTheme();
-  const { id } = useParams();
+  const { goal_id } = useParams();
   const dispatch = useDispatch();
   const {
     trackedGoalItems,
@@ -22,10 +22,10 @@ const Tracker = () => {
   const { token } = useSelector((state) => state.authSlice);
 
   useEffect(() => {
-    if (id && token) {
-      dispatch(getTrackedGoal({ token, goal_id: id, step: 0 }));
+    if (goal_id && token) {
+      dispatch(getTrackedGoal({ token, goal_id: goal_id, step: 0 }));
     }
-  }, [dispatch, id, token]);
+  }, [dispatch, goal_id, token]);
 
   const [board, setBoard] = useState({
     columns: [
