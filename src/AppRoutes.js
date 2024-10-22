@@ -11,6 +11,8 @@ import {
   Goals,
   ViewGoal,
   Tracker,
+  TermsOfService,
+  PrivacyPolicy,
 } from "./components/index.js";
 import App from "./App.js";
 
@@ -30,6 +32,8 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/welcome" element={<LandingPage />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/" element={<PrivateRoute element={<App />} />} />
         <Route path="/goals" element={<PrivateRoute element={<Goals />} />} />
         <Route

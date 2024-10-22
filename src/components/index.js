@@ -1,4 +1,4 @@
-export { default as LandingPage } from "./LandingPage";
+export { default as LandingPage } from "./Onboarding/LandingPage";
 export { default as Analyze } from "./Analyze";
 export { default as Goals } from "./Goals";
 export { default as Login } from "./Login";
@@ -12,3 +12,5 @@ export { default as BackButton } from "./BackButton";
 export { default as TrackGoalButton } from "./TrackGoalButton";
 export { default as InputForm } from "./InputForm";
 export { default as Tracker } from "./TrackerBoard/Tracker";
+export { default as TermsOfService } from "./Onboarding/TermsOfService";
+export { default as PrivacyPolicy } from "./Onboarding/PrivacyPolicy";
