@@ -2,11 +2,8 @@ import React, { useRef } from "react";
 import { Box, Container, Typography, Paper, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion, useInView } from "framer-motion";
-import TrackChangesIcon from "@mui/icons-material/TrackChanges";
-import SubtitlesIcon from "@mui/icons-material/Subtitles";
-import AssessmentIcon from "@mui/icons-material/Assessment";
 
-const FeaturesSection = () => {
+const TestimonialsSection = () => {
   const theme = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -29,7 +26,7 @@ const FeaturesSection = () => {
         padding: "80px 0",
         backgroundColor: theme.palette.background.default,
       }}
-      id="features"
+      id="testimonials"
       ref={ref}
     >
       <Container maxWidth="lg">
@@ -42,7 +39,7 @@ const FeaturesSection = () => {
             color: theme.palette.text.primary,
           }}
         >
-          Features
+          What Our Users Say
         </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
@@ -60,37 +57,27 @@ const FeaturesSection = () => {
                   boxShadow: theme.shadows[4],
                   borderRadius: "10px",
                   minHeight: "144px",
-                  textAlign: "center",
                 }}
               >
-                <TrackChangesIcon
-                  sx={{
-                    fontSize: "48px",
-                    color: theme.palette.secondary.main,
-                    marginBottom: "16px",
-                  }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.text.primary,
-                    marginBottom: "8px",
-                  }}
-                >
-                  Define Your Goal
-                </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: theme.palette.text.primary }}
                 >
-                  Use our AI-powered tool to clearly define the path to your
-                  goal.
+                  "I used it to plan my dinner recipe and explain each step in
+                  depth."
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  — Austin Candler
                 </Typography>
               </Paper>
             </motion.div>
           </Grid>
-
           <Grid item xs={12} md={4}>
             <motion.div
               initial="hidden"
@@ -106,37 +93,26 @@ const FeaturesSection = () => {
                   boxShadow: theme.shadows[4],
                   borderRadius: "10px",
                   minHeight: "144px",
-                  textAlign: "center",
                 }}
               >
-                <SubtitlesIcon
-                  sx={{
-                    fontSize: "48px",
-                    color: theme.palette.secondary.main,
-                    marginBottom: "16px",
-                  }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.text.primary,
-                    marginBottom: "8px",
-                  }}
-                >
-                  Dive into Subtopics
-                </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: theme.palette.text.primary }}
                 >
-                  Generate detailed plans and resources for each subtopic of
-                  your goal.
+                  "Helped me map out my fitness goal"
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  — Jim Gibbs
                 </Typography>
               </Paper>
             </motion.div>
           </Grid>
-
           <Grid item xs={12} md={4}>
             <motion.div
               initial="hidden"
@@ -152,32 +128,22 @@ const FeaturesSection = () => {
                   boxShadow: theme.shadows[4],
                   borderRadius: "10px",
                   minHeight: "144px",
-                  textAlign: "center",
                 }}
               >
-                <AssessmentIcon
-                  sx={{
-                    fontSize: "48px",
-                    color: theme.palette.secondary.main,
-                    marginBottom: "16px",
-                  }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.text.primary,
-                    marginBottom: "8px",
-                  }}
-                >
-                  Track Progress
-                </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: theme.palette.text.primary }}
                 >
-                  Stay on top of your progress with real-time tracking and
-                  analytics.
+                  "Excited to see where this project goes! Great for planning"
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontStyle: "italic",
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  — Laura Townsend
                 </Typography>
               </Paper>
             </motion.div>
@@ -188,4 +154,4 @@ const FeaturesSection = () => {
   );
 };
 
-export default FeaturesSection;
+export default TestimonialsSection;
