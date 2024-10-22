@@ -1,13 +1,38 @@
 import React from "react";
-import { Box, Container, Grid, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Button,
+  useMediaQuery,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import GoalIllustration from "../../assets/images/my_goal_creator_landing_page_img_1.webp";
+import HoneycombGrid from "./HoneycombGrid"; // Import the HoneycombGrid
 
 const HeroSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+
+  // Use MUI's useMediaQuery hook to detect screen size
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  const isXLargeScreen = useMediaQuery(theme.breakpoints.up("xl"));
+  console.log("isSmallScreen", isSmallScreen);
+  console.log("isMediumScreen", isMediumScreen);
+  console.log("isLargeScreen", isLargeScreen);
+  console.log("isXLargeScreen", isXLargeScreen);
+
+  // Define different honeycomb structures for different screen sizes
+  const fullHoneycomb = [5, 6, 7, 8, 9, 8, 7, 6, 5];
+  const smallHoneycomb = [3, 4, 5, 4, 3];
+
+  // Determine the structure based on the screen size
+  const honeycomb =
+    isLargeScreen || isXLargeScreen ? fullHoneycomb : smallHoneycomb;
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -106,12 +131,8 @@ const HeroSection = () => {
               animate="visible"
               variants={imageVariants}
             >
-              <Box
-                component="img"
-                src={GoalIllustration}
-                alt="Illustration"
-                sx={{ width: "100%", height: "auto", borderRadius: "8px" }}
-              />
+              {/* Pass the honeycomb structure to the HoneycombGrid */}
+              <HoneycombGrid structure={honeycomb} theme={theme} />
             </motion.div>
           </Grid>
         </Grid>
