@@ -11,8 +11,10 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import GoalIllustration from "../assets/images/my_goal_creator_landing_page_img_1.webp";
+import GoalIllustration from "../../assets/images/my_goal_creator_landing_page_img_1.webp";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../NavBar";
+import FeaturesSection from "./FeaturesSection";
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -20,6 +22,17 @@ const LandingPage = () => {
 
   return (
     <Box className="landing-page">
+      <Box
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          backgroundColor: theme.palette.background.paper,
+          boxShadow: theme.shadows[3],
+        }}
+      >
+        <NavBar isMenuDisabled={true} />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -88,7 +101,8 @@ const LandingPage = () => {
         </Container>
       </Box>
       {/* Features Section */}
-      <Box
+      <FeaturesSection />
+      {/* <Box
         sx={{
           padding: "80px 0",
           backgroundColor: theme.palette.background.default,
@@ -196,7 +210,7 @@ const LandingPage = () => {
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </Box> */}
       {/* Testimonials Section */}
       <Box
         sx={{
@@ -485,11 +499,36 @@ const LandingPage = () => {
           color: theme.palette.primary.contrastText,
           textAlign: "center",
         }}
-        id="footer"
       >
         <Typography variant="body2">
           © 2024 My Goal Creator. All rights reserved.
         </Typography>
+        <Box sx={{ marginTop: "16px" }}>
+          <Button
+            onClick={() => navigate("/privacy")}
+            sx={{
+              color: theme.palette.primary.contrastText,
+              marginRight: "8px",
+              "&:hover": {
+                color: theme.palette.secondary.main,
+              },
+            }}
+          >
+            Privacy Policy
+          </Button>
+          <Button
+            onClick={() => navigate("/terms")}
+            sx={{
+              color: theme.palette.primary.contrastText,
+              marginRight: "8px",
+              "&:hover": {
+                color: theme.palette.secondary.main,
+              },
+            }}
+          >
+            Terms of Service
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
