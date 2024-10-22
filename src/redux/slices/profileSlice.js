@@ -8,7 +8,7 @@ export const getProfile = createAsyncThunk(
   "profile/getProfile",
   async ({ token, setLatestGoal }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.get(`api/profile`, {
+      const response = await axios.get(`/api/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -42,6 +42,7 @@ const profileSlice = createSlice({
       })
       .addCase(getProfile.fulfilled, (state, action) => {
         const { user, goals, recentGoal, showUiHelp } = action.payload;
+        console.log("Got profile", action.payload);
         state.user = user;
         state.goals = goals;
         state.recentGoal = recentGoal;
