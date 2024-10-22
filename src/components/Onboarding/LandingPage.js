@@ -15,6 +15,7 @@ import GoalIllustration from "../../assets/images/my_goal_creator_landing_page_i
 import { useNavigate } from "react-router-dom";
 import NavBar from "../NavBar";
 import FeaturesSection from "./FeaturesSection";
+import HeroSection from "./HeroSection";
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -33,7 +34,8 @@ const LandingPage = () => {
       >
         <NavBar isMenuDisabled={true} />
       </Box>
-      <Box
+      <HeroSection />
+      {/* <Box
         sx={{
           display: "flex",
           alignItems: "center",
@@ -99,7 +101,7 @@ const LandingPage = () => {
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </Box> */}
       {/* Features Section */}
       <FeaturesSection />
       {/* <Box
