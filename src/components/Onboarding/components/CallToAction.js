@@ -58,7 +58,7 @@ const CallToAction = () => {
       ref={sectionRef}
       sx={{
         padding: "80px 0",
-        background: theme.palette.background.paper,
+        background: theme.palette.background.default,
         textAlign: "center",
       }}
       id="cta"
@@ -113,12 +113,13 @@ const CallToAction = () => {
         </Box>
         <Button
           variant="contained"
+          color="secondary"
           size="large"
           onClick={() => navigate("/register")}
           sx={{
             marginTop: "20px",
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.primary.contrastText,
+            // backgroundColor: theme.palette.primary.main,
+            // color: theme.palette.primary.contrastText,
           }}
         >
           Get Started for Free
