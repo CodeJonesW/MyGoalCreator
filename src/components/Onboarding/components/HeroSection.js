@@ -90,6 +90,7 @@ const HeroSection = () => {
                 sx={{
                   marginBottom: "30px",
                   fontSize: "18px",
+                  textAlign: "left",
                   color: theme.palette.text.secondary,
                 }}
               >
