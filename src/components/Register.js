@@ -64,12 +64,13 @@ const Register = () => {
     <Box
       sx={{
         background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-        height: "100vh",
-        width: "100vw",
-        padding: "20px",
+        height: "100%",
+        width: "100%",
       }}
     >
-      <BackButton />
+      <Box sx={{ padding: "24px" }}>
+        <BackButton />
+      </Box>
       <Box
         sx={{
           display: "flex",

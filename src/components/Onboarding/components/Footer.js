@@ -11,7 +11,7 @@ const Footer = () => {
     <Box
       sx={{
         padding: "40px 0",
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.background.paper,
         color: theme.palette.primary.contrastText,
         textAlign: "center",
       }}
