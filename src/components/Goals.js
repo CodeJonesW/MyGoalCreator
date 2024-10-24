@@ -199,6 +199,7 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
           </ListItemIcon>
 
           <ListItemText
+            sx={{ textWrap: "wrap" }}
             onClick={() => handleShowGoal(goal.goal_id)}
             primary={goal.goal_name}
           />
@@ -218,7 +219,6 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
         ? goal.subgoals.map((subgoal, index) => (
             <ListItem
               sx={{
-                marginLeft: goal.isGoalTracked ? "112px" : "56px",
                 cursor: "pointer",
               }}
               key={index}
@@ -237,6 +237,7 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
                 </IconButton>
               </ListItemIcon>
               <ListItemText
+                sx={{ whiteSpace: "normal", overflow: "hidden" }}
                 onClick={() => handleShowGoal(subgoal.goal_id)}
                 primary={subgoal.goal_name}
               />
