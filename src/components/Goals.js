@@ -35,8 +35,8 @@ const Goals = () => {
   const [goalToDelete, setGoalToDelete] = useState(null);
 
   const handleShowGoal = async (goal_id) => {
-    dispatch(getGoal({ token, goal_id }));
-    navigate("/goal");
+    // dispatch(getGoal({ token, goal_id }));
+    navigate(`/goal/${goal_id}`);
   };
 
   const handleDeleteGoal = async () => {

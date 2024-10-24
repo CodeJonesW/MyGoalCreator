@@ -14,13 +14,13 @@ import { useTheme } from "@mui/material/styles";
 
 const InputForm = ({ onSubmit, loading }) => {
   const theme = useTheme();
-  const [goal, setGoal] = useState("");
-  const [prompt, setPrompt] = useState("");
+  const [goalName, setGoalName] = useState("");
+  const [areaOfFocus, setAreaOfFocus] = useState("");
   const [timeline, setTimeline] = useState("1 day");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await onSubmit(goal, prompt, timeline);
+    await onSubmit(goalName, areaOfFocus, timeline);
   };
 
   return (
@@ -42,8 +42,8 @@ const InputForm = ({ onSubmit, loading }) => {
             <FormControl fullWidth>
               <TextField
                 placeholder="Type your goal..."
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
+                value={goalName}
+                onChange={(e) => setGoalName(e.target.value)}
                 required
                 InputProps={{
                   style: {
@@ -63,8 +63,8 @@ const InputForm = ({ onSubmit, loading }) => {
             <FormControl fullWidth>
               <TextField
                 placeholder="Areas of focus..."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                value={areaOfFocus}
+                onChange={(e) => setAreaOfFocus(e.target.value)}
                 variant="outlined"
                 multiline
                 rows={3}
