@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import Results from "./Results";
-import Loading from "./Loading";
-import TrackGoalButton from "./TrackGoalButton";
+import Results from "./Results.js";
+import Loading from "./Loading.js";
+import TrackGoalButton from "./TrackGoalButton.js";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
-import { clearSubGoal, clearGoal } from "../redux/slices/goalSlice";
+import { clearSubGoal, clearGoal, getGoal } from "../redux/slices/goalSlice.js";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import { NavBar } from "./index.js";
 import { useNavigate } from "react-router-dom";
 import { BackButton } from "./index.js";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ViewGoal = () => {
   const theme = useTheme();
@@ -19,12 +20,13 @@ const ViewGoal = () => {
   const firstRender = useRef(true);
   const { token } = useSelector((state) => state.authSlice);
   const { goal } = useSelector((state) => state.goalSlice);
-  const { recentGoal, showUiHelp } = useSelector((state) => state.profileSlice);
+  const { showUiHelp } = useSelector((state) => state.profileSlice);
   const [showSubGoalResults, setShowSubGoalResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [, setBuffer] = useState("");
+  const { goal_id } = useParams();
 
   useEffect(() => {
     if (result) {
@@ -51,24 +53,40 @@ const ViewGoal = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if (goal_id) {
+      setResult("");
+      dispatch(getGoal({ token, goal_id }));
+    }
+  }, [dispatch, goal_id, token]);
+
   const onLineClick = (text) => {
-    const goal_id = goal ? goal.goal_id : recentGoal.goal_id;
+    const goal_id = goal.goal_id;
     handleAnalyzeSubGoal(goal_id, text);
   };
 
-  const handleAnalyzeSubGoal = (goal_id, text, lineNumber = 0) => {
+  const handleAnalyzeSubGoal = async (parentGoalId, subGoalName) => {
     setResult("");
     setBuffer("");
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("authToken");
+      const result = await axios.post(
+        "/api/createSubGoal",
+        { parentGoalId, subGoalName },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (result.data.existed) {
+        navigate(`/goal/${result.data.goal_id}`);
+        setLoading(false);
+        return;
+      }
+
+      const goalId = result.data.goal_id;
 
       const eventSource = new EventSource(
-        `/api/subgoal?goal_id=${encodeURIComponent(
-          goal_id
-        )}&text=${encodeURIComponent(text)}&lineNumber=${encodeURIComponent(
-          lineNumber
+        `/api/subgoal?goalId=${encodeURIComponent(
+          goalId
         )}&token=${encodeURIComponent(token)}`
       );
 
@@ -132,6 +150,7 @@ const ViewGoal = () => {
           return "";
         });
         setLoading(false);
+        navigate("/goal/" + goalId);
       };
 
       eventSource.addEventListener("close", () => {
@@ -147,14 +166,6 @@ const ViewGoal = () => {
     }
   };
 
-  const handleClearSubGoal = () => {
-    setResult("");
-  };
-
-  const handleClearGoal = () => {
-    navigate("/goals");
-  };
-
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -163,7 +174,7 @@ const ViewGoal = () => {
     await axios.post(
       "/api/trackgoal",
       {
-        goal_id: goal ? goal.goal_id : recentGoal.goal_id,
+        goal_id: goal.goal_id,
       },
       {
         headers: {
@@ -172,7 +183,7 @@ const ViewGoal = () => {
         },
       }
     );
-    navigate(`/tracker/${goal ? goal.goal_id : recentGoal.goal_id}`);
+    navigate(`/tracker/${goal.goal_id}`);
   };
 
   const variants = {
@@ -181,7 +192,13 @@ const ViewGoal = () => {
     exit: { x: "-100vw", opacity: 0, transition: { duration: 0.5 } },
   };
 
-  if (!goal && !recentGoal) {
+  const pageVariants = {
+    initial: { opacity: 0, x: -50 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 50 },
+  };
+
+  if (!goal) {
     return <Loading />;
   }
 
@@ -203,81 +220,87 @@ const ViewGoal = () => {
         <Box style={{ width: "100%", paddingBottom: "24px" }}>
           <NavBar />
         </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
+        <motion.div
+          variants={pageVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.5 }}
+          style={{ width: "100%" }}
         >
           <Box
-            style={{
+            sx={{
               display: "flex",
-              justifyContent: "space-between",
-              width: "80%",
+              width: "100%",
+              height: "100%",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              flexDirection: "column",
             }}
           >
-            <Snackbar
-              open={openSnackbar}
-              autoHideDuration={4000}
-              onClose={handleCloseSnackbar}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              variant="filled"
+            <Box
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "80%",
+              }}
             >
-              <Alert
+              <Snackbar
+                open={openSnackbar}
+                autoHideDuration={4000}
                 onClose={handleCloseSnackbar}
-                severity="info"
-                sx={{ width: "100%" }}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                variant="filled"
               >
-                Select a line of interest to learn more! 🚀
-              </Alert>
-            </Snackbar>
-            {!loading ? (
-              <BackButton
-                onClick={!result ? handleClearGoal : handleClearSubGoal}
-              />
+                <Alert
+                  onClose={handleCloseSnackbar}
+                  severity="info"
+                  sx={{ width: "100%" }}
+                >
+                  Select a line of interest to learn more! 🚀
+                </Alert>
+              </Snackbar>
+              {!loading ? <BackButton onClick={() => navigate(-1)} /> : null}
+              {!loading && !goal.parent_goal_id ? (
+                <TrackGoalButton
+                  isGoalTracked={goal.isGoalTracked}
+                  onClick={handleTrackGoal}
+                />
+              ) : null}
+            </Box>
+            {goal && !result ? (
+              <motion.div
+                variants={variants}
+                initial="visible"
+                animate={showSubGoalResults ? "exit" : "visible"}
+                exit="exit"
+              >
+                <Results
+                  onLineClick={onLineClick}
+                  result={goal.plan}
+                  isSubGoal={goal.parent_goal_id !== null}
+                  isLoading={loading}
+                />
+              </motion.div>
             ) : null}
-            <TrackGoalButton
-              isGoalTracked={
-                goal ? goal.isGoalTracked : recentGoal.isGoalTracked
-              }
-              onClick={handleTrackGoal}
-            />
-          </Box>
-          {!result ? (
-            <motion.div
-              variants={variants}
-              initial="visible"
-              animate={showSubGoalResults ? "exit" : "visible"}
-              exit="exit"
-            >
-              <Results
-                onLineClick={onLineClick}
-                result={goal ? goal?.plan : recentGoal?.plan}
-                isSubGoal={false}
-              />
-            </motion.div>
-          ) : null}
 
-          {result ? (
-            <motion.div
-              variants={variants}
-              initial="hidden"
-              animate={showSubGoalResults ? "visible" : "hidden"}
-              exit="exit"
-            >
-              <Results
-                onLineClick={onLineClick}
-                result={result}
-                isSubGoal={true}
-              />
-            </motion.div>
-          ) : null}
-        </Box>
+            {result ? (
+              <motion.div
+                variants={variants}
+                initial="hidden"
+                animate={showSubGoalResults ? "visible" : "hidden"}
+                exit="exit"
+              >
+                <Results
+                  onLineClick={onLineClick}
+                  result={result}
+                  isSubGoal={true}
+                  isLoading={loading}
+                />
+              </motion.div>
+            ) : null}
+          </Box>
+        </motion.div>
       </Box>
     </Box>
   );

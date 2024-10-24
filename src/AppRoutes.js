@@ -40,7 +40,10 @@ function AppRoutes() {
           path="/profile"
           element={<PrivateRoute element={<Profile />} />}
         />
-        <Route path="/goal" element={<PrivateRoute element={<ViewGoal />} />} />
+        <Route
+          path="/goal/:goal_id"
+          element={<PrivateRoute element={<ViewGoal />} />}
+        />
         <Route
           path="/tracker/:goal_id"
           element={<PrivateRoute element={<Tracker />} />}

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Analyze = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Analyze = () => {
   const { loading: isProfileLoading, showUiHelp } = useSelector(
     (state) => state.profileSlice
   );
+  const { token } = useSelector((state) => state.authSlice);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,23 +36,29 @@ const Analyze = () => {
     return <Loading />;
   }
 
-  const handleAnalyze = (goal, prompt, timeline) => {
+  const handleAnalyze = async (goalName, areaOfFocus, timeline) => {
     setLoading(true);
     setResult("");
     setBuffer("");
+    console.log("creating goal", goalName, areaOfFocus, timeline);
+    const result = await axios.post(
+      "/api/createGoal",
+      { goalName, areaOfFocus, timeline },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const goal_id = result.data.goal_id;
 
     try {
       const token = localStorage.getItem("authToken");
 
       const eventSource = new EventSource(
-        `/api/analyze?goal=${encodeURIComponent(
-          goal
-        )}&prompt=${encodeURIComponent(prompt)}&timeline=${encodeURIComponent(
-          timeline
+        `/api/analyze?goal_id=${encodeURIComponent(
+          goal_id
         )}&token=${encodeURIComponent(token)}`
       );
 
       eventSource.onmessage = (event) => {
+        console.log("EVENT", event);
         let newChunk = event.data;
         if (newChunk === "event: done") {
           return;
@@ -104,7 +112,7 @@ const Analyze = () => {
         });
         setLoading(false);
         dispatch(getProfile({ token: token, setLatestGoal: true }));
-        navigate("/goal");
+        navigate("/goal/" + goal_id);
       };
 
       eventSource.addEventListener("close", () => {
@@ -158,7 +166,12 @@ const Analyze = () => {
         </Box>
       ) : null}
       {result ? (
-        <Results back={null} result={result} isSubGoal={false} />
+        <Results
+          isLoading={loading}
+          back={null}
+          result={result}
+          isSubGoal={false}
+        />
       ) : null}
     </Box>
   );

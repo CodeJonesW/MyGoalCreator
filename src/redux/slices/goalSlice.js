@@ -74,7 +74,6 @@ const goalSlice = createSlice({
   reducers: {
     clearGoal: (state) => {
       state.goal = null;
-      localStorage.removeItem("goal");
     },
     clearSubGoal: (state) => {
       state.subGoal = null;
@@ -90,7 +89,6 @@ const goalSlice = createSlice({
       })
       .addCase(getGoal.fulfilled, (state, action) => {
         state.goal = action.payload.goal;
-        localStorage.setItem("goal", JSON.stringify(action.payload.goal));
         state.loading = false;
       })
       .addCase(getGoal.rejected, (state, action) => {

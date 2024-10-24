@@ -7,10 +7,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 const mdParser = new MarkdownIt();
 
-const Results = ({ result, onLineClick, isSubGoal }) => {
+const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
   const theme = useTheme();
   const [isToastOpen, setIsToastOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const htmlContent = mdParser.render(result);
   const cleanHtmlContent = DOMPurify.sanitize(htmlContent);
@@ -81,7 +80,6 @@ const Results = ({ result, onLineClick, isSubGoal }) => {
       const text = target.innerHTML;
       if (text) {
         onLineClick(text);
-        setIsLoading(true);
       }
     };
 
