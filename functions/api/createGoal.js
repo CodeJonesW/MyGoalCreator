@@ -8,7 +8,7 @@ export async function onRequest(context) {
 
   const url = `${workerUrl}/api/createGoal`;
   const body = await context.request.json();
-  const { goal_name } = body;
+  const { goalName: goal_name, areaOfFocus: area_of_focus, timeline } = body;
 
   const init = {
     method: "POST",
@@ -18,6 +18,8 @@ export async function onRequest(context) {
     },
     body: JSON.stringify({
       goal_name,
+      area_of_focus,
+      timeline,
     }),
   };
 

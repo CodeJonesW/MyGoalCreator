@@ -27,6 +27,7 @@ const ViewGoal = () => {
   const [result, setResult] = useState("");
   const [, setBuffer] = useState("");
   const { goal_id } = useParams();
+  console.log("ViewGoal.js goal_id", goal_id, goal);
 
   useEffect(() => {
     if (result) {
@@ -54,7 +55,9 @@ const ViewGoal = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("ViewGoal.js useEffect");
     if (goal_id && !goal) {
+      console.log("ViewGoal.js useEffect getGoal", goal_id);
       dispatch(getGoal({ token, goal_id }));
     }
   }, [dispatch, goal_id, token]);
@@ -254,20 +257,20 @@ const ViewGoal = () => {
               onClick={handleTrackGoal}
             />
           </Box>
-          {/* {!result ? ( */}
-          <motion.div
-            variants={variants}
-            initial="visible"
-            animate={showSubGoalResults ? "exit" : "visible"}
-            exit="exit"
-          >
-            <Results
-              onLineClick={onLineClick}
-              result={goal.plan}
-              isSubGoal={false}
-            />
-          </motion.div>
-          {/* ) : null} */}
+          {goal ? (
+            <motion.div
+              variants={variants}
+              initial="visible"
+              animate={showSubGoalResults ? "exit" : "visible"}
+              exit="exit"
+            >
+              <Results
+                onLineClick={onLineClick}
+                result={goal.plan}
+                isSubGoal={false}
+              />
+            </motion.div>
+          ) : null}
 
           {/* {result ? (
             <motion.div

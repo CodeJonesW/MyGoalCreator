@@ -36,14 +36,14 @@ const Analyze = () => {
     return <Loading />;
   }
 
-  const handleAnalyze = async (goal_name, areaOfFocus, timeline) => {
+  const handleAnalyze = async (goalName, areaOfFocus, timeline) => {
     setLoading(true);
     setResult("");
     setBuffer("");
-
+    console.log("creating goal", goalName, areaOfFocus, timeline);
     const result = await axios.post(
       "/api/createGoal",
-      { goal_name },
+      { goalName, areaOfFocus, timeline },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     const goal_id = result.data.goal_id;
@@ -54,13 +54,7 @@ const Analyze = () => {
       const eventSource = new EventSource(
         `/api/analyze?goal_id=${encodeURIComponent(
           goal_id
-        )}&goal_name=${encodeURIComponent(
-          goal_name
-        )}&areaOfFocus=${encodeURIComponent(
-          areaOfFocus
-        )}&timeline=${encodeURIComponent(timeline)}&token=${encodeURIComponent(
-          token
-        )}`
+        )}&token=${encodeURIComponent(token)}`
       );
 
       eventSource.onmessage = (event) => {
