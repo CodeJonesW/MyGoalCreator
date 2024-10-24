@@ -62,9 +62,6 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
       .clickable-line {
         cursor: pointer;
       }
-      .clickable-line:hover {
-        background-color: ${theme.palette.action.hover};
-      }
     `;
     document.head.appendChild(styleTag);
 
