@@ -154,9 +154,6 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
           key={index}
           sx={{
             cursor: "pointer",
-            backgroundColor: "transparent",
-            transition: "background-color 0.3s",
-            borderRadius: "16px",
           }}
         >
           {goal.isGoalTracked ? (
@@ -221,7 +218,10 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
       {goal.subgoals.length > 0 && subGoalsExpanded
         ? goal.subgoals.map((subgoal, index) => (
             <ListItem
-              sx={{ marginLeft: goal.isGoalTracked ? "112px" : "56px" }}
+              sx={{
+                marginLeft: goal.isGoalTracked ? "112px" : "56px",
+                cursor: "pointer",
+              }}
               key={index}
             >
               <ListItemIcon>

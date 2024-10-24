@@ -76,9 +76,9 @@ const ViewGoal = () => {
         { parentGoalId, subGoalName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("SUBGOAL RESULT", result);
       if (result.data.existed) {
         navigate(`/goal/${result.data.goal_id}`);
+        setLoading(false);
         return;
       }
 
@@ -287,6 +287,7 @@ const ViewGoal = () => {
                   onLineClick={onLineClick}
                   result={goal.plan}
                   isSubGoal={goal.parent_goal_id !== null}
+                  isLoading={loading}
                 />
               </motion.div>
             ) : null}
@@ -302,6 +303,7 @@ const ViewGoal = () => {
                   onLineClick={onLineClick}
                   result={result}
                   isSubGoal={true}
+                  isLoading={loading}
                 />
               </motion.div>
             ) : null}

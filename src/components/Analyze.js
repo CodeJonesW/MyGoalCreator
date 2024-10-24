@@ -166,7 +166,12 @@ const Analyze = () => {
         </Box>
       ) : null}
       {result ? (
-        <Results back={null} result={result} isSubGoal={false} />
+        <Results
+          isLoading={loading}
+          back={null}
+          result={result}
+          isSubGoal={false}
+        />
       ) : null}
     </Box>
   );
