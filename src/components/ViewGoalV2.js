@@ -257,7 +257,7 @@ const ViewGoal = () => {
               onClick={handleTrackGoal}
             />
           </Box>
-          {goal ? (
+          {goal && !result ? (
             <motion.div
               variants={variants}
               initial="visible"
@@ -272,7 +272,7 @@ const ViewGoal = () => {
             </motion.div>
           ) : null}
 
-          {/* {result ? (
+          {result ? (
             <motion.div
               variants={variants}
               initial="hidden"
@@ -285,7 +285,7 @@ const ViewGoal = () => {
                 isSubGoal={true}
               />
             </motion.div>
-          ) : null} */}
+          ) : null}
         </Box>
       </Box>
     </Box>
