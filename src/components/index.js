@@ -14,4 +14,4 @@ export { default as InputForm } from "./InputForm";
 export { default as Tracker } from "./TrackerBoard/Tracker";
 export { default as TermsOfService } from "./Onboarding/TermsOfService";
 export { default as PrivacyPolicy } from "./Onboarding/PrivacyPolicy";
-export { default as ViewGoalV2 } from "./ViewGoalV2";
+export { default as ViewGoalV2 } from "./ViewGoal";

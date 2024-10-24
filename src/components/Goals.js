@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import NavBar from "./NavBar";
 import { useDispatch, useSelector } from "react-redux";
-import { getGoal } from "../redux/slices/goalSlice";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";

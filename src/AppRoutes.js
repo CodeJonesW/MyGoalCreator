@@ -10,7 +10,6 @@ import {
   PrivateRoute,
   Goals,
   ViewGoal,
-  ViewGoalV2,
   Tracker,
   TermsOfService,
   PrivacyPolicy,
