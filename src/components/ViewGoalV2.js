@@ -27,7 +27,6 @@ const ViewGoal = () => {
   const [result, setResult] = useState("");
   const [, setBuffer] = useState("");
   const { goal_id } = useParams();
-  console.log("ViewGoal.js goal_id", goal_id, goal);
 
   useEffect(() => {
     if (result) {
@@ -55,9 +54,8 @@ const ViewGoal = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("ViewGoal.js useEffect");
-    if (goal_id && !goal) {
-      console.log("ViewGoal.js useEffect getGoal", goal_id);
+    if (goal_id) {
+      setResult("");
       dispatch(getGoal({ token, goal_id }));
     }
   }, [dispatch, goal_id, token]);
@@ -67,19 +65,28 @@ const ViewGoal = () => {
     handleAnalyzeSubGoal(goal_id, text);
   };
 
-  const handleAnalyzeSubGoal = (goal_id, text, lineNumber = 0) => {
+  const handleAnalyzeSubGoal = async (parentGoalId, subGoalName) => {
     setResult("");
     setBuffer("");
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("authToken");
+      const result = await axios.post(
+        "/api/createSubGoal",
+        { parentGoalId, subGoalName },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("SUBGOAL RESULT", result);
+      if (result.data.existed) {
+        navigate(`/goal/${result.data.goal_id}`);
+        return;
+      }
+
+      const goalId = result.data.goal_id;
 
       const eventSource = new EventSource(
-        `/api/subgoal?goal_id=${encodeURIComponent(
-          goal_id
-        )}&text=${encodeURIComponent(text)}&lineNumber=${encodeURIComponent(
-          lineNumber
+        `/api/subgoal?goalId=${encodeURIComponent(
+          goalId
         )}&token=${encodeURIComponent(token)}`
       );
 
@@ -143,6 +150,7 @@ const ViewGoal = () => {
           return "";
         });
         setLoading(false);
+        navigate("/goal/" + goalId);
       };
 
       eventSource.addEventListener("close", () => {
@@ -260,15 +268,13 @@ const ViewGoal = () => {
                   Select a line of interest to learn more! 🚀
                 </Alert>
               </Snackbar>
-              {!loading ? (
-                <BackButton
-                  onClick={!result ? handleClearGoal : handleClearSubGoal}
+              {!loading ? <BackButton onClick={() => navigate(-1)} /> : null}
+              {!loading && !goal.parent_goal_id ? (
+                <TrackGoalButton
+                  isGoalTracked={goal.isGoalTracked}
+                  onClick={handleTrackGoal}
                 />
               ) : null}
-              <TrackGoalButton
-                isGoalTracked={goal.isGoalTracked}
-                onClick={handleTrackGoal}
-              />
             </Box>
             {goal && !result ? (
               <motion.div
@@ -280,7 +286,7 @@ const ViewGoal = () => {
                 <Results
                   onLineClick={onLineClick}
                   result={goal.plan}
-                  isSubGoal={false}
+                  isSubGoal={goal.parent_goal_id !== null}
                 />
               </motion.div>
             ) : null}

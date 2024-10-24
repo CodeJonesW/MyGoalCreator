@@ -1,11 +1,9 @@
 export async function onRequest(context) {
   const { searchParams } = new URL(context.request.url);
-  const goal_id = searchParams.get("goal_id");
-  const text = searchParams.get("text");
-  const lineNumber = searchParams.get("lineNumber");
+  const goalId = searchParams.get("goalId");
   const token = searchParams.get("token");
 
-  if (!goal_id || !text) {
+  if (!goalId) {
     console.log("Missing required parameters");
     return new Response(
       JSON.stringify({ error: "Missing required parameters" }),
@@ -37,9 +35,7 @@ export async function onRequest(context) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      goal_id,
-      sub_goal_name: text,
-      line_number: lineNumber,
+      goal_id: goalId,
     }),
   };
 
