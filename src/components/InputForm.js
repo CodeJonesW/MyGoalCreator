@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   Box,
@@ -9,19 +9,42 @@ import {
   Button,
   TextField,
   FormGroup,
+  Collapse,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
+import TuneIcon from "@mui/icons-material/Tune";
 
 const InputForm = ({ onSubmit, loading }) => {
   const theme = useTheme();
   const [goalName, setGoalName] = useState("");
   const [areaOfFocus, setAreaOfFocus] = useState("");
-  const [timeline, setTimeline] = useState("1 day");
+  const [timeline, setTimeline] = useState("1 week");
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [placeholder, setPlaceholder] = useState("Type your goal...");
+
+  const placeholderTexts = [
+    "What do you want to learn?",
+    "Achieve a goal you've always wanted.",
+    "What would you like to accomplish?",
+    "Set a new target for yourself.",
+    "Is there a skill you want to master?",
+    "Tell me about your next big goal.",
+  ];
+
+  useEffect(() => {
+    const randomPlaceholder =
+      placeholderTexts[Math.floor(Math.random() * placeholderTexts.length)];
+    setPlaceholder(randomPlaceholder);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await onSubmit(goalName, areaOfFocus, timeline);
+  };
+
+  const toggleAdvancedOptions = () => {
+    setShowAdvancedOptions(!showAdvancedOptions);
   };
 
   return (
@@ -47,7 +70,7 @@ const InputForm = ({ onSubmit, loading }) => {
             <Box className="input-group">
               <FormControl fullWidth>
                 <TextField
-                  placeholder="Type your goal..."
+                  placeholder={placeholder} // Set the dynamic placeholder here
                   value={goalName}
                   onChange={(e) => setGoalName(e.target.value)}
                   required
@@ -65,30 +88,48 @@ const InputForm = ({ onSubmit, loading }) => {
                 />
               </FormControl>
             </Box>
-            <Box className="input-group">
-              <FormControl fullWidth>
-                <TextField
-                  placeholder="Areas of focus..."
-                  value={areaOfFocus}
-                  onChange={(e) => setAreaOfFocus(e.target.value)}
-                  variant="outlined"
-                  multiline
-                  rows={3}
-                  InputProps={{
-                    style: {
-                      backgroundColor: theme.palette.background.paper,
-                      color: theme.palette.text.primary,
-                    },
-                  }}
-                  sx={{
-                    "& input:-webkit-autofill": {
-                      WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
-                      WebkitTextFillColor: theme.palette.text.primary,
-                    },
-                  }}
-                />
-              </FormControl>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
+            >
+              <Button
+                onClick={toggleAdvancedOptions}
+                sx={{ marginTop: "4px", marginBottom: "4px" }}
+              >
+                <TuneIcon />
+              </Button>
             </Box>
+
+            <Collapse in={showAdvancedOptions}>
+              <Box className="input-group">
+                <FormControl fullWidth>
+                  <TextField
+                    placeholder="Areas of focus..."
+                    value={areaOfFocus}
+                    onChange={(e) => setAreaOfFocus(e.target.value)}
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                    InputProps={{
+                      style: {
+                        backgroundColor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
+                      },
+                    }}
+                    sx={{
+                      "& input:-webkit-autofill": {
+                        WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
+                        WebkitTextFillColor: theme.palette.text.primary,
+                      },
+                    }}
+                  />
+                </FormControl>
+              </Box>
+            </Collapse>
             <Box className="input-group">
               <FormControl fullWidth>
                 <InputLabel id="timeline-select-label">Timeline</InputLabel>
