@@ -77,6 +77,8 @@ const Analyze = () => {
               ? "\n"
               : newChunk);
 
+          console.log("updatedBuffer", updatedBuffer);
+
           const lines = updatedBuffer.split("\n");
 
           let completeContent = "";
@@ -93,6 +95,9 @@ const Analyze = () => {
               }
             }
           });
+
+          console.log("completeContent", completeContent);
+          console.log("remainingBuffer", remainingBuffer);
 
           setResult((prevResult) => prevResult + completeContent);
 
