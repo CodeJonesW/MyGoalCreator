@@ -200,6 +200,10 @@ const Tracker = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
+      <Box>
+        <Typography variant={"h4"} color="secondary">
+          {`Goal Tracker`}
+      </Box>
         <Box
           sx={{
             display: "flex",
@@ -235,10 +239,11 @@ const Tracker = () => {
             </Button>
           </Box>
         </Box>
+
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <Board board={board} />
+        </DndContext>
       </motion.div>
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <Board board={board} />
-      </DndContext>
     </Box>
   );
 };

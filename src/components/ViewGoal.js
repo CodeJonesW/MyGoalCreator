@@ -93,6 +93,7 @@ const ViewGoal = () => {
       eventSource.onmessage = (event) => {
         let newChunk = event.data;
         console.log("newChunk", newChunk);
+        console.log("newChunk is empty string", newChunk === "");
         try {
           const parsed = JSON.parse(newChunk);
           if (parsed.message === "success") {
