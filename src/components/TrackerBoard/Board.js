@@ -46,7 +46,7 @@ export const Board = ({ board, handleUpdateStatus }) => {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [currentColumn, touchStartX]);
+  }, [currentColumn, touchStartX, board.columns.length]);
 
   return (
     <Box
