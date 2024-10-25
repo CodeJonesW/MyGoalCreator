@@ -113,9 +113,7 @@ const ViewGoal = () => {
 
           let updatedBuffer =
             prevBuffer +
-            (newChunk === "" || newChunk === " " || newChunk === "\n"
-              ? "\n"
-              : newChunk);
+            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
 
           const lines = updatedBuffer.split("\n");
 
