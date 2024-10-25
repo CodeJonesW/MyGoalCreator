@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 const mdParser = new MarkdownIt();
 
-const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
+const Results = ({ result, onLineClick, lineClickDisabled, isLoading }) => {
   const theme = useTheme();
   const [isToastOpen, setIsToastOpen] = useState(false);
 
@@ -68,8 +68,8 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
       if (!event.target.classList.contains("clickable-line")) {
         return;
       }
-      if (isSubGoal) {
-        console.log("isSubGoal", isSubGoal);
+      if (lineClickDisabled) {
+        console.log("lineClickDisabled", lineClickDisabled);
         setIsToastOpen(true);
         return;
       }
@@ -87,7 +87,7 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
       document.head.removeChild(styleTag);
       contentDiv.removeEventListener("click", handleLineClick);
     };
-  }, [theme, onLineClick, isSubGoal]);
+  }, [theme, onLineClick, lineClickDisabled]);
 
   return (
     <Box
