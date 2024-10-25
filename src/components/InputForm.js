@@ -23,20 +23,20 @@ const InputForm = ({ onSubmit, loading }) => {
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [placeholder, setPlaceholder] = useState("Type your goal...");
 
-  const placeholderTexts = [
-    "What do you want to learn?",
-    "Achieve a goal you've always wanted.",
-    "What would you like to accomplish?",
-    "Set a new target for yourself.",
-    "Is there a skill you want to master?",
-    "Tell me about your next big goal.",
-  ];
-
   useEffect(() => {
+    const placeholderTexts = [
+      "What do you want to learn?",
+      "Achieve a goal you've always wanted.",
+      "What would you like to accomplish?",
+      "Set a new target for yourself.",
+      "Is there a skill you want to master?",
+      "Tell me about your next big goal.",
+    ];
+
     const randomPlaceholder =
       placeholderTexts[Math.floor(Math.random() * placeholderTexts.length)];
     setPlaceholder(randomPlaceholder);
-  }, [placeholderTexts]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
