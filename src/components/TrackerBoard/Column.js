@@ -6,7 +6,13 @@ import { useTheme } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const Column = ({ column, isVisible, currentColumn, index }) => {
+export const Column = ({
+  column,
+  isVisible,
+  currentColumn,
+  index,
+  handleUpdateStatus,
+}) => {
   const theme = useTheme();
   const { setNodeRef } = useDroppable({
     id: column.id,
@@ -46,7 +52,12 @@ export const Column = ({ column, isVisible, currentColumn, index }) => {
             {column.title}
           </Typography>
           {column.tasks.map((task) => (
-            <Task key={task.id} task={task} columnId={column.id} />
+            <Task
+              handleUpdateStatus={handleUpdateStatus}
+              key={task.id}
+              task={task}
+              columnId={column.id}
+            />
           ))}
         </motion.div>
       )}

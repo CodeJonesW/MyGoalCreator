@@ -4,7 +4,7 @@ import { Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion, AnimatePresence } from "framer-motion";
 
-export const Board = ({ board }) => {
+export const Board = ({ board, handleUpdateStatus }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [currentColumn, setCurrentColumn] = useState(0);
@@ -81,6 +81,7 @@ export const Board = ({ board }) => {
               isVisible={true}
               currentColumn={currentColumn}
               index={currentColumn}
+              handleUpdateStatus={handleUpdateStatus}
             />
           </motion.div>
         </AnimatePresence>
@@ -92,6 +93,7 @@ export const Board = ({ board }) => {
             isVisible={true}
             currentColumn={currentColumn}
             index={index}
+            handleUpdateStatus={handleUpdateStatus}
           />
         ))
       )}
