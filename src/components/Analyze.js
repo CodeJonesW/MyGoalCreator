@@ -73,9 +73,7 @@ const Analyze = () => {
 
           let updatedBuffer =
             prevBuffer +
-            (newChunk === "" || newChunk === " " || newChunk === "\n"
-              ? "\n"
-              : newChunk);
+            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
 
           console.log("updatedBuffer", updatedBuffer);
 
