@@ -115,7 +115,9 @@ const ViewGoal = () => {
             prevBuffer +
             (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
 
+          console.log("updatedBuffer", updatedBuffer);
           const lines = updatedBuffer.split("\n");
+          console.log("lines", lines);
 
           let completeContent = "";
           let remainingBuffer = "";
