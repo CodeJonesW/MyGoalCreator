@@ -11,16 +11,16 @@ export const Board = ({ board, handleUpdateStatus }) => {
   const [touchStartX, setTouchStartX] = useState(null);
   const [swipeDirection, setSwipeDirection] = useState("left");
 
-  const handleSwipe = (direction) => {
-    setSwipeDirection(direction);
-    if (direction === "left" && currentColumn < board.columns.length - 1) {
-      setCurrentColumn((prev) => prev + 1);
-    } else if (direction === "right" && currentColumn > 0) {
-      setCurrentColumn((prev) => prev - 1);
-    }
-  };
-
   useEffect(() => {
+    const handleSwipe = (direction) => {
+      setSwipeDirection(direction);
+      if (direction === "left" && currentColumn < board.columns.length - 1) {
+        setCurrentColumn((prev) => prev + 1);
+      } else if (direction === "right" && currentColumn > 0) {
+        setCurrentColumn((prev) => prev - 1);
+      }
+    };
+
     const handleTouchStart = (e) => {
       setTouchStartX(e.touches[0].clientX);
     };
@@ -46,7 +46,7 @@ export const Board = ({ board, handleUpdateStatus }) => {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [currentColumn, touchStartX, handleSwipe]);
+  }, [currentColumn, touchStartX]);
 
   return (
     <Box
