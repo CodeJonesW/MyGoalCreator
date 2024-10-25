@@ -14,8 +14,6 @@ import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import ExpandIcon from "@mui/icons-material/Expand";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 
-const MAX_DEPTH = 4;
-
 const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
   const theme = useTheme();
   const navigate = useNavigate();
