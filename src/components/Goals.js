@@ -9,10 +9,6 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  IconButton,
 } from "@mui/material";
 import NavBar from "./NavBar";
 import GoalItem from "./GoalItem";
@@ -20,11 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import ArticleIcon from "@mui/icons-material/Article";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import TrackChangesIcon from "@mui/icons-material/TrackChanges";
-import ExpandIcon from "@mui/icons-material/Expand";
-import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 
 const Goals = () => {
   const dispatch = useDispatch();
