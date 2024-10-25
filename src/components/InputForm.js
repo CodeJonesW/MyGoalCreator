@@ -36,7 +36,7 @@ const InputForm = ({ onSubmit, loading }) => {
     const randomPlaceholder =
       placeholderTexts[Math.floor(Math.random() * placeholderTexts.length)];
     setPlaceholder(randomPlaceholder);
-  }, []);
+  }, [placeholderTexts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
