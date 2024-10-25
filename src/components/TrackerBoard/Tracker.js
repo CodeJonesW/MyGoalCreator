@@ -181,26 +181,25 @@ const Tracker = () => {
   const sensors = useSensors(useSensor(MouseSensor));
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        overflow: "scroll",
+        background: theme.palette.primary.main,
+      }}
     >
-      <Box
-        sx={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          overflow: "scroll",
-          background: theme.palette.primary.main,
-        }}
+      <NavBar />
+      {/* forward and back button  */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <NavBar />
-        {/* forward and back button  */}
-
         <Box
           sx={{
             display: "flex",
@@ -236,11 +235,11 @@ const Tracker = () => {
             </Button>
           </Box>
         </Box>
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <Board board={board} />
-        </DndContext>
-      </Box>
-    </motion.div>
+      </motion.div>
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <Board board={board} />
+      </DndContext>
+    </Box>
   );
 };
 
