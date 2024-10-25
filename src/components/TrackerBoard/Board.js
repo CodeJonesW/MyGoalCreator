@@ -9,9 +9,8 @@ export const Board = ({ board, handleUpdateStatus }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [currentColumn, setCurrentColumn] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
-  const [swipeDirection, setSwipeDirection] = useState("left"); // Track the swipe direction
+  const [swipeDirection, setSwipeDirection] = useState("left");
 
-  // Handle swipe detection to navigate columns
   const handleSwipe = (direction) => {
     setSwipeDirection(direction);
     if (direction === "left" && currentColumn < board.columns.length - 1) {
@@ -21,7 +20,6 @@ export const Board = ({ board, handleUpdateStatus }) => {
     }
   };
 
-  // Swipe detection event listeners
   useEffect(() => {
     const handleTouchStart = (e) => {
       setTouchStartX(e.touches[0].clientX);

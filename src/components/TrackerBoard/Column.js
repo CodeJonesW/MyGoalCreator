@@ -18,7 +18,6 @@ export const Column = ({
     id: column.id,
   });
 
-  // Animation variants for fade-in and fade-out effects
   const variants = {
     hidden: { opacity: 0, x: index < currentColumn ? -100 : 100 },
     visible: { opacity: 1, x: 0 },
@@ -43,7 +42,7 @@ export const Column = ({
             borderRadius: "16px",
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
-            scrollSnapAlign: "center", // Ensures the column snaps into view
+            scrollSnapAlign: "center",
             justifyContent: "center",
             alignItems: "center",
           }}
