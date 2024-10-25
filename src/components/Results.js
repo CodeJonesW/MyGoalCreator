@@ -47,7 +47,6 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
   const processedHtml = processContent(cleanHtmlContent);
 
   useEffect(() => {
-    // Inject custom styles for links and clickable lines
     const styleTag = document.createElement("style");
     styleTag.type = "text/css";
     styleTag.innerHTML = `
@@ -65,9 +64,10 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
     `;
     document.head.appendChild(styleTag);
 
-    // Add event listener for clicks on the processed content
     const handleLineClick = (event) => {
-      console.log("handleLineClick", event);
+      if (!event.target.classList.contains("clickable-line")) {
+        return;
+      }
       if (isSubGoal) {
         console.log("isSubGoal", isSubGoal);
         setIsToastOpen(true);
@@ -84,7 +84,6 @@ const Results = ({ result, onLineClick, isSubGoal, isLoading }) => {
     contentDiv.addEventListener("click", handleLineClick);
 
     return () => {
-      // Cleanup the event listener and style tag when component unmounts
       document.head.removeChild(styleTag);
       contentDiv.removeEventListener("click", handleLineClick);
     };

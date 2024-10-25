@@ -92,6 +92,8 @@ const ViewGoal = () => {
 
       eventSource.onmessage = (event) => {
         let newChunk = event.data;
+        console.log("newChunk", newChunk);
+        console.log("newChunk is empty string", newChunk === "");
         try {
           const parsed = JSON.parse(newChunk);
           if (parsed.message === "success") {
@@ -113,11 +115,11 @@ const ViewGoal = () => {
 
           let updatedBuffer =
             prevBuffer +
-            (newChunk === "" || newChunk === " " || newChunk === "\n"
-              ? "\n"
-              : newChunk);
+            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
 
+          console.log("updatedBuffer", updatedBuffer);
           const lines = updatedBuffer.split("\n");
+          console.log("lines", lines);
 
           let completeContent = "";
           let remainingBuffer = "";

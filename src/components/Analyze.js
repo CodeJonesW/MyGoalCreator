@@ -60,6 +60,7 @@ const Analyze = () => {
       eventSource.onmessage = (event) => {
         console.log("EVENT", event);
         let newChunk = event.data;
+        console.log("newChunk is empty string", newChunk === "");
         if (newChunk === "event: done") {
           return;
         }
@@ -73,9 +74,9 @@ const Analyze = () => {
 
           let updatedBuffer =
             prevBuffer +
-            (newChunk === "" || newChunk === " " || newChunk === "\n"
-              ? "\n"
-              : newChunk);
+            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
+
+          console.log("updatedBuffer", updatedBuffer);
 
           const lines = updatedBuffer.split("\n");
 
@@ -93,6 +94,9 @@ const Analyze = () => {
               }
             }
           });
+
+          console.log("completeContent", completeContent);
+          console.log("remainingBuffer", remainingBuffer);
 
           setResult((prevResult) => prevResult + completeContent);
 

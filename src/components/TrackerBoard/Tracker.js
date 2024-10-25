@@ -4,9 +4,12 @@ import { Board } from "./Board";
 import { NavBar } from "../index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { getTrackedGoal } from "../../redux/slices/goalSlice";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Tracker = () => {
   const theme = useTheme();
@@ -18,6 +21,7 @@ const Tracker = () => {
     trackedGoalStep,
     trackedGoalTimelineName,
     isTrackedGoalLastStep,
+    trackedGoalName,
   } = useSelector((state) => state.goalSlice);
   const { token } = useSelector((state) => state.authSlice);
 
@@ -194,42 +198,63 @@ const Tracker = () => {
     >
       <NavBar />
       {/* forward and back button  */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "80%",
-          padding: "24px",
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{
+          paddingTop: "16px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box>
-          <Button
-            sx={{ display: parseInt(trackedGoalStep) === 0 ? "none" : "block" }}
-            onClick={handleBackStep}
-            variant="outlined"
-            color="secondary"
-          >
-            Back
-          </Button>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
+          <Typography variant={"h4"} color="secondary">
+            {trackedGoalName}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            paddingTop: "16px",
+            paddingBottom: "16px",
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            alignText: "center",
+          }}
+        >
+          <Box>
+            <IconButton
+              sx={{
+                display: parseInt(trackedGoalStep) === 0 ? "none" : "block",
+              }}
+              onClick={handleBackStep}
+              variant="outlined"
+              color="secondary"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Box>
+
+          <Typography variant={"h6"} color="secondary">
+            {trackedGoalTimelineName}
+          </Typography>
+          <Box>
+            <IconButton
+              sx={{ display: isTrackedGoalLastStep ? "none" : "block" }}
+              variant="outlined"
+              color="secondary"
+              onClick={handleForwardStep}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          </Box>
         </Box>
 
-        <Typography variant={"h5"} color="secondary">
-          {trackedGoalTimelineName}
-        </Typography>
-        <Box>
-          <Button
-            sx={{ display: isTrackedGoalLastStep ? "none" : "block" }}
-            variant="outlined"
-            color="secondary"
-            onClick={handleForwardStep}
-          >
-            Forward
-          </Button>
-        </Box>
-      </Box>
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <Board board={board} />
-      </DndContext>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <Board board={board} />
+        </DndContext>
+      </motion.div>
     </Box>
   );
 };
