@@ -180,6 +180,36 @@ const Tracker = () => {
     updateTaskStatus(task.id, destinationColumnId, token);
   };
 
+  const handleUpdateStatus = (taskId, sourceColumnId, destinationColumnId) => {
+    console.log("UPDATING STATUS", taskId, sourceColumnId, destinationColumnId);
+    const sourceColumn = board.columns.find((col) => col.id === sourceColumnId);
+    const destinationColumn = board.columns.find(
+      (col) => col.id === destinationColumnId
+    );
+    const task = sourceColumn.tasks.find((task) => task.id === taskId);
+
+    // Remove task from the source column
+    const updatedSourceTasks = sourceColumn.tasks.filter(
+      (t) => t.id !== taskId
+    );
+    // Add task to the destination column
+    const updatedDestinationTasks = [...destinationColumn.tasks, task];
+
+    // Update columns
+    const updatedColumns = board.columns.map((col) => {
+      if (col.id === sourceColumnId) {
+        return { ...col, tasks: updatedSourceTasks };
+      } else if (col.id === destinationColumnId) {
+        return { ...col, tasks: updatedDestinationTasks };
+      }
+      return col;
+    });
+
+    setBoard({ columns: updatedColumns });
+
+    updateTaskStatus(taskId, destinationColumnId);
+  };
+
   // Set up the sensors for drag detection
   const sensors = useSensors(useSensor(MouseSensor));
 
@@ -209,7 +239,7 @@ const Tracker = () => {
         }}
       >
         <Box sx={{ width: "100%", textAlign: "center" }}>
-          <Typography variant={"h4"} color="secondary">
+          <Typography variant={"h5"} color="secondary">
             {trackedGoalName}
           </Typography>
         </Box>
@@ -220,7 +250,7 @@ const Tracker = () => {
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
-            alignText: "center",
+            textAlign: "center",
           }}
         >
           <Box>
@@ -236,7 +266,11 @@ const Tracker = () => {
             </IconButton>
           </Box>
 
-          <Typography variant={"h6"} color="secondary">
+          <Typography
+            sx={{ maxWidth: "290px" }}
+            variant={"h6"}
+            color="secondary"
+          >
             {trackedGoalTimelineName}
           </Typography>
           <Box>
@@ -252,7 +286,7 @@ const Tracker = () => {
         </Box>
 
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <Board board={board} />
+          <Board board={board} handleUpdateStatus={handleUpdateStatus} />
         </DndContext>
       </motion.div>
     </Box>
