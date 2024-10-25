@@ -62,7 +62,12 @@ export const Task = ({ task, columnId, handleUpdateStatus }) => {
           alignItems: "center",
         }}
       >
-        <Box ref={setNodeRef} {...listeners} {...attributes}>
+        <Box
+          sx={{ flex: 1, cursor: "pointer" }}
+          ref={setNodeRef}
+          {...listeners}
+          {...attributes}
+        >
           <Typography variant="body1" sx={{ paddingRight: "10px" }}>
             {task.description}
           </Typography>

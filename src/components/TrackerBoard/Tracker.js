@@ -239,7 +239,7 @@ const Tracker = () => {
         }}
       >
         <Box sx={{ width: "100%", textAlign: "center" }}>
-          <Typography variant={"h4"} color="secondary">
+          <Typography variant={"h5"} color="secondary">
             {trackedGoalName}
           </Typography>
         </Box>
