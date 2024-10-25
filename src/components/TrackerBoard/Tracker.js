@@ -4,11 +4,12 @@ import { Board } from "./Board";
 import { NavBar } from "../index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { getTrackedGoal } from "../../redux/slices/goalSlice";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { capitalizeFirstLetter } from "../../utils/stringManipulate";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Tracker = () => {
   const theme = useTheme();
@@ -209,19 +210,21 @@ const Tracker = () => {
       >
         <Box sx={{ width: "100%", textAlign: "center" }}>
           <Typography variant={"h4"} color="secondary">
-            {trackedGoalName ? capitalizeFirstLetter(trackedGoalName) : ""}
+            {trackedGoalName}
           </Typography>
         </Box>
         <Box
           sx={{
+            paddingTop: "16px",
+            paddingBottom: "16px",
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
-            padding: "24px",
+            alignText: "center",
           }}
         >
           <Box>
-            <Button
+            <IconButton
               sx={{
                 display: parseInt(trackedGoalStep) === 0 ? "none" : "block",
               }}
@@ -229,22 +232,22 @@ const Tracker = () => {
               variant="outlined"
               color="secondary"
             >
-              Back
-            </Button>
+              <ArrowBackIcon />
+            </IconButton>
           </Box>
 
-          <Typography variant={"h5"} color="secondary">
+          <Typography variant={"h6"} color="secondary">
             {trackedGoalTimelineName}
           </Typography>
           <Box>
-            <Button
+            <IconButton
               sx={{ display: isTrackedGoalLastStep ? "none" : "block" }}
               variant="outlined"
               color="secondary"
               onClick={handleForwardStep}
             >
-              Forward
-            </Button>
+              <ArrowForwardIcon />
+            </IconButton>
           </Box>
         </Box>
 
