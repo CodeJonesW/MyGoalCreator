@@ -63,8 +63,8 @@ const TestimonialsSection = () => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "I used it to plan my dinner recipe and explain each step in
-                  depth."
+                  "ChatGPT is great but I like how I dont have to type anything.
+                  I dont have to think of the right questions."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -99,7 +99,7 @@ const TestimonialsSection = () => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "Helped me map out my fitness goal"
+                  "I found it helpful to know what to research."
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -108,7 +108,7 @@ const TestimonialsSection = () => {
                     color: theme.palette.text.secondary,
                   }}
                 >
-                  — Jim Gibbs
+                  — Sarah Henry
                 </Typography>
               </Paper>
             </motion.div>
@@ -134,7 +134,7 @@ const TestimonialsSection = () => {
                   variant="body1"
                   sx={{ color: theme.palette.text.primary }}
                 >
-                  "Excited to see where this project goes! Great for planning"
+                  "Diving into sub topics is fun and interesting."
                 </Typography>
                 <Typography
                   variant="subtitle2"
