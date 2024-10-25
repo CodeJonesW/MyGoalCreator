@@ -118,6 +118,7 @@ const goalSlice = createSlice({
         state.trackedGoalStep = action.payload.step;
         state.trackedGoalTimelineName = action.payload.timelineName;
         state.isTrackedGoalLastStep = action.payload.isLastStep;
+        state.trackedGoalName = action.payload.goal_name;
       })
       .addCase(getTrackedGoal.rejected, (state) => {
         state.loading = false;

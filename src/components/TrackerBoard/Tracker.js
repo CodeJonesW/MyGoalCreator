@@ -8,6 +8,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { capitalizeFirstLetter } from "../../utils/stringManipulate";
 
 const Tracker = () => {
   const theme = useTheme();
@@ -19,6 +20,7 @@ const Tracker = () => {
     trackedGoalStep,
     trackedGoalTimelineName,
     isTrackedGoalLastStep,
+    trackedGoalName,
   } = useSelector((state) => state.goalSlice);
   const { token } = useSelector((state) => state.authSlice);
 
@@ -199,16 +201,22 @@ const Tracker = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{
+          paddingTop: "16px",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-      <Box>
-        <Typography variant={"h4"} color="secondary">
-          {`Goal Tracker`}
-      </Box>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
+          <Typography variant={"h4"} color="secondary">
+            {trackedGoalName ? capitalizeFirstLetter(trackedGoalName) : ""}
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width: "80%",
+            width: "100%",
             padding: "24px",
           }}
         >
