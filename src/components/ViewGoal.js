@@ -280,7 +280,7 @@ const ViewGoal = () => {
                 <Results
                   onLineClick={onLineClick}
                   result={goal.plan}
-                  isSubGoal={goal.parent_goal_id !== null}
+                  lineClickDisabled={goal.depth >= 4}
                   isLoading={loading}
                 />
               </motion.div>
@@ -296,7 +296,7 @@ const ViewGoal = () => {
                 <Results
                   onLineClick={onLineClick}
                   result={result}
-                  isSubGoal={true}
+                  lineClickDisabled={true}
                   isLoading={loading}
                 />
               </motion.div>

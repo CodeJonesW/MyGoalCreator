@@ -174,7 +174,7 @@ const Analyze = () => {
           isLoading={loading}
           back={null}
           result={result}
-          isSubGoal={false}
+          lineClickDisabled={true}
         />
       ) : null}
     </Box>
