@@ -41,7 +41,7 @@ const NavBar = ({ isMenuDisabled }) => {
     >
       {isMenuDisabled ? (
         <Toolbar>
-          <ListAltIcon />
+          <ListAltIcon sx={{ marginRight: "8px" }} />
           <Typography
             variant="h6"
             sx={{ flexGrow: 1, color: theme.palette.text.primary }}
