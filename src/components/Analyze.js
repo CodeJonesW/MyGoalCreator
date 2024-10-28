@@ -64,44 +64,47 @@ const Analyze = () => {
         if (newChunk === "event: done") {
           return;
         }
-
-        setBuffer((prevBuffer) => {
-          if (prevBuffer === "" && newChunk === "") {
-            let updatedBuffer = prevBuffer + "\n";
-            setResult((prevResult) => prevResult + updatedBuffer);
-            return "";
-          }
-
-          let updatedBuffer =
-            prevBuffer +
-            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
-
-          console.log("updatedBuffer", updatedBuffer);
-
-          const lines = updatedBuffer.split("\n");
-
-          let completeContent = "";
-          let remainingBuffer = "";
-
-          lines.forEach((line, index) => {
-            if (index === lines.length - 1) {
-              remainingBuffer = line + "\n";
-            } else {
-              if (line !== "\n") {
-                completeContent += line + "\n";
-              } else {
-                completeContent += line;
-              }
-            }
-          });
-
-          console.log("completeContent", completeContent);
-          console.log("remainingBuffer", remainingBuffer);
-
-          setResult((prevResult) => prevResult + completeContent);
-
-          return remainingBuffer || "";
+        setResult((prevResult) => {
+          return prevResult + newChunk;
         });
+
+        // setBuffer((prevBuffer) => {
+        //   if (prevBuffer === "" && newChunk === "") {
+        //     let updatedBuffer = prevBuffer + "\n";
+        //     setResult((prevResult) => prevResult + updatedBuffer);
+        //     return "";
+        //   }
+
+        //   let updatedBuffer =
+        //     prevBuffer +
+        //     (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
+
+        //   console.log("updatedBuffer", updatedBuffer);
+
+        //   const lines = updatedBuffer.split("\n");
+
+        //   let completeContent = "";
+        //   let remainingBuffer = "";
+
+        //   lines.forEach((line, index) => {
+        //     if (index === lines.length - 1) {
+        //       remainingBuffer = line + "\n";
+        //     } else {
+        //       if (line !== "\n") {
+        //         completeContent += line + "\n";
+        //       } else {
+        //         completeContent += line;
+        //       }
+        //     }
+        //   });
+
+        //   console.log("completeContent", completeContent);
+        //   console.log("remainingBuffer", remainingBuffer);
+
+        //   setResult((prevResult) => prevResult + completeContent);
+
+        //   return remainingBuffer || "";
+        // });
       };
 
       eventSource.onerror = (error) => {
