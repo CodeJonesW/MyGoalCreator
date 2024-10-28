@@ -4,14 +4,23 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NavBar from "./NavBar";
+import { useDispatch } from "react-redux";
+import { getProfile } from "../redux/slices/profileSlice";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const { user } = useSelector((state) => state.profileSlice);
+  const { token } = useSelector((state) => state.authSlice);
 
   const handleGoToCreateGoal = () => {
     navigate("/");
+  };
+
+  const handleNavigateToGoals = () => {
+    dispatch(getProfile({ token, setLatestGoal: false }));
+    navigate("/goals");
   };
 
   if (!user) {
@@ -89,7 +98,7 @@ const Profile = () => {
             <span>
               <Button
                 style={{ marginTop: "16px", maxWidth: "144px" }}
-                onClick={() => navigate("/goals")}
+                onClick={handleNavigateToGoals}
                 variant="contained"
               >
                 View Goals
