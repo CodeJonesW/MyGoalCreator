@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { clearAuthToken } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const NavBar = ({ isMenuDisabled }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const NavBar = ({ isMenuDisabled }) => {
     >
       {isMenuDisabled ? (
         <Toolbar>
+          <ListAltIcon sx={{ marginRight: "8px" }} />
           <Typography
             variant="h6"
             sx={{ flexGrow: 1, color: theme.palette.text.primary }}
@@ -49,6 +51,7 @@ const NavBar = ({ isMenuDisabled }) => {
         </Toolbar>
       ) : (
         <Toolbar>
+          <ListAltIcon sx={{ marginRight: "8px" }} />
           <Typography
             onClick={() => navigate("/")}
             variant="h6"
