@@ -61,6 +61,7 @@ const Analyze = () => {
         let newChunk = event.data;
         console.log("newChunk is empty string", newChunk === "");
         console.log("newChunk is a space", newChunk === " ");
+        console.log("newChunk is newline", newChunk === "\n");
         if (newChunk === "event: done") {
           return;
         }
