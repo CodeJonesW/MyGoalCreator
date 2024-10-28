@@ -14,12 +14,15 @@ import { useDispatch } from "react-redux";
 import { clearAuthToken } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import { useSelector } from "react-redux";
+import { getProfile } from "../redux/slices/profileSlice";
 
 const NavBar = ({ isMenuDisabled }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { token } = useSelector((state) => state.authSlice);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +35,11 @@ const NavBar = ({ isMenuDisabled }) => {
   const handleLogout = () => {
     dispatch(clearAuthToken());
     navigate("/welcome");
+  };
+
+  const handleNavigateToGoals = () => {
+    dispatch(getProfile({ token, setLatestGoal: false }));
+    navigate("/goals");
   };
 
   return (
@@ -77,7 +85,7 @@ const NavBar = ({ isMenuDisabled }) => {
               onClose={handleMenuClose}
             >
               <MenuItem onClick={() => navigate("/")}>Create Goal</MenuItem>
-              <MenuItem onClick={() => navigate("/goals")}>View Goals</MenuItem>
+              <MenuItem onClick={handleNavigateToGoals}>View Goals</MenuItem>
               <MenuItem onClick={() => navigate("/profile")}>
                 View Profile
               </MenuItem>
