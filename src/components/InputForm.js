@@ -19,7 +19,7 @@ const InputForm = ({ onSubmit, loading }) => {
   const theme = useTheme();
   const [goalName, setGoalName] = useState("");
   const [areaOfFocus, setAreaOfFocus] = useState("");
-  const [timeline, setTimeline] = useState("1 week");
+  const [timeline, setTimeline] = useState("1 day");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [placeholder, setPlaceholder] = useState("Type your goal...");
 
@@ -129,32 +129,32 @@ const InputForm = ({ onSubmit, loading }) => {
                   />
                 </FormControl>
               </Box>
+              <Box className="input-group">
+                <FormControl fullWidth>
+                  <InputLabel id="timeline-select-label">Timeline</InputLabel>
+                  <Select
+                    labelId="timeline-select-label"
+                    label="Timeline"
+                    value={timeline}
+                    onChange={(e) => setTimeline(e.target.value)}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Timeline...
+                    </MenuItem>
+                    <MenuItem value="1 day">1 Day</MenuItem>
+                    <MenuItem value="1 week">1 Week</MenuItem>
+                    <MenuItem value="1 month">1 Month</MenuItem>
+                    <MenuItem value="3 months">3 Months</MenuItem>
+                    <MenuItem value="6 months">6 Months</MenuItem>
+                    <MenuItem value="1 year">1 Year</MenuItem>
+                    <MenuItem value="2 years">2 Years</MenuItem>
+                    <MenuItem value="5 years">5 Years</MenuItem>
+                    <MenuItem value="10 years">10 Years</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </Collapse>
-            <Box className="input-group">
-              <FormControl fullWidth>
-                <InputLabel id="timeline-select-label">Timeline</InputLabel>
-                <Select
-                  labelId="timeline-select-label"
-                  label="Timeline"
-                  value={timeline}
-                  onChange={(e) => setTimeline(e.target.value)}
-                  required
-                >
-                  <MenuItem value="" disabled>
-                    Select Timeline...
-                  </MenuItem>
-                  <MenuItem value="1 day">1 Day</MenuItem>
-                  <MenuItem value="1 week">1 Week</MenuItem>
-                  <MenuItem value="1 month">1 Month</MenuItem>
-                  <MenuItem value="3 months">3 Months</MenuItem>
-                  <MenuItem value="6 months">6 Months</MenuItem>
-                  <MenuItem value="1 year">1 Year</MenuItem>
-                  <MenuItem value="2 years">2 Years</MenuItem>
-                  <MenuItem value="5 years">5 Years</MenuItem>
-                  <MenuItem value="10 years">10 Years</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+
             <Box style={{ display: "flex", justifyContent: "center" }}>
               <Button type="submit" variant={"contained"} disabled={loading}>
                 {loading ? <CircularProgress size={24} /> : "Show me the way"}
