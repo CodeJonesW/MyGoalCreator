@@ -90,7 +90,7 @@ const Analyze = () => {
               if (line !== "\n") {
                 completeContent += line + "\n";
               } else {
-                completeContent += line;
+                completeContent += line + " ";
               }
             }
           });
