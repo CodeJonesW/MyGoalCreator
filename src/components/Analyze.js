@@ -85,12 +85,12 @@ const Analyze = () => {
 
           lines.forEach((line, index) => {
             if (index === lines.length - 1) {
-              remainingBuffer = line;
+              remainingBuffer = line + "\n";
             } else {
               if (line !== "\n") {
                 completeContent += line + "\n";
               } else {
-                completeContent += line + " ";
+                completeContent += line;
               }
             }
           });
