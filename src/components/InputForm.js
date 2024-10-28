@@ -26,11 +26,11 @@ const InputForm = ({ onSubmit, loading }) => {
   useEffect(() => {
     const placeholderTexts = [
       "What do you want to learn?",
-      "Achieve a goal you've always wanted.",
+      "What needs to be done?",
       "What would you like to accomplish?",
       "Set a new target for yourself.",
       "Is there a skill you want to master?",
-      "Tell me about your next big goal.",
+      "Tell me what you need to do.",
     ];
 
     const randomPlaceholder =
