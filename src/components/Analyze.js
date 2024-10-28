@@ -20,7 +20,7 @@ const Analyze = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-  const [buffer, setBuffer] = useState("");
+  const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -66,7 +66,16 @@ const Analyze = () => {
         setResult((prevResult) => {
           console.log("prevResult", prevResult);
           console.log("newChunk", newChunk);
-          return prevResult + newChunk;
+
+          if (newChunk === "" && buffer === "") {
+            setBuffer(null);
+            return prevResult + "\n";
+          } else {
+            if (newChunk === "") {
+              setBuffer("");
+            }
+            return prevResult + newChunk;
+          }
         });
 
         // setBuffer((prevBuffer) => {
