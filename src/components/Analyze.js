@@ -60,59 +60,25 @@ const Analyze = () => {
       eventSource.onmessage = (event) => {
         console.log("EVENT", event);
         let newChunk = event.data;
+
+        // Check if newChunk is an empty string, a space, or a newline
         console.log("newChunk is empty string", newChunk === "");
+        console.log("newChunk is a space", newChunk === " ");
+        console.log("newChunk is newline", newChunk === "\n");
+
+        // If this is the end event, stop further processing
         if (newChunk === "event: done") {
           return;
         }
+
+        // Replace custom delimiter '[NEWLINE]' with actual newline characters for display
+        newChunk = newChunk.replace(/\[NEWLINE\]/g, "\n");
+        console.log("Processed newChunk", newChunk);
+
+        // Update result state by appending the new chunk
         setResult((prevResult) => {
-          console.log("newChunk is empty string", newChunk === "");
-          console.log("newChunk is a space", newChunk === " ");
-          console.log("newChunk is newline", newChunk === "\n");
-          console.log("newChunk", newChunk);
-
-          const lines = newChunk.split("\n");
-          console.log("lines", lines);
-
           return prevResult + newChunk;
         });
-
-        // setBuffer((prevBuffer) => {
-        //   if (prevBuffer === "" && newChunk === "") {
-        //     let updatedBuffer = prevBuffer + "\n";
-        //     setResult((prevResult) => prevResult + updatedBuffer);
-        //     return "";
-        //   }
-
-        //   let updatedBuffer =
-        //     prevBuffer +
-        //     (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
-
-        //   console.log("updatedBuffer", updatedBuffer);
-
-        //   const lines = updatedBuffer.split("\n");
-
-        //   let completeContent = "";
-        //   let remainingBuffer = "";
-
-        //   lines.forEach((line, index) => {
-        //     if (index === lines.length - 1) {
-        //       remainingBuffer = line + "\n";
-        //     } else {
-        //       if (line !== "\n") {
-        //         completeContent += line + "\n";
-        //       } else {
-        //         completeContent += line;
-        //       }
-        //     }
-        //   });
-
-        //   console.log("completeContent", completeContent);
-        //   console.log("remainingBuffer", remainingBuffer);
-
-        //   setResult((prevResult) => prevResult + completeContent);
-
-        //   return remainingBuffer || "";
-        // });
       };
 
       eventSource.onerror = (error) => {

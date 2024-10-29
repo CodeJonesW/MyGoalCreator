@@ -63,9 +63,7 @@ export async function onRequest(context) {
         while (true) {
           const { done, value } = await reader.read();
           if (done) {
-            console.log("Stream complete");
             setTimeout(() => {
-              console.log("Closing stream");
               controller.close();
             }, 5000);
             break;
@@ -74,9 +72,15 @@ export async function onRequest(context) {
           // Decode the Uint8Array into a string
           const chunk = decoder.decode(value, { stream: true });
           console.log("Received chunk in fn:", chunk);
+          console.log("newChunk is empty string", chunk === "");
+          console.log("newChunk is a space", chunk === " ");
+          console.log("newChunk is newline", chunk === "\n");
 
           // Enqueue the encoded chunk to the stream controller
-          controller.enqueue(encoder.encode(`data: ${chunk}`));
+          const sanitizedChunk = chunk.replace(/\n/g, "[NEWLINE]");
+          console.log("Sanitized chunk:", sanitizedChunk);
+
+          controller.enqueue(encoder.encode(`data: ${sanitizedChunk}\n\n`));
         }
       },
     });
