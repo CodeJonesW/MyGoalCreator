@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@mui/material";
 import NavBar from "../NavBar";
-import GoalItem from "./GoalItem";
 import ViewGoals from "./ViewGoals";
-import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../../redux/slices/profileSlice";
 import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
 
 const Goals = () => {
   const theme = useTheme();

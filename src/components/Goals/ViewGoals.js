@@ -10,7 +10,6 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import NavBar from "../NavBar";
 import GoalItem from "./GoalItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/profileSlice";
@@ -20,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 const ViewGoals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const theme = useTheme();
   const { goals } = useSelector((state) => state.profileSlice);
   const { token } = useSelector((state) => state.authSlice);
 
