@@ -58,6 +58,7 @@ const Analyze = () => {
       );
 
       eventSource.onmessage = (event) => {
+        console.log("EVENT", event);
         let newChunk = event.data;
         console.log("newChunk is empty string", newChunk === "");
         if (newChunk === "event: done") {
