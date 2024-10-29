@@ -20,7 +20,7 @@ const Analyze = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-  const [buffer, setBuffer] = useState("");
+  const [buffer, setBuffer] = useState(null);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -40,17 +40,14 @@ const Analyze = () => {
     setLoading(true);
     setResult("");
     setBuffer("");
-    console.log("creating goal", goalName, areaOfFocus, timeline);
     const result = await axios.post(
       "/api/createGoal",
       { goalName, areaOfFocus, timeline },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     const goal_id = result.data.goal_id;
-
     try {
       const token = localStorage.getItem("authToken");
-
       const eventSource = new EventSource(
         `/api/analyze?goal_id=${encodeURIComponent(
           goal_id
@@ -58,49 +55,13 @@ const Analyze = () => {
       );
 
       eventSource.onmessage = (event) => {
-        console.log("EVENT", event);
         let newChunk = event.data;
-        console.log("newChunk is empty string", newChunk === "");
         if (newChunk === "event: done") {
           return;
         }
-
-        setBuffer((prevBuffer) => {
-          if (prevBuffer === "" && newChunk === "") {
-            let updatedBuffer = prevBuffer + "\n";
-            setResult((prevResult) => prevResult + updatedBuffer);
-            return "";
-          }
-
-          let updatedBuffer =
-            prevBuffer +
-            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
-
-          console.log("updatedBuffer", updatedBuffer);
-
-          const lines = updatedBuffer.split("\n");
-
-          let completeContent = "";
-          let remainingBuffer = "";
-
-          lines.forEach((line, index) => {
-            if (index === lines.length - 1) {
-              remainingBuffer = line;
-            } else {
-              if (line !== "\n") {
-                completeContent += line + "\n";
-              } else {
-                completeContent += line;
-              }
-            }
-          });
-
-          console.log("completeContent", completeContent);
-          console.log("remainingBuffer", remainingBuffer);
-
-          setResult((prevResult) => prevResult + completeContent);
-
-          return remainingBuffer || "";
+        newChunk = newChunk.replace(/\[NEWLINE\]/g, "\n");
+        setResult((prevResult) => {
+          return prevResult + newChunk;
         });
       };
 

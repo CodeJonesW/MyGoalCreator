@@ -92,53 +92,12 @@ const ViewGoal = () => {
 
       eventSource.onmessage = (event) => {
         let newChunk = event.data;
-        console.log("newChunk", newChunk);
-        console.log("newChunk is empty string", newChunk === "");
-        try {
-          const parsed = JSON.parse(newChunk);
-          if (parsed.message === "success") {
-            setResult(parsed.subGoal.plan);
-            setLoading(false);
-            return;
-          }
-        } catch (error) {}
         if (newChunk === "event: done") {
           return;
         }
-
-        setBuffer((prevBuffer) => {
-          if (prevBuffer === "" && newChunk === "") {
-            let updatedBuffer = prevBuffer + "\n";
-            setResult((prevResult) => prevResult + updatedBuffer);
-            return "";
-          }
-
-          let updatedBuffer =
-            prevBuffer +
-            (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
-
-          console.log("updatedBuffer", updatedBuffer);
-          const lines = updatedBuffer.split("\n");
-          console.log("lines", lines);
-
-          let completeContent = "";
-          let remainingBuffer = "";
-
-          lines.forEach((line, index) => {
-            if (index === lines.length - 1) {
-              remainingBuffer = line;
-            } else {
-              if (line !== "\n") {
-                completeContent += line + "\n";
-              } else {
-                completeContent += line;
-              }
-            }
-          });
-
-          setResult((prevResult) => prevResult + completeContent);
-
-          return remainingBuffer || "";
+        newChunk = newChunk.replace(/\[NEWLINE\]/g, "\n");
+        setResult((prevResult) => {
+          return prevResult + newChunk;
         });
       };
 

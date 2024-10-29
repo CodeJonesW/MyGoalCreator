@@ -51,39 +51,24 @@ export async function onRequest(context) {
       });
     }
 
-    // Define a TextEncoder instance to encode the response chunks
     const encoder = new TextEncoder();
     const decoder = new TextDecoder("utf-8");
-
-    // Read the stream from the response body
     const reader = response.body.getReader();
 
-    // Create a readable stream to send the data incrementally to the client
     const stream = new ReadableStream({
       async start(controller) {
         while (true) {
           const { done, value } = await reader.read();
           if (done) {
-            console.log("Stream complete");
             setTimeout(() => {
-              console.log("Closing stream");
               controller.close();
             }, 5000);
             break;
           }
 
-          // Decode the Uint8Array into a string
           const chunk = decoder.decode(value, { stream: true });
-          console.log("Received chunk in fn:", chunk);
-          //   try {
-          //     const json = JSON.parse(chunk);
-          //     console.log("Parsed JSON in fn:", json);
-          //   } catch (error) {
-          //     console.error("Error parsing JSON in fn:", error);
-          //   }
-
-          // Enqueue the encoded chunk to the stream controller
-          controller.enqueue(encoder.encode(`data: ${chunk}\n\n`));
+          const sanitizedChunk = chunk.replace(/\n/g, "[NEWLINE]");
+          controller.enqueue(encoder.encode(`data: ${sanitizedChunk}\n\n`));
         }
       },
     });
