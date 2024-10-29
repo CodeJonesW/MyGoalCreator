@@ -67,6 +67,7 @@ const Analyze = () => {
           console.log("newChunk is empty string", newChunk === "");
           console.log("newChunk is a space", newChunk === " ");
           console.log("newChunk is newline", newChunk === "\n");
+          console.log("newChunk", newChunk);
 
           return prevResult + newChunk;
         });
