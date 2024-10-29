@@ -60,25 +60,54 @@ const Analyze = () => {
       eventSource.onmessage = (event) => {
         let newChunk = event.data;
         console.log("newChunk is empty string", newChunk === "");
-        console.log("newChunk is a space", newChunk === " ");
-        console.log("newChunk is newline", newChunk === "\n");
         if (newChunk === "event: done") {
           return;
         }
         setResult((prevResult) => {
-          console.log("prevResult", prevResult);
-          console.log("newChunk", newChunk);
+          console.log("newChunk is empty string", newChunk === "");
+          console.log("newChunk is a space", newChunk === " ");
+          console.log("newChunk is newline", newChunk === "\n");
 
-          if (newChunk === " " && buffer === " ") {
-            setBuffer(null);
-            return prevResult + "\n";
-          } else {
-            if (newChunk === "") {
-              setBuffer(" ");
-            }
-            return prevResult + newChunk;
-          }
+          return prevResult + newChunk;
         });
+
+        // setBuffer((prevBuffer) => {
+        //   if (prevBuffer === "" && newChunk === "") {
+        //     let updatedBuffer = prevBuffer + "\n";
+        //     setResult((prevResult) => prevResult + updatedBuffer);
+        //     return "";
+        //   }
+
+        //   let updatedBuffer =
+        //     prevBuffer +
+        //     (newChunk === "" || newChunk === "\n" ? "\n" : newChunk);
+
+        //   console.log("updatedBuffer", updatedBuffer);
+
+        //   const lines = updatedBuffer.split("\n");
+
+        //   let completeContent = "";
+        //   let remainingBuffer = "";
+
+        //   lines.forEach((line, index) => {
+        //     if (index === lines.length - 1) {
+        //       remainingBuffer = line + "\n";
+        //     } else {
+        //       if (line !== "\n") {
+        //         completeContent += line + "\n";
+        //       } else {
+        //         completeContent += line;
+        //       }
+        //     }
+        //   });
+
+        //   console.log("completeContent", completeContent);
+        //   console.log("remainingBuffer", remainingBuffer);
+
+        //   setResult((prevResult) => prevResult + completeContent);
+
+        //   return remainingBuffer || "";
+        // });
       };
 
       eventSource.onerror = (error) => {
