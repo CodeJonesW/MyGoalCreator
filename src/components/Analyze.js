@@ -131,12 +131,14 @@ const Analyze = () => {
         </Box>
       ) : null}
       {result ? (
-        <Results
-          isLoading={loading}
-          back={null}
-          result={result}
-          lineClickDisabled={true}
-        />
+        <Box sx={{ paddingTop: "16px" }}>
+          <Results
+            isLoading={loading}
+            back={null}
+            result={result}
+            lineClickDisabled={true}
+          />
+        </Box>
       ) : null}
     </Box>
   );

@@ -4,7 +4,6 @@ export async function onRequest(context) {
   const token = searchParams.get("token");
 
   if (!goalId) {
-    console.log("Missing required parameters");
     return new Response(
       JSON.stringify({ error: "Missing required parameters" }),
       {
@@ -40,11 +39,9 @@ export async function onRequest(context) {
   };
 
   try {
-    // Fetch the streaming response from the worker
     const response = await fetch(url, init);
 
     if (!response.ok) {
-      console.error("Worker returned an error:", response.status);
       return new Response(JSON.stringify({ error: "Worker error" }), {
         status: response.status,
         headers: { "Content-Type": "application/json" },
@@ -73,7 +70,6 @@ export async function onRequest(context) {
       },
     });
 
-    // Return the readable stream as a Server-Sent Event (SSE)
     return new Response(stream, {
       headers: {
         "Content-Type": "text/event-stream",

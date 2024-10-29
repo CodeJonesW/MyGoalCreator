@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Results from "./Results.js";
 import Loading from "./Loading.js";
-import TrackGoalButton from "./TrackGoalButton.js";
+// import TrackGoalButton from "./TrackGoalButton.js";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
 import { clearSubGoal, clearGoal, getGoal } from "../redux/slices/goalSlice.js";
@@ -131,21 +131,21 @@ const ViewGoal = () => {
     setOpenSnackbar(false);
   };
 
-  const handleTrackGoal = async () => {
-    await axios.post(
-      "/api/trackgoal",
-      {
-        goal_id: goal.goal_id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    navigate(`/tracker/${goal.goal_id}`);
-  };
+  // const handleTrackGoal = async () => {
+  //   await axios.post(
+  //     "/api/trackgoal",
+  //     {
+  //       goal_id: goal.goal_id,
+  //     },
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   navigate(`/tracker/${goal.goal_id}`);
+  // };
 
   const variants = {
     hidden: { x: "100vw", opacity: 0 },
@@ -154,7 +154,7 @@ const ViewGoal = () => {
   };
 
   const pageVariants = {
-    initial: { opacity: 0, x: -50 },
+    initial: { opacity: 0, x: 0 },
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: 50 },
   };
@@ -222,12 +222,12 @@ const ViewGoal = () => {
                 </Alert>
               </Snackbar>
               {!loading ? <BackButton onClick={() => navigate(-1)} /> : null}
-              {!loading && !goal.parent_goal_id ? (
+              {/* {!loading && !goal.parent_goal_id ? (
                 <TrackGoalButton
                   isGoalTracked={goal.isGoalTracked}
                   onClick={handleTrackGoal}
                 />
-              ) : null}
+              ) : null} */}
             </Box>
             {goal && !result ? (
               <motion.div

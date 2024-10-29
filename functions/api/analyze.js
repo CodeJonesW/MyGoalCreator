@@ -2,7 +2,6 @@ export async function onRequest(context) {
   const { searchParams } = new URL(context.request.url);
   const goal_id = searchParams.get("goal_id");
   const token = searchParams.get("token");
-  console.log("Params:", goal_id, token);
 
   if (!goal_id) {
     return new Response(
@@ -39,7 +38,6 @@ export async function onRequest(context) {
   };
 
   try {
-    // Fetch the streaming response from the worker
     const response = await fetch(url, init);
     console.log("Response from worker:", response);
 
@@ -50,14 +48,10 @@ export async function onRequest(context) {
       });
     }
 
-    // Define a TextEncoder instance to encode the response chunks
     const encoder = new TextEncoder();
     const decoder = new TextDecoder("utf-8");
-
-    // Read the stream from the response body
     const reader = response.body.getReader();
 
-    // Create a readable stream to send the data incrementally to the client
     const stream = new ReadableStream({
       async start(controller) {
         while (true) {
@@ -76,7 +70,6 @@ export async function onRequest(context) {
       },
     });
 
-    // Return the readable stream as a Server-Sent Event (SSE)
     return new Response(stream, {
       headers: {
         "Content-Type": "text/event-stream",
