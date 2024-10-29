@@ -73,7 +73,7 @@ const Analyze = () => {
           const lines = newChunk.split("\n");
           console.log("lines", lines);
 
-          return prevResult + properlyFormattedText;
+          return prevResult + newChunk;
         });
 
         // setBuffer((prevBuffer) => {
