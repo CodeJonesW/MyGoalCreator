@@ -76,7 +76,7 @@ export async function onRequest(context) {
           console.log("Received chunk in fn:", chunk);
 
           // Enqueue the encoded chunk to the stream controller
-          controller.enqueue(encoder.encode(`${chunk}`));
+          controller.enqueue(encoder.encode(`data: ${chunk}`));
         }
       },
     });
