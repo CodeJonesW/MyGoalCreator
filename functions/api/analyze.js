@@ -69,17 +69,8 @@ export async function onRequest(context) {
             break;
           }
 
-          // Decode the Uint8Array into a string
           const chunk = decoder.decode(value, { stream: true });
-          console.log("Received chunk in fn:", chunk);
-          console.log("newChunk is empty string", chunk === "");
-          console.log("newChunk is a space", chunk === " ");
-          console.log("newChunk is newline", chunk === "\n");
-
-          // Enqueue the encoded chunk to the stream controller
           const sanitizedChunk = chunk.replace(/\n/g, "[NEWLINE]");
-          console.log("Sanitized chunk:", sanitizedChunk);
-
           controller.enqueue(encoder.encode(`data: ${sanitizedChunk}\n\n`));
         }
       },

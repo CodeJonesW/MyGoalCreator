@@ -40,17 +40,14 @@ const Analyze = () => {
     setLoading(true);
     setResult("");
     setBuffer("");
-    console.log("creating goal", goalName, areaOfFocus, timeline);
     const result = await axios.post(
       "/api/createGoal",
       { goalName, areaOfFocus, timeline },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     const goal_id = result.data.goal_id;
-
     try {
       const token = localStorage.getItem("authToken");
-
       const eventSource = new EventSource(
         `/api/analyze?goal_id=${encodeURIComponent(
           goal_id
@@ -58,24 +55,11 @@ const Analyze = () => {
       );
 
       eventSource.onmessage = (event) => {
-        console.log("EVENT", event);
         let newChunk = event.data;
-
-        // Check if newChunk is an empty string, a space, or a newline
-        console.log("newChunk is empty string", newChunk === "");
-        console.log("newChunk is a space", newChunk === " ");
-        console.log("newChunk is newline", newChunk === "\n");
-
-        // If this is the end event, stop further processing
         if (newChunk === "event: done") {
           return;
         }
-
-        // Replace custom delimiter '[NEWLINE]' with actual newline characters for display
         newChunk = newChunk.replace(/\[NEWLINE\]/g, "\n");
-        console.log("Processed newChunk", newChunk);
-
-        // Update result state by appending the new chunk
         setResult((prevResult) => {
           return prevResult + newChunk;
         });
