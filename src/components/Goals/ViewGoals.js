@@ -13,7 +13,6 @@ import {
 import GoalItem from "./GoalItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/profileSlice";
-import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 const ViewGoals = () => {
