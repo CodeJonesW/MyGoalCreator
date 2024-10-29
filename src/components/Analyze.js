@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import InputForm from "./InputForm";
 import Loading from "./Loading";
 import Results from "./Results";
+import ViewGoals from "./Goals/ViewGoals";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useDispatch } from "react-redux";
 import { Box, Snackbar, Alert } from "@mui/material";
@@ -13,9 +14,11 @@ const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const firstRender = useRef(true);
-  const { loading: isProfileLoading, showUiHelp } = useSelector(
-    (state) => state.profileSlice
-  );
+  const {
+    loading: isProfileLoading,
+    showUiHelp,
+    goals,
+  } = useSelector((state) => state.profileSlice);
   const { token } = useSelector((state) => state.authSlice);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
@@ -126,8 +129,18 @@ const Analyze = () => {
         </Alert>
       </Snackbar>
       {!result ? (
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <InputForm loading={loading} onSubmit={handleAnalyze} />
+          <Box sx={{ paddingTop: "16px" }} />
+
+          {goals.length > 0 ? <ViewGoals /> : null}
         </Box>
       ) : null}
       {result ? (

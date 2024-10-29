@@ -10,14 +10,14 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import NavBar from "./NavBar";
+import NavBar from "../NavBar";
 import GoalItem from "./GoalItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../redux/slices/profileSlice";
+import { getProfile } from "../../redux/slices/profileSlice";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-const Goals = () => {
+const ViewGoals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -66,20 +66,7 @@ const Goals = () => {
   };
 
   return (
-    <Box
-      className="main"
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        overflow: "scroll",
-        background: theme.palette.primary.main,
-      }}
-    >
-      <NavBar />
+    <Box className="main">
       <Box sx={{ padding: "24px" }}>
         <Card
           style={{ minWidth: "300px", padding: "24px", borderRadius: "16px" }}
@@ -128,4 +115,4 @@ const Goals = () => {
   );
 };
 
-export default Goals;
+export default ViewGoals;
