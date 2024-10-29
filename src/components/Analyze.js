@@ -70,8 +70,8 @@ const Analyze = () => {
           console.log("newChunk is newline", newChunk === "\n");
           console.log("newChunk", newChunk);
 
-          const lines = newChunk.split(/\r?\n/);
-          const properlyFormattedText = lines.join("\n");
+          const lines = newChunk.split("\n");
+          console.log("lines", lines);
 
           return prevResult + properlyFormattedText;
         });
