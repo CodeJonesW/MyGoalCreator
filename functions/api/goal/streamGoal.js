@@ -1,9 +1,9 @@
 export async function onRequest(context) {
   const { searchParams } = new URL(context.request.url);
-  const goalId = searchParams.get("goalId");
+  const goal_id = searchParams.get("goal_id");
   const token = searchParams.get("token");
 
-  if (!goalId) {
+  if (!goal_id) {
     return new Response(
       JSON.stringify({ error: "Missing required parameters" }),
       {
@@ -25,7 +25,8 @@ export async function onRequest(context) {
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
 
-  const url = `${workerUrl}/api/subgoal`;
+  const url = `${workerUrl}/api/streamGoal`;
+  console.log("Worker URL:", url);
 
   const init = {
     method: "POST",
@@ -33,13 +34,12 @@ export async function onRequest(context) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      goal_id: goalId,
-    }),
+    body: JSON.stringify({ goal_id }),
   };
 
   try {
     const response = await fetch(url, init);
+    console.log("Response from worker:", response);
 
     if (!response.ok) {
       return new Response(JSON.stringify({ error: "Worker error" }), {
@@ -78,7 +78,7 @@ export async function onRequest(context) {
       },
     });
   } catch (error) {
-    console.error("Error during subgoal v2: in function", error);
+    console.error("Error during analysis: in function", error);
     return new Response(
       JSON.stringify({ error: "Failed to process request" }),
       {

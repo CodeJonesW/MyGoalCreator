@@ -32,7 +32,7 @@ const ViewGoals = () => {
     if (!goalToDelete) return;
 
     try {
-      await fetch("/api/deletegoal", {
+      await fetch("/api/goal/deleteGoal", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

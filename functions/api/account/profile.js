@@ -1,21 +1,19 @@
 export async function onRequest(context) {
-  const isLocal = context.request.url === "http://localhost:8788/api/trackgoal";
+  const isLocal =
+    context.request.url === "http://localhost:8788/api/account/profile";
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
-  const url = `${workerUrl}/api/trackGoal`;
-  const body = await context.request.json();
-  const { goal_id } = body;
+  const url = `${workerUrl}/api/profile`;
+
   const init = {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
     },
-    body: JSON.stringify({
-      goal_id,
-    }),
   };
+  console.log("Sending request to", url, init);
 
   try {
     const response = await fetch(url, init);
@@ -25,7 +23,7 @@ export async function onRequest(context) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to track goal" }), {
+    return new Response(JSON.stringify({ error: "Failed to register user" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

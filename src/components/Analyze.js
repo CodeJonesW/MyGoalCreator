@@ -44,7 +44,7 @@ const Analyze = () => {
     setResult("");
     setBuffer("");
     const result = await axios.post(
-      "/api/createGoal",
+      "/api/goal/createGoal",
       { goalName, areaOfFocus, timeline },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -52,7 +52,7 @@ const Analyze = () => {
     try {
       const token = localStorage.getItem("authToken");
       const eventSource = new EventSource(
-        `/api/analyze?goal_id=${encodeURIComponent(
+        `/api/goal/streamGoal?goal_id=${encodeURIComponent(
           goal_id
         )}&token=${encodeURIComponent(token)}`
       );

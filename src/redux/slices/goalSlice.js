@@ -6,28 +6,7 @@ export const getGoal = createAsyncThunk(
   "goal/getGoal",
   async ({ token, goal_id }) => {
     const response = await axios.get(
-      `/api/goal?goal_id=${encodeURIComponent(goal_id)}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
-  }
-);
-
-export const analyzeSubGoal = createAsyncThunk(
-  "goal/analyzeSubGoal",
-  async ({ token, text, lineNumber, goal_id }) => {
-    const response = await axios.post(
-      `/api/subgoal`,
-      {
-        goal_id,
-        sub_goal_name: text,
-        line_number: lineNumber,
-      },
+      `/api/goal/getGoal?goal_id=${encodeURIComponent(goal_id)}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +23,7 @@ export const getTrackedGoal = createAsyncThunk(
   async ({ token, goal_id, step }) => {
     console.log("Getting tracked goal", goal_id);
     const response = await axios.get(
-      `/api/getTrackedGoal?goal_id=${encodeURIComponent(
+      `/api/tracker/getTrackedGoal?goal_id=${encodeURIComponent(
         goal_id
       )}&step=${encodeURIComponent(step)}`,
       {
@@ -94,18 +73,6 @@ const goalSlice = createSlice({
       .addCase(getGoal.rejected, (state, action) => {
         state.error = true;
         state.loading = false;
-      })
-      .addCase(analyzeSubGoal.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(analyzeSubGoal.fulfilled, (state, action) => {
-        console.log("Subgoal analyzed successfully", action);
-        state.loading = false;
-        state.subGoal = action.payload.subGoal;
-      })
-      .addCase(analyzeSubGoal.rejected, (state) => {
-        state.loading = false;
-        state.error = true;
       })
       .addCase(getTrackedGoal.pending, (state) => {
         state.loading = true;
