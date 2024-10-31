@@ -5,7 +5,7 @@ import Results from "./Results";
 import ViewGoals from "./Goals/ViewGoals";
 import { getProfile } from "../redux/slices/profileSlice";
 import { useDispatch } from "react-redux";
-import { Box, Snackbar, Alert } from "@mui/material";
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -14,26 +14,14 @@ const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const firstRender = useRef(true);
-  const {
-    loading: isProfileLoading,
-    showUiHelp,
-    goals,
-  } = useSelector((state) => state.profileSlice);
+  const { loading: isProfileLoading, goals } = useSelector(
+    (state) => state.profileSlice
+  );
   const { token } = useSelector((state) => state.authSlice);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState(null);
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      if (showUiHelp) {
-        setOpenSnackbar(true);
-      }
-      return;
-    }
-  }, [showUiHelp]);
 
   if (isProfileLoading) {
     return <Loading />;
@@ -113,21 +101,6 @@ const Analyze = () => {
         flexDirection: "column",
       }}
     >
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        variant="filled"
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="info"
-          sx={{ width: "100%" }}
-        >
-          Welcome! Enter a goal to get started! 🎯
-        </Alert>
-      </Snackbar>
       {!result ? (
         <Box
           sx={{
