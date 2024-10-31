@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import InputForm from "./InputForm";
 import Loading from "./Loading";
 import Results from "./Results";
@@ -13,12 +13,10 @@ import axios from "axios";
 const Analyze = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const firstRender = useRef(true);
   const { loading: isProfileLoading, goals } = useSelector(
     (state) => state.profileSlice
   );
   const { token } = useSelector((state) => state.authSlice);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState(null);
@@ -84,10 +82,6 @@ const Analyze = () => {
       setLoading(false);
       console.error("Error during analysis:", error);
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
   };
 
   return (
