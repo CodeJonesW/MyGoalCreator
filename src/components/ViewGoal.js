@@ -72,10 +72,11 @@ const ViewGoal = () => {
 
     try {
       const result = await axios.post(
-        "/api/createSubGoal",
+        "/api/goal/createSubGoal",
         { parentGoalId, subGoalName },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log("result", result);
       if (result.data.existed) {
         navigate(`/goal/${result.data.goal_id}`);
         setLoading(false);
@@ -85,7 +86,7 @@ const ViewGoal = () => {
       const goalId = result.data.goal_id;
 
       const eventSource = new EventSource(
-        `/api/subgoal?goalId=${encodeURIComponent(
+        `/api/goal/streamSubGoal?goalId=${encodeURIComponent(
           goalId
         )}&token=${encodeURIComponent(token)}`
       );
@@ -133,7 +134,7 @@ const ViewGoal = () => {
 
   // const handleTrackGoal = async () => {
   //   await axios.post(
-  //     "/api/trackgoal",
+  //     "/api/tracker/trackgoal",
   //     {
   //       goal_id: goal.goal_id,
   //     },

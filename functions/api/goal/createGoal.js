@@ -1,21 +1,25 @@
 export async function onRequest(context) {
-  const isLocal = context.request.url === "http://localhost:8788/api/planItem";
+  const isLocal =
+    context.request.url === "http://localhost:8788/api/goal/createGoal";
+
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
 
-  const url = `${workerUrl}/api/planItem`;
+  const url = `${workerUrl}/api/createGoal`;
   const body = await context.request.json();
-  const { taskId, status } = body;
+  const { goalName: goal_name, areaOfFocus: area_of_focus, timeline } = body;
+
   const init = {
-    method: "PUT",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
     },
     body: JSON.stringify({
-      plan_item_id: taskId,
-      status: status,
+      goal_name,
+      area_of_focus,
+      timeline,
     }),
   };
 
@@ -27,12 +31,9 @@ export async function onRequest(context) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ error: "Failed to update plan item" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify({ error: "Failed to create goal" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

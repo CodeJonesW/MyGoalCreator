@@ -73,7 +73,7 @@ const Tracker = () => {
 
   const updateTaskStatus = async (taskId, newStatus) => {
     try {
-      const response = await fetch(`/api/planItem`, {
+      const response = await fetch(`/api/tracker/planItem`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

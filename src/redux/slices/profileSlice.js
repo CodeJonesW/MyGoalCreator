@@ -8,7 +8,7 @@ export const getProfile = createAsyncThunk(
   "profile/getProfile",
   async ({ token, setLatestGoal }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.get(`/api/profile`, {
+      const response = await axios.get(`/api/account/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
