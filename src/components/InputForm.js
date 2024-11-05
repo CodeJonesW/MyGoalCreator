@@ -19,7 +19,7 @@ const InputForm = ({ onSubmit, loading }) => {
   const theme = useTheme();
   const [goalName, setGoalName] = useState("");
   const [areaOfFocus, setAreaOfFocus] = useState("");
-  const [timeline, setTimeline] = useState("1 day");
+  const [timeline, setTimeline] = useState("1 week");
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [placeholder, setPlaceholder] = useState("Type your goal...");
 
