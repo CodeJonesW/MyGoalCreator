@@ -102,6 +102,7 @@ const Tracker = () => {
         .map((planItem) => ({
           id: planItem.plan_item_id,
           description: planItem.description,
+          name: planItem.name,
         }));
 
       const inProgressTasks = trackedGoalItems
@@ -109,6 +110,7 @@ const Tracker = () => {
         .map((planItem) => ({
           id: planItem.plan_item_id,
           description: planItem.description,
+          name: planItem.name,
         }));
 
       const doneTasks = trackedGoalItems
@@ -116,6 +118,7 @@ const Tracker = () => {
         .map((planItem) => ({
           id: planItem.plan_item_id,
           description: planItem.description,
+          name: planItem.name,
         }));
 
       setBoard({

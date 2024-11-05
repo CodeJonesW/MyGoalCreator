@@ -52,6 +52,9 @@ export const Task = ({ task, columnId, handleUpdateStatus }) => {
     handleUpdateStatus(task.id, columnId, "todo");
     handleMenuClose();
   };
+  console.log("task", task);
+
+  const lines = task.description.split("\n");
 
   return (
     <Box style={style}>
@@ -68,9 +71,20 @@ export const Task = ({ task, columnId, handleUpdateStatus }) => {
           {...listeners}
           {...attributes}
         >
-          <Typography variant="body1" sx={{ paddingRight: "10px" }}>
-            {task.description}
-          </Typography>
+          <Typography>{task.name}</Typography>
+          {/* <Typography variant="body1" sx={{ paddingRight: "10px" }}>
+            - {task.description}
+          </Typography> */}
+          {lines.map((line, index) => (
+            <Typography
+              key={index}
+              variant="body1"
+              sx={{ paddingRight: "10px" }}
+            >
+              {line[0] === "-" ? "" : "- "}
+              {line}
+            </Typography>
+          ))}
         </Box>
 
         <IconButton
