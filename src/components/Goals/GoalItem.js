@@ -74,7 +74,10 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
           </ListItemIcon>
 
           <ListItemText
-            sx={{ textWrap: "wrap" }}
+            sx={{
+              textOverflow: "ellipsis",
+              maxWidth: "200px",
+            }}
             onClick={() => handleShowGoal(goal.goal_id)}
             primary={goal.goal_name}
           />

@@ -65,8 +65,10 @@ const ViewGoals = () => {
   return (
     <Box className="main">
       <Box sx={{ padding: "24px" }}>
-        <Card style={{ padding: "24px", borderRadius: "16px" }}>
-          <h2>My Goals</h2>
+        <Card
+          style={{ padding: "24px", borderRadius: "16px", maxWidth: "300px" }}
+        >
+          <h2>Goals Research</h2>
           <List>
             {goals.length > 0 ? (
               goals.map((goal, index) => (
