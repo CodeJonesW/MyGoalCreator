@@ -148,15 +148,14 @@ const DailyTodos = () => {
             Daily Todos
           </Typography>
           {dailyTodos.map((todo) => (
-              <Box key={todo.id} display="flex" alignItems="center">
-                <Checkbox
-                  onChange={() => handleCheck(todo.daily_todo_id)}
-                  checked={checkedTodos.includes(todo.daily_todo_id)}
-                />
-                <Typography>{todo.todo}</Typography>
-              </Box>
-            );
-          )}
+            <Box key={todo.id} display="flex" alignItems="center">
+              <Checkbox
+                onChange={() => handleCheck(todo.daily_todo_id)}
+                checked={checkedTodos.includes(todo.daily_todo_id)}
+              />
+              <Typography>{todo.todo}</Typography>
+            </Box>
+          ))}
           {dailyTodos.length > 0 &&
           checkedTodos.length === dailyTodos.length ? (
             <Box
