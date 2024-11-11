@@ -51,19 +51,6 @@ const DailyTodos = () => {
     setLoading(false);
   };
 
-  const handleCompleteDay = async () => {
-    const result = await axios.post(
-      "/api/todo/completeDay",
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-  };
-
   const handleCheck = async (todo) => {
     const result = await axios.post(
       "/api/todo/completeDailyTodo",
