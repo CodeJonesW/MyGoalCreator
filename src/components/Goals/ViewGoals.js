@@ -14,6 +14,7 @@ import GoalItem from "./GoalItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/profileSlice";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const ViewGoals = () => {
   const dispatch = useDispatch();
@@ -63,52 +64,58 @@ const ViewGoals = () => {
   };
 
   return (
-    <Box className="main">
-      <Box sx={{ padding: "24px" }}>
-        <Card
-          style={{ padding: "24px", borderRadius: "16px", maxWidth: "300px" }}
-        >
-          <h2>Goals Research</h2>
-          <List>
-            {goals.length > 0 ? (
-              goals.map((goal, index) => (
-                <GoalItem
-                  key={index}
-                  goal={goal}
-                  index={index}
-                  handleShowGoal={handleShowGoal}
-                  handleOpenDeleteDialog={handleOpenDeleteDialog}
-                />
-              ))
-            ) : (
-              <p>No goals available</p>
-            )}
-          </List>
-        </Card>
-      </Box>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <Box className="main">
+        <Box sx={{ padding: "24px" }}>
+          <Card
+            style={{ padding: "24px", borderRadius: "16px", maxWidth: "300px" }}
+          >
+            <h2>Goals Research</h2>
+            <List>
+              {goals.length > 0 ? (
+                goals.map((goal, index) => (
+                  <GoalItem
+                    key={index}
+                    goal={goal}
+                    index={index}
+                    handleShowGoal={handleShowGoal}
+                    handleOpenDeleteDialog={handleOpenDeleteDialog}
+                  />
+                ))
+              ) : (
+                <p>No goals available</p>
+              )}
+            </List>
+          </Card>
+        </Box>
 
-      <Dialog
-        sx={{ borderRadius: "16px" }}
-        open={open}
-        onClose={handleCloseDialog}
-      >
-        <DialogTitle>Delete Goal</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this goal? This action cannot be
-            undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleCloseDialog}>
-            Cancel
-          </Button>
-          <Button variant="outlined" onClick={handleDeleteGoal} color="error">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+        <Dialog
+          sx={{ borderRadius: "16px" }}
+          open={open}
+          onClose={handleCloseDialog}
+        >
+          <DialogTitle>Delete Goal</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this goal? This action cannot be
+              undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" onClick={handleCloseDialog}>
+              Cancel
+            </Button>
+            <Button variant="outlined" onClick={handleDeleteGoal} color="error">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </motion.div>
   );
 };
 

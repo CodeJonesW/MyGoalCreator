@@ -98,22 +98,17 @@ const Analyze = () => {
       }}
     >
       {!result ? (
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
             <InputForm loading={loading} onSubmit={handleAnalyze} />
-
-            <Box sx={{ paddingTop: "16px" }} />
-
             {goals.length > 0 ? <ViewGoals /> : null}
           </Box>
-          <Box sx={{ padding: "16px" }} />
           <DailyTodos />
           <DailyTodosCompletionCalendar />
         </Box>
