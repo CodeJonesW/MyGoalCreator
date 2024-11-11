@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputForm from "./InputForm";
+import CreateGoalForm from "./CreateGoalForm";
 import Loading from "./Loading";
 import Results from "./Results";
 import ViewGoals from "./Goals/ViewGoals";
@@ -106,7 +106,7 @@ const Analyze = () => {
               alignItems: "center",
             }}
           >
-            <InputForm loading={loading} onSubmit={handleAnalyze} />
+            <CreateGoalForm loading={loading} onSubmit={handleAnalyze} />
             {goals.length > 0 ? <ViewGoals /> : null}
           </Box>
           <DailyTodos />

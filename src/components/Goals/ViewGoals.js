@@ -69,10 +69,14 @@ const ViewGoals = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <Box className="main">
-        <Box sx={{ padding: "24px" }}>
+      <Box sx={{ padding: "24px" }}>
+        <Box className="main">
           <Card
-            style={{ padding: "24px", borderRadius: "16px", maxWidth: "300px" }}
+            style={{
+              padding: "20px",
+              borderRadius: "16px",
+              maxWidth: "300px",
+            }}
           >
             <h2>Goals Research</h2>
             <List>
@@ -91,29 +95,33 @@ const ViewGoals = () => {
               )}
             </List>
           </Card>
-        </Box>
 
-        <Dialog
-          sx={{ borderRadius: "16px" }}
-          open={open}
-          onClose={handleCloseDialog}
-        >
-          <DialogTitle>Delete Goal</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this goal? This action cannot be
-              undone.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button variant="contained" onClick={handleCloseDialog}>
-              Cancel
-            </Button>
-            <Button variant="outlined" onClick={handleDeleteGoal} color="error">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <Dialog
+            sx={{ borderRadius: "16px" }}
+            open={open}
+            onClose={handleCloseDialog}
+          >
+            <DialogTitle>Delete Goal</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this goal? This action cannot be
+                undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={handleCloseDialog}>
+                Cancel
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleDeleteGoal}
+                color="error"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
       </Box>
     </motion.div>
   );
