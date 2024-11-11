@@ -38,6 +38,7 @@ const DailyTodos = () => {
       dispatch(createDailyTodo(response.data.result));
     }
     setLoading(false);
+    setTodo("");
   };
 
   const handleCheck = async (todo) => {
