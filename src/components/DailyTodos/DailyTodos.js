@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   updateDailyTodo,
   createDailyTodo,
 } from "../../redux/slices/profileSlice";
-import {
-  Box,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  Button,
-  TextField,
-  FormGroup,
-  Collapse,
-} from "@mui/material";
+import { Box, FormControl, Button, TextField, FormGroup } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
-import TuneIcon from "@mui/icons-material/Tune";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Checkbox, Typography } from "@mui/material";
