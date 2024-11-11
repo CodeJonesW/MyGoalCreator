@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import DailyTodos from "./DailyTodos/DailyTodos";
+import DailyTodosCompletionCalendar from "./DailyTodos/DailyTodosCompletionCalendar";
 
 const Analyze = () => {
   const dispatch = useDispatch();
@@ -114,8 +115,10 @@ const Analyze = () => {
           </Box>
           <Box sx={{ padding: "16px" }} />
           <DailyTodos />
+          <DailyTodosCompletionCalendar />
         </Box>
       ) : null}
+
       {result ? (
         <Box sx={{ paddingTop: "16px" }}>
           <Results
