@@ -10,7 +10,7 @@ export { default as PrivateRoute } from "./PrivateRoute";
 export { default as ViewGoal } from "./ViewGoal";
 export { default as BackButton } from "./BackButton";
 export { default as TrackGoalButton } from "./TrackGoalButton";
-export { default as InputForm } from "./InputForm";
+export { default as CreateGoalForm } from "./CreateGoalForm";
 export { default as Tracker } from "./TrackerBoard/Tracker";
 export { default as TermsOfService } from "./Onboarding/TermsOfService";
 export { default as PrivacyPolicy } from "./Onboarding/PrivacyPolicy";

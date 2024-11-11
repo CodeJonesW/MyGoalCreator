@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputForm from "./InputForm";
+import CreateGoalForm from "./CreateGoalForm";
 import Loading from "./Loading";
 import Results from "./Results";
 import ViewGoals from "./Goals/ViewGoals";
@@ -98,22 +98,17 @@ const Analyze = () => {
       }}
     >
       {!result ? (
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <InputForm loading={loading} onSubmit={handleAnalyze} />
-
-            <Box sx={{ paddingTop: "16px" }} />
-
+            <CreateGoalForm loading={loading} onSubmit={handleAnalyze} />
             {goals.length > 0 ? <ViewGoals /> : null}
           </Box>
-          <Box sx={{ padding: "16px" }} />
           <DailyTodos />
           <DailyTodosCompletionCalendar />
         </Box>
