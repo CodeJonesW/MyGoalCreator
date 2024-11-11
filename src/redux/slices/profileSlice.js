@@ -37,9 +37,21 @@ const profileSlice = createSlice({
     dailyTodos: [],
   },
   reducers: {
-    updateDailyTodos: (state, action) => {
-      const newTodo = { todo: action.payload };
-      state.dailyTodos = [...state.dailyTodos, newTodo];
+    createDailyTodo: (state, action) => {
+      state.dailyTodos = [...state.dailyTodos, action.payload];
+    },
+    updateDailyTodo: (state, action) => {
+      console.log("Updating daily todo", action.payload);
+      state.dailyTodos = state.dailyTodos.map((todo) => {
+        if (todo.daily_todo_id === action.payload.daily_todo_id) {
+          return {
+            ...todo,
+            completed: action.payload.completed,
+          };
+        } else {
+          return todo;
+        }
+      });
     },
   },
   extraReducers: (builder) => {
@@ -66,6 +78,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { updateDailyTodos } = profileSlice.actions;
+export const { createDailyTodo, updateDailyTodo } = profileSlice.actions;
 
 export default profileSlice;

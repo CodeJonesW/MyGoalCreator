@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { updateDailyTodos } from "../../redux/slices/profileSlice";
+import {
+  updateDailyTodo,
+  createDailyTodo,
+} from "../../redux/slices/profileSlice";
 import {
   Box,
   InputLabel,
@@ -26,17 +29,11 @@ const DailyTodos = () => {
   const { dailyTodos } = useSelector((state) => state.profileSlice);
   const [loading, setLoading] = useState(false);
   const [todo, setTodo] = useState("");
-  const [checkedTodos, setCheckedTodos] = useState([]);
 
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("checkedTodos")) || [];
-    setCheckedTodos(storedTodos);
-  }, []);
-
-  const handleSubmit = async (e) => {
+  const handleCreateDailyTodo = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const result = await axios.post(
+    const response = await axios.post(
       "/api/todo/createDailyTodo",
       {
         todo: todo,
@@ -48,9 +45,8 @@ const DailyTodos = () => {
         },
       }
     );
-    console.log(result);
-    if (result.data.message === "success") {
-      dispatch(updateDailyTodos(todo));
+    if (response.data.message === "success") {
+      dispatch(createDailyTodo(response.data.result));
     }
     setLoading(false);
   };
@@ -66,20 +62,26 @@ const DailyTodos = () => {
         },
       }
     );
-    console.log(result);
   };
 
-  const handleCheck = (id) => {
-    const isChecked = checkedTodos.includes(id);
+  const handleCheck = async (todo) => {
+    const result = await axios.post(
+      "/api/todo/completeDailyTodo",
+      {
+        daily_todo_id: todo.daily_todo_id,
+        completed: !todo.completed,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    let newCheckedTodos = [];
-    if (isChecked) {
-      newCheckedTodos = checkedTodos.filter((todoId) => todoId !== id);
-    } else {
-      newCheckedTodos = [...checkedTodos, id];
+    if (result.data.message === "success") {
+      dispatch(updateDailyTodo(result.data.result));
     }
-    setCheckedTodos(newCheckedTodos);
-    localStorage.setItem("checkedTodos", JSON.stringify(newCheckedTodos));
   };
 
   return (
@@ -100,7 +102,7 @@ const DailyTodos = () => {
           width: "300px",
         }}
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleCreateDailyTodo}>
           <FormGroup>
             <Box className="input-group">
               <FormControl fullWidth>
@@ -150,26 +152,12 @@ const DailyTodos = () => {
           {dailyTodos.map((todo) => (
             <Box key={todo.id} display="flex" alignItems="center">
               <Checkbox
-                onChange={() => handleCheck(todo.daily_todo_id)}
-                checked={checkedTodos.includes(todo.daily_todo_id)}
+                onChange={() => handleCheck(todo)}
+                checked={todo.completed === 1}
               />
-              <Typography>{todo.todo}</Typography>
+              <Typography>{todo.task}</Typography>
             </Box>
           ))}
-          {dailyTodos.length > 0 &&
-          checkedTodos.length === dailyTodos.length ? (
-            <Box
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "20px",
-              }}
-            >
-              <Button onClick={handleCompleteDay} variant={"contained"}>
-                Complete Day
-              </Button>
-            </Box>
-          ) : null}
         </Box>
       ) : null}
     </motion.div>

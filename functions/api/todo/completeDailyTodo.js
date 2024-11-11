@@ -1,12 +1,17 @@
 export async function onRequest(context) {
   const isLocal =
-    context.request.url === "http://localhost:8788/api/todo/completeDay";
+    context.request.url === "http://localhost:8788/api/todo/completeDailyTodo";
 
   const workerUrl = isLocal
     ? "http://localhost:8787"
     : "https://tube-script-ai-worker.williamjonescodes.workers.dev";
 
-  const url = `${workerUrl}/api/completeDay`;
+  const url = `${workerUrl}/api/completeDailyTodo`;
+
+  const request = context.request;
+  const requestBody = await request.json();
+  const { daily_todo_id, completed } = requestBody;
+  console.log("sending", daily_todo_id, completed);
 
   const init = {
     method: "POST",
@@ -14,7 +19,10 @@ export async function onRequest(context) {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({
+      daily_todo_id,
+      completed,
+    }),
   };
 
   try {
