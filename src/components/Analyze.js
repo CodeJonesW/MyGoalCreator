@@ -9,6 +9,8 @@ import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import DailyTodos from "./DailyTodos/DailyTodos";
+import DailyTodosCompletionCalendar from "./DailyTodos/DailyTodosCompletionCalendar";
 
 const Analyze = () => {
   const dispatch = useDispatch();
@@ -96,20 +98,27 @@ const Analyze = () => {
       }}
     >
       {!result ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <InputForm loading={loading} onSubmit={handleAnalyze} />
-          <Box sx={{ paddingTop: "16px" }} />
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <InputForm loading={loading} onSubmit={handleAnalyze} />
 
-          {goals.length > 0 ? <ViewGoals /> : null}
+            <Box sx={{ paddingTop: "16px" }} />
+
+            {goals.length > 0 ? <ViewGoals /> : null}
+          </Box>
+          <Box sx={{ padding: "16px" }} />
+          <DailyTodos />
+          <DailyTodosCompletionCalendar />
         </Box>
       ) : null}
+
       {result ? (
         <Box sx={{ paddingTop: "16px" }}>
           <Results
