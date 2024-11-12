@@ -9,12 +9,17 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  Menu,
+  MenuItem,
+  Typography,
+  IconButton,
 } from "@mui/material";
 import GoalItem from "./GoalItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/profileSlice";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ViewGoals = () => {
   const dispatch = useDispatch();
@@ -63,6 +68,21 @@ const ViewGoals = () => {
     setGoalToDelete(null);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showDeleteButton, setShowDeleteButton] = React.useState(false);
+  const isEditMenuOpen = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    setAnchorEl(null);
+    setShowDeleteButton(!showDeleteButton);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -78,7 +98,40 @@ const ViewGoals = () => {
               maxWidth: "300px",
             }}
           >
-            <h2>Goals Research</h2>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant={"h6"}>Goals Research</Typography>
+              <Box>
+                <IconButton
+                  size="small"
+                  id="basic-button"
+                  aria-controls={isEditMenuOpen ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={isEditMenuOpen ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={isEditMenuOpen}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                </Menu>
+              </Box>
+            </Box>
+
             <List>
               {goals.length > 0 ? (
                 goals.map((goal, index) => (
@@ -88,6 +141,7 @@ const ViewGoals = () => {
                     index={index}
                     handleShowGoal={handleShowGoal}
                     handleOpenDeleteDialog={handleOpenDeleteDialog}
+                    showDeleteButton={showDeleteButton}
                   />
                 ))
               ) : (

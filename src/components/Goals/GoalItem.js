@@ -14,7 +14,13 @@ import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import ExpandIcon from "@mui/icons-material/Expand";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 
-const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
+const GoalItem = ({
+  goal,
+  index,
+  handleShowGoal,
+  handleOpenDeleteDialog,
+  showDeleteButton,
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [subGoalsExpanded, setSubGoalsExpanded] = useState(false);
@@ -38,7 +44,7 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
             cursor: "pointer",
           }}
         >
-          {goal.isGoalTracked ? (
+          {goal.isGoalTracked && !showDeleteButton ? (
             <ListItemIcon>
               <IconButton
                 onClick={() => navigate(`/tracker/${goal.goal_id}`)}
@@ -50,7 +56,7 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
               </IconButton>
             </ListItemIcon>
           ) : null}
-          {goal.subgoals.length > 0 ? (
+          {goal.subgoals.length > 0 && !showDeleteButton ? (
             <ListItemIcon>
               <IconButton
                 sx={{
@@ -82,15 +88,17 @@ const GoalItem = ({ goal, index, handleShowGoal, handleOpenDeleteDialog }) => {
             primary={goal.goal_name}
           />
         </ListItem>
-        <IconButton
-          onClick={() => handleOpenDeleteDialog(goal.goal_id)}
-          sx={{
-            marginLeft: "8px",
-            color: theme.palette.secondary.contrastText,
-          }}
-        >
-          <DeleteOutlineIcon />
-        </IconButton>
+        {showDeleteButton ? (
+          <IconButton
+            onClick={() => handleOpenDeleteDialog(goal.goal_id)}
+            sx={{
+              marginLeft: "8px",
+              color: theme.palette.secondary.contrastText,
+            }}
+          >
+            <DeleteOutlineIcon />
+          </IconButton>
+        ) : null}
       </Box>
       {goal.subgoals.length > 0 && subGoalsExpanded
         ? goal.subgoals.map((subgoal, index) => (
