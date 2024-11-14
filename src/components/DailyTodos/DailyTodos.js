@@ -144,6 +144,7 @@ const DailyTodos = () => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
+                paddingBottom: "8px",
               }}
             >
               <Typography
@@ -154,9 +155,11 @@ const DailyTodos = () => {
               </Typography>
               {dailyTodos.filter((todo) => todo.completed === 1).length ===
               dailyTodos.length ? (
-                <Button onClick={handleCompleteDay}>
+                <Button variant="outlined" onClick={handleCompleteDay}>
                   <Typography sx={{ marginRight: "8px" }}>
-                    Complete Day
+                    {!dailyTodosCompletedToday
+                      ? "Complete Day"
+                      : "Day Completed"}
                   </Typography>
                   <CheckCircleIcon
                     color={dailyTodosCompletedToday ? "success" : "secondary"}
