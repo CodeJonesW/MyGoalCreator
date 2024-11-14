@@ -16,7 +16,9 @@ const DailyTodos = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
-  const { dailyTodos } = useSelector((state) => state.profileSlice);
+  const { dailyTodos, dailyTodosCompletedToday } = useSelector(
+    (state) => state.profileSlice
+  );
   const [loading, setLoading] = useState(false);
   const [todo, setTodo] = useState("");
 
@@ -142,6 +144,7 @@ const DailyTodos = () => {
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
+                paddingBottom: "8px",
               }}
             >
               <Typography
@@ -152,11 +155,15 @@ const DailyTodos = () => {
               </Typography>
               {dailyTodos.filter((todo) => todo.completed === 1).length ===
               dailyTodos.length ? (
-                <Button onClick={handleCompleteDay}>
+                <Button variant="outlined" onClick={handleCompleteDay}>
                   <Typography sx={{ marginRight: "8px" }}>
-                    Complete Day
+                    {!dailyTodosCompletedToday
+                      ? "Complete Day"
+                      : "Day Completed"}
                   </Typography>
-                  <CheckCircleIcon color="success" />
+                  <CheckCircleIcon
+                    color={dailyTodosCompletedToday ? "success" : "secondary"}
+                  />
                 </Button>
               ) : null}
             </Box>
