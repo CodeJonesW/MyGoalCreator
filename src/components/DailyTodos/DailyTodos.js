@@ -63,7 +63,7 @@ const DailyTodos = () => {
   };
 
   const handleCompleteDay = async () => {
-    const result = await axios.post(
+    await axios.post(
       "/api/todo/completeDay",
       {},
       {
