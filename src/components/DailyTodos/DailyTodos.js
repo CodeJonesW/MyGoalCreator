@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { Checkbox, Typography, IconButton } from "@mui/material";
+import { Checkbox, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const DailyTodos = () => {
