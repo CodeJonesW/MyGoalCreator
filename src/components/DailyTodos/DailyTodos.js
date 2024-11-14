@@ -9,7 +9,8 @@ import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { Checkbox, Typography } from "@mui/material";
+import { Checkbox, Typography, IconButton } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const DailyTodos = () => {
   const theme = useTheme();
@@ -59,6 +60,19 @@ const DailyTodos = () => {
     if (result.data.message === "success") {
       dispatch(updateDailyTodo(result.data.result));
     }
+  };
+
+  const handleCompleteDay = async () => {
+    const result = await axios.post(
+      "/api/todo/completeDay",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   };
 
   return (
@@ -123,12 +137,30 @@ const DailyTodos = () => {
               width: "300px",
             }}
           >
-            <Typography
-              sx={{ color: theme.palette.text.primary }}
-              variant={"h6"}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
-              Daily Todos
-            </Typography>
+              <Typography
+                sx={{ color: theme.palette.text.primary }}
+                variant={"h6"}
+              >
+                Daily Todos
+              </Typography>
+              {dailyTodos.filter((todo) => todo.completed === 1).length ===
+              dailyTodos.length ? (
+                <Button onClick={handleCompleteDay}>
+                  <Typography sx={{ marginRight: "8px" }}>
+                    Complete Day
+                  </Typography>
+                  <CheckCircleIcon color="success" />
+                </Button>
+              ) : null}
+            </Box>
+
             {dailyTodos.map((todo) => (
               <Box key={todo.id} display="flex" alignItems="center">
                 <Checkbox
