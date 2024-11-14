@@ -16,7 +16,9 @@ const DailyTodos = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.authSlice);
-  const { dailyTodos } = useSelector((state) => state.profileSlice);
+  const { dailyTodos, dailyTodosCompletedToday } = useSelector(
+    (state) => state.profileSlice
+  );
   const [loading, setLoading] = useState(false);
   const [todo, setTodo] = useState("");
 
@@ -156,7 +158,9 @@ const DailyTodos = () => {
                   <Typography sx={{ marginRight: "8px" }}>
                     Complete Day
                   </Typography>
-                  <CheckCircleIcon color="success" />
+                  <CheckCircleIcon
+                    color={dailyTodosCompletedToday ? "success" : "secondary"}
+                  />
                 </Button>
               ) : null}
             </Box>
