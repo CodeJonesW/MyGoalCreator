@@ -53,7 +53,7 @@ const DailyTodos = () => {
       })
     );
 
-    const result = await axios.post(
+    await axios.post(
       "/api/todo/completeDailyTodo",
       {
         daily_todo_id: todo.daily_todo_id,
