@@ -45,6 +45,13 @@ const DailyTodos = () => {
   };
 
   const handleCheck = async (todo) => {
+    dispatch(
+      updateDailyTodo({
+        ...todo,
+        completed: !todo.completed,
+      })
+    );
+
     const result = await axios.post(
       "/api/todo/completeDailyTodo",
       {
@@ -58,10 +65,6 @@ const DailyTodos = () => {
         },
       }
     );
-
-    if (result.data.message === "success") {
-      dispatch(updateDailyTodo(result.data.result));
-    }
   };
 
   const handleCompleteDay = async () => {

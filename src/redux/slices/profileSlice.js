@@ -46,9 +46,10 @@ const profileSlice = createSlice({
       console.log("Updating daily todo", action.payload);
       state.dailyTodos = state.dailyTodos.map((todo) => {
         if (todo.daily_todo_id === action.payload.daily_todo_id) {
+          console.log("found match");
           return {
             ...todo,
-            completed: action.payload.completed,
+            completed: action.payload.completed ? 1 : 0,
           };
         } else {
           return todo;
