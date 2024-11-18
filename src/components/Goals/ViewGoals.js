@@ -127,7 +127,9 @@ const ViewGoals = () => {
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                  <MenuItem onClick={handleEdit}>
+                    {showDeleteButton ? "Hide Edit" : "Edit"}
+                  </MenuItem>
                 </Menu>
               </Box>
             </Box>
