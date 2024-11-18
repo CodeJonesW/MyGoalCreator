@@ -76,6 +76,12 @@ const PricingSection = () => {
                   <ListItem>
                     <ListItemText primary="- Dive into goal subtopics." />
                   </ListItem>
+                  <ListItem>
+                    <ListItemText primary="- Convert AI plans into sprints and manage in tracker." />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="- Create lists of daily todos and track completions" />
+                  </ListItem>
                 </List>
               </Box>
 
@@ -126,13 +132,13 @@ const PricingSection = () => {
                   }}
                 >
                   <ListItem>
-                    <ListItemText primary="- Dive multiple levels into subtopics and get detailed insights." />
+                    <ListItemText primary="- Dive deeper with the ability to go past 5 sub topics" />
                   </ListItem>
                   <ListItem>
                     <ListItemText primary="- Track your progress with advanced analytics." />
                   </ListItem>
                   <ListItem>
-                    <ListItemText primary="- Unlimited requests." />
+                    <ListItemText primary="- Unlimited goal planning requests." />
                   </ListItem>
                 </List>
               </Box>
