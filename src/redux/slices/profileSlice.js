@@ -63,6 +63,12 @@ const profileSlice = createSlice({
         },
       ];
     },
+    deleteDailyTodo: (state, action) => {
+      console.log("deleting todo");
+      state.dailyTodos = state.dailyTodos.filter(
+        (todo) => todo.daily_todo_id !== action.payload.daily_todo_id
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -100,6 +106,7 @@ export const {
   createDailyTodo,
   updateDailyTodo,
   updateDailyTodosCompletedToday,
+  deleteDailyTodo,
 } = profileSlice.actions;
 
 export default profileSlice;
