@@ -3,6 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
   updateDailyTodo,
   createDailyTodo,
+  updateDailyTodosCompletedToday,
 } from "../../redux/slices/profileSlice";
 import { Box, FormControl, Button, TextField, FormGroup } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -68,6 +69,7 @@ const DailyTodos = () => {
   };
 
   const handleCompleteDay = async () => {
+    dispatch(updateDailyTodosCompletedToday());
     await axios.post(
       "/api/todo/completeDay",
       {},
@@ -158,7 +160,11 @@ const DailyTodos = () => {
               </Typography>
               {dailyTodos.filter((todo) => todo.completed === 1).length ===
               dailyTodos.length ? (
-                <Button variant="outlined" onClick={handleCompleteDay}>
+                <Button
+                  disabled={dailyTodosCompletedToday}
+                  variant="outlined"
+                  onClick={handleCompleteDay}
+                >
                   <Typography sx={{ marginRight: "8px" }}>
                     {!dailyTodosCompletedToday
                       ? "Complete Day"
