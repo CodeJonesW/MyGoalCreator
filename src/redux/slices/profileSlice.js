@@ -43,17 +43,31 @@ const profileSlice = createSlice({
       state.dailyTodos = [...state.dailyTodos, action.payload];
     },
     updateDailyTodo: (state, action) => {
-      console.log("Updating daily todo", action.payload);
       state.dailyTodos = state.dailyTodos.map((todo) => {
         if (todo.daily_todo_id === action.payload.daily_todo_id) {
           return {
             ...todo,
-            completed: action.payload.completed,
+            completed: action.payload.completed ? 1 : 0,
           };
         } else {
           return todo;
         }
       });
+    },
+    updateDailyTodosCompletedToday: (state, action) => {
+      state.dailyTodosCompletedToday = true;
+      state.dailyTodosCompletions = [
+        ...state.dailyTodosCompletions,
+        {
+          completed_at: new Date(),
+        },
+      ];
+    },
+    deleteDailyTodo: (state, action) => {
+      console.log("deleting todo");
+      state.dailyTodos = state.dailyTodos.filter(
+        (todo) => todo.daily_todo_id !== action.payload.daily_todo_id
+      );
     },
   },
   extraReducers: (builder) => {
@@ -71,7 +85,6 @@ const profileSlice = createSlice({
           dailyTodosCompletions,
           dailyTodosCompletedToday,
         } = action.payload;
-        console.log("Got profile", action.payload);
         state.user = user;
         state.goals = goals;
         state.recentGoal = recentGoal;
@@ -89,6 +102,11 @@ const profileSlice = createSlice({
   },
 });
 
-export const { createDailyTodo, updateDailyTodo } = profileSlice.actions;
+export const {
+  createDailyTodo,
+  updateDailyTodo,
+  updateDailyTodosCompletedToday,
+  deleteDailyTodo,
+} = profileSlice.actions;
 
 export default profileSlice;

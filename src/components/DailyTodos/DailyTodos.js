@@ -3,14 +3,27 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {
   updateDailyTodo,
   createDailyTodo,
+  updateDailyTodosCompletedToday,
+  deleteDailyTodo,
 } from "../../redux/slices/profileSlice";
-import { Box, FormControl, Button, TextField, FormGroup } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Button,
+  TextField,
+  FormGroup,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Checkbox, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const DailyTodos = () => {
   const theme = useTheme();
@@ -21,6 +34,43 @@ const DailyTodos = () => {
   );
   const [loading, setLoading] = useState(false);
   const [todo, setTodo] = useState("");
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [showDeleteButton, setShowDeleteButton] = React.useState(false);
+  const editOpen = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    setAnchorEl(null);
+    setShowDeleteButton(!showDeleteButton);
+  };
+
+  const handleDeleteTodo = async (todo) => {
+    dispatch(
+      deleteDailyTodo({
+        daily_todo_id: todo.daily_todo_id,
+      })
+    );
+
+    await axios.post(
+      "/api/todo/deleteDailyTodo",
+      {
+        daily_todo_id: todo.daily_todo_id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
 
   const handleCreateDailyTodo = async (e) => {
     e.preventDefault();
@@ -45,8 +95,15 @@ const DailyTodos = () => {
   };
 
   const handleCheck = async (todo) => {
-    const result = await axios.post(
-      "/api/todo/completeDailyTodo",
+    dispatch(
+      updateDailyTodo({
+        ...todo,
+        completed: !todo.completed,
+      })
+    );
+
+    await axios.post(
+      "/api/todo/updateDailyTodo",
       {
         daily_todo_id: todo.daily_todo_id,
         completed: !todo.completed,
@@ -58,13 +115,10 @@ const DailyTodos = () => {
         },
       }
     );
-
-    if (result.data.message === "success") {
-      dispatch(updateDailyTodo(result.data.result));
-    }
   };
 
   const handleCompleteDay = async () => {
+    dispatch(updateDailyTodosCompletedToday());
     await axios.post(
       "/api/todo/completeDay",
       {},
@@ -153,9 +207,77 @@ const DailyTodos = () => {
               >
                 Daily Todos
               </Typography>
-              {dailyTodos.filter((todo) => todo.completed === 1).length ===
-              dailyTodos.length ? (
-                <Button variant="outlined" onClick={handleCompleteDay}>
+
+              <IconButton
+                id="basic-button"
+                aria-controls={editOpen ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={editOpen ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={editOpen}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem onClick={handleEdit}>
+                  {showDeleteButton ? "Hide Edit" : "Edit"}
+                </MenuItem>
+              </Menu>
+            </Box>
+
+            {dailyTodos.map((todo) => (
+              <Box
+                key={todo.id}
+                display="flex"
+                alignItems="center"
+                sx={{ flexDirection: "row", justifyContent: "space-between" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Checkbox
+                    onChange={() => handleCheck(todo)}
+                    checked={todo.completed === 1}
+                  />
+                  <Typography>{todo.task}</Typography>
+                </Box>
+
+                {showDeleteButton ? (
+                  <IconButton
+                    onClick={() => {
+                      handleDeleteTodo(todo);
+                    }}
+                  >
+                    <DeleteIcon color="secondary" />
+                  </IconButton>
+                ) : null}
+              </Box>
+            ))}
+            {dailyTodos.filter((todo) => todo.completed === 1).length ===
+            dailyTodos.length ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  paddingTop: "8px",
+                }}
+              >
+                <Button
+                  disabled={dailyTodosCompletedToday}
+                  variant="outlined"
+                  onClick={handleCompleteDay}
+                >
                   <Typography sx={{ marginRight: "8px" }}>
                     {!dailyTodosCompletedToday
                       ? "Complete Day"
@@ -165,18 +287,8 @@ const DailyTodos = () => {
                     color={dailyTodosCompletedToday ? "success" : "secondary"}
                   />
                 </Button>
-              ) : null}
-            </Box>
-
-            {dailyTodos.map((todo) => (
-              <Box key={todo.id} display="flex" alignItems="center">
-                <Checkbox
-                  onChange={() => handleCheck(todo)}
-                  checked={todo.completed === 1}
-                />
-                <Typography>{todo.task}</Typography>
               </Box>
-            ))}
+            ) : null}
           </Box>
         ) : null}
       </Box>
