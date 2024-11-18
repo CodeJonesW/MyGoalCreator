@@ -23,7 +23,7 @@ import axios from "axios";
 import { Checkbox, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const DailyTodos = () => {
   const theme = useTheme();
@@ -259,7 +259,11 @@ const DailyTodos = () => {
                       handleDeleteTodo(todo);
                     }}
                   >
-                    <DeleteIcon color="secondary" />
+                    <DeleteOutlineIcon
+                      sx={{
+                        color: theme.palette.secondary.contrastText,
+                      }}
+                    />
                   </IconButton>
                 ) : null}
               </Box>
