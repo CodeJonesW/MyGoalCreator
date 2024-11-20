@@ -3,15 +3,27 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clearAuthToken } from "./authSlice";
 import { setGoal } from "./goalSlice";
 import axios from "axios";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const getProfile = createAsyncThunk(
   "profile/getProfile",
   async ({ token, setLatestGoal }, { rejectWithValue, dispatch }) => {
+    const userTimezone = dayjs.tz.guess();
+    console.log("user timezone", userTimezone);
+    const now = dayjs().tz(userTimezone);
+    console.log(now.format("YYYY-MM-DD HH:mm:ss"));
+
     try {
       const response = await axios.get(`/api/account/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          userTimezone: userTimezone,
+          datetime: now,
         },
       });
       if (setLatestGoal) {
@@ -59,7 +71,7 @@ const profileSlice = createSlice({
       state.dailyTodosCompletions = [
         ...state.dailyTodosCompletions,
         {
-          completed_at: new Date(),
+          completed_at: action.payload,
         },
       ];
     },

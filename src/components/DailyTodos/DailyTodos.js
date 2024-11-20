@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
   updateDailyTodo,
@@ -24,7 +27,8 @@ import { Checkbox, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
+dayjs.extend(utc);
+dayjs.extend(timezone);
 const DailyTodos = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -118,14 +122,21 @@ const DailyTodos = () => {
   };
 
   const handleCompleteDay = async () => {
-    dispatch(updateDailyTodosCompletedToday());
+    const userTimezone = dayjs.tz.guess();
+    console.log("user timezone", userTimezone);
+    const now = dayjs().tz(userTimezone);
+    console.log(now.format("YYYY-MM-DD HH:mm:ss"));
+
+    dispatch(updateDailyTodosCompletedToday(now));
     await axios.post(
       "/api/todo/completeDay",
-      {},
+      { datetime: now },
       {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          userTimezone: userTimezone,
+          datetime: now,
         },
       }
     );
