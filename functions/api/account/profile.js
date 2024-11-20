@@ -11,6 +11,8 @@ export async function onRequest(context) {
     headers: {
       "Content-Type": "application/json",
       Authorization: context.request.headers.get("authorization"),
+      userTimezone: context.request.headers.get("userTimezone"),
+      datetime: context.request.headers.get("datetime"),
     },
   };
   console.log("Sending request to", url, init);
