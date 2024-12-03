@@ -30,7 +30,7 @@ const DailyTodosCompletionCalendar = () => {
             backgroundColor: theme.palette.background.paper,
             borderRadius: "10px",
             width: "300px",
-            height: "364px",
+            height: "auto",
           }}
         >
           <Typography variant="h5">Daily Todos Completion Calendar</Typography>
